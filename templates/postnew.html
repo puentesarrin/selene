@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}
+ | Write a new post
+{% end %}
+
+{% block header %}
+{% end %}
+
+{% block content %}
+    <form action="/post/new" method="post">
+        <dl>
+            <dt><label for="title">Title:</label></dt>
+            <dd><input type="text" name="title" id="title" /></dd>
+            <dt><label for="slug">Automatic slug:</label></dt>
+            <dd>
+                <input type="checkbox" name="slug" id="slug" checked="checked" />
+                <input type="text" name="customslug" id="customslug" />
+            </dd>
+            <dt><label for="tags">Tags:</label></dt>
+            <dd><input type="text" name="tags" id="tags" /></dd>
+            <dt><label for="content">Content:</label></dt>
+            <dd><textarea name="content" id="content"></textarea></dd>
+            <dt><label for="status">Status:</label></dt>
+            <dd>
+                <input type="radio" name="status" id="published" value="published" checked="checked" />
+                <label for="published">Published</label>
+                <input type="radio" name="status" id="unpublished" value="unpublished" />
+                <label for="unpublished">Unpublished</label>
+            </dd>
+        </dl>
+        {% raw xsrf_form_html() %}
+        <input type="submit" value="Save it" />
+    </form>
+{% end %}
+
+{% block footer %}
+{% end %}

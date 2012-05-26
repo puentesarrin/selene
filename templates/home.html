@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% end %}
+
+{% block header %}
+{% end %}
+
+{% block content %}
+{% for post in posts %}
+<fieldset>
+    <legend>{{ post["title"] }}</legend>
+    <link>{{ blog["urlbase"] + "/post/" + post["slug"] }}</link>
+    <description>{{ post["description"] }}</description>
+    <comments>{{ blog["urlbase"] + "/post/" + post["slug"] }}#comments</comments>
+    {% for tag in post["tags"] %}
+    <category domain="{{ blog["urlbase"] + "/tag/" + tag["slug"] }}">{{ tag["slug"] }}</category>
+    {% end %}
+    <pubDate>Wed, 22 Feb 2012 05:47:24 +0000</pubDate>
+    <dc:creator>{{ post["author"] }}</dc:creator>
+</fieldset>
+{% end %}
+{% end %}
+
+{% block footer %}
+{% end %}

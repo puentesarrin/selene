@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+    <properties>
+        <property key="urlbase" value="http://localhost:8081" />
+        <property key="title" value="Selene" />
+        <property key="slogan" value="A simple CMS for blogging built with Tornado and MongoDB" />
+        <property key="description" value="Selene is a simple CMS for blogging built with Tornado and MongoDB" />
+        <property key="language" value="es" />
+    </properties>
+</configuration>

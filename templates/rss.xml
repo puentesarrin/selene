@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xml:base="{{ blog["urlbase"] }}"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+    <title>{{ blog["title"] }}</title>
+    <link>{{ blog["urlbase"] }}</link>
+    <description>{{ blog["description"] }}</description>
+    <language>{{ blog["language"] }}</language>
+    {% for post in posts %}
+    <item>
+        <title>{{ post["title"] }}</title>
+        <link>{{ blog["urlbase"] + "/post/" + post["slug"] }}</link>
+        <description>{{ post["description"] }}</description>
+        <comments>{{ blog["urlbase"] + "/post/" + post["slug"] }}#comments</comments>
+        {% for tag in post["tags"] %}
+        <category domain="{{ blog["urlbase"] + "/tag/" + tag["slug"] }}">{{ tag["slug"] }}</category>
+        {% end %}
+        <pubDate>Wed, 22 Feb 2012 05:47:24 +0000</pubDate>
+        <dc:creator>{{ post["author"] }}</dc:creator>
+        <guid isPermaLink="false">27 at http://puentesarr.in</guid>
+    </item>
+    {% end %}
+</channel>
+</rss>

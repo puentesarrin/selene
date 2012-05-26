@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+ | Register
+{% end %}
+
+{% block header %}
+{% end %}
+
+{% block content %}
+    <form action="/register" method="post">
+        <dl>
+            <dt><label for="name">Full name:</label></dt>
+            <dd><input type="text" name="name" id="name" /></dd>
+            <dt><label for="email">E-mail:</label></dt>
+            <dd><input type="text" name="email" id="email" /></dd>
+            <dt><label for="password">Password:</label></dt>
+            <dd><input type="password" name="password" id="password" /></dd>
+        </dl>
+        {% raw xsrf_form_html() %}
+        <input type="submit" value="Register" />
+    </form>
+{% end %}
+
+{% block footer %}
+{% end %}
