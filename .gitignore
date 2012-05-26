@@ -1,0 +1,5 @@
+*.nja
+*.pyc
+*.so
+*~
+build 
