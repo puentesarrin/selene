@@ -6,7 +6,7 @@ A simple CMS for blogging inspired by my beautiful wife and built with Tornado a
 TODO list
 ---------
 
-* Improve schema design and bear in mind this presentation: [MongoDB for Content Management](http://www.10gen.com/presentations/webinar/mongodb-for-content-management) 
+* Improve schema design bearing in mind this presentation: [MongoDB for Content Management](http://www.10gen.com/presentations/webinar/mongodb-for-content-management) 
 * Define design and improve styles
 * Validations for forms
 * Support for RSS with XML files and aggressive caching (No templates)
@@ -14,3 +14,5 @@ TODO list
 * Support for multi-blogging
 * Support for third-party and customizable authentication (Google, Facebook and Twitter)
 * Etc.
+
+I want to improve this project with your help... I will watch to all of your pull-requests!
