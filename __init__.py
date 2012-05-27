@@ -8,6 +8,7 @@ import base64
 from xml.dom import minidom
 import handlers
 import modules
+from helpers.xmlhelper import xmldom2dict
 
 define("debug", default=True, type=bool)
 define("port", default=8081, type=int)
@@ -18,12 +19,7 @@ class Selene(tornado.web.Application):
 
     def __init__(self):
         self.xml = minidom.parse("config.xml")
-        tagconfig = self.xml.getElementsByTagName("configuration")[0]
-        tagproperties = tagconfig.getElementsByTagName("properties")[0]
-        properties = dict()
-        for prop in tagproperties.getElementsByTagName("property"):
-            properties[prop.getAttribute("key")] = prop.getAttribute("value")
-        self.properties = properties
+        self.config = xmldom2dict(self.xml)["#document"]["configuration"]
         self.db = pymongo.Connection()[options.database]
         app_path = os.path.dirname(__file__)
         settings = {

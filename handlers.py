@@ -9,10 +9,6 @@ import httplib
 
 class BaseHandler(tornado.web.RequestHandler):
 
-#    def __init__(self, application, request, **kwargs):
-#        tornado.web.RequestHandler.__init__(self, application, request,
-#            **kwargs)
-
     def get_current_user(self):
         user = self.get_secure_cookie("current_user") or False
         if not user:
@@ -20,7 +16,8 @@ class BaseHandler(tornado.web.RequestHandler):
         return tornado.escape.json_decode(user)
 
     def render(self, template_name, **kwargs):
-        kwargs.update({'blog': self.application.properties})
+        kwargs.update({'selene': self.application.config["selene"]})
+        kwargs.update({'blog': self.application.config["blog"]})
         kwargs.update({'current_user': self.current_user})
         super(BaseHandler, self).render(template_name, **kwargs)
 

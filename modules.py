@@ -12,4 +12,10 @@ class Menu(tornado.web.UIModule):
 class Post(tornado.web.UIModule):
 
     def render(self, post):
-        return self.render_string("modules/post.html", post)
+        return self.render_string("modules/post.html", post=post)
+
+
+class PoweredBy(tornado.web.UIModule):
+
+    def render(self, selene):
+        return self.render_string("modules/powered_by.html", selene=selene)
