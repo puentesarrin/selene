@@ -5,6 +5,7 @@ from tornado.template import Template
 import bcrypt
 import os
 import httplib
+import pymongo
 
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -15,9 +16,15 @@ class BaseHandler(tornado.web.RequestHandler):
             return None
         return tornado.escape.json_decode(user)
 
+    def get_user_locale(self):
+        user = self.current_user
+        if not user:
+            return None
+        return tornado.locale.get(user.locale)
+
     def render(self, template_name, **kwargs):
-        kwargs.update({'selene': self.application.config["selene"]})
-        kwargs.update({'blog': self.application.config["blog"]})
+        kwargs.update({'selene': self.application.selene})
+        kwargs.update({'blog': self.application.blog})
         kwargs.update({'current_user': self.current_user})
         super(BaseHandler, self).render(template_name, **kwargs)
 
@@ -138,4 +145,6 @@ class RssHandler(BaseHandler):
     def get(self):
         self.set_header("Content-Type", "text/xml; charset=UTF-8")
         self.render("rss.xml",
-            posts=self.application.db.posts.find())
+            posts=self.application.db.posts.find().sort("pubdate",
+                pymongo.DESCENDING),
+            default_language=self.application.default_language["shortcode"])

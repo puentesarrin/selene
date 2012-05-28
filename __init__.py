@@ -12,19 +12,34 @@ from helpers.xmlhelper import xmldom2dict
 
 define("debug", default=True, type=bool)
 define("port", default=8081, type=int)
+define("connectionuri", default="mongodb://localhost:27017", type=str)
 define("database", default="selene", type=str)
 
 
 class Selene(tornado.web.Application):
 
+    def set_languages(self):
+        self.languages = dict()
+        for lang in filter(lambda x: x != "#attributes"
+            and not x.endswith("-attrs"),
+            self.selene["languages"].keys()):
+            self.languages[lang] = self.selene["languages"][lang + "-attrs"]
+            self.languages[lang]["code"] = lang
+            self.languages[lang]["name"] = self.selene["languages"][lang]
+        default_language = self.selene["languages"]["#attributes"]["default"]
+        self.default_language = self.languages[default_language]
+
     def __init__(self):
         self.xml = minidom.parse("config.xml")
         self.config = xmldom2dict(self.xml)["#document"]["configuration"]
-        self.db = pymongo.Connection()[options.database]
-        app_path = os.path.dirname(__file__)
+        self.selene = self.config["selene"]
+        self.blog = self.config["blog"]
+        self.set_languages()
+        self.db = pymongo.Connection(options.connectionuri)[options.database]
+        self.path = os.path.dirname(__file__)
         settings = {
-            'static_path': os.path.join(app_path, "static"),
-            'template_path': os.path.join(app_path, "templates"),
+            'static_path': os.path.join(self.path, "static"),
+            'template_path': os.path.join(self.path, "templates"),
             "ui_modules": modules,
             "cookie_secret": base64.b64encode(os.urandom(32)),
             "login_url": "/login",
