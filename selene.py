@@ -18,23 +18,23 @@ define("database", default="selene", type=str)
 
 class Selene(tornado.web.Application):
 
-    def set_languages(self):
-        self.languages = dict()
+    def set_locales(self):
+        self.locales = dict()
         for lang in filter(lambda x: x != "#attributes"
             and not x.endswith("-attrs"),
-            self.selene["languages"].keys()):
-            self.languages[lang] = self.selene["languages"][lang + "-attrs"]
-            self.languages[lang]["code"] = lang
-            self.languages[lang]["name"] = self.selene["languages"][lang]
-        default_language = self.selene["languages"]["#attributes"]["default"]
-        self.default_language = self.languages[default_language]
+            self.selene["locales"].keys()):
+            self.locales[lang] = self.selene["locales"][lang + "-attrs"]
+            self.locales[lang]["code"] = lang
+            self.locales[lang]["name"] = self.selene["locales"][lang]
+        default_locale = self.selene["locales"]["#attributes"]["default"]
+        self.default_locale = self.locales[default_locale]
 
     def __init__(self):
         self.xml = minidom.parse("config.xml")
         self.config = xmldom2dict(self.xml)["#document"]["configuration"]
         self.selene = self.config["selene"]
         self.blog = self.config["blog"]
-        self.set_languages()
+        self.set_locales()
         self.db = pymongo.Connection(options.connectionuri)[options.database]
         self.path = os.path.dirname(__file__)
         settings = {
@@ -62,6 +62,7 @@ class Selene(tornado.web.Application):
 
 if __name__ == '__main__':
     tornado.options.parse_command_line()
+    tornado.locale.load_translations("translations")
     tornado.web.ErrorHandler = handlers.ErrorHandler
     http_server = tornado.httpserver.HTTPServer(Selene())
     http_server.listen(options.port)

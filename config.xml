@@ -3,10 +3,10 @@
     <selene>
         <title>Selene</title>
         <slogan>A simple CMS for blogging built with Tornado and MongoDB</slogan>
-        <languages default="en_US">
+        <locales default="en_US">
             <en_US shortcode="en">English</en_US>
             <es_ES shortcode="es">Spanish</es_ES>
-        </languages>
+        </locales>
     </selene>
     <blog>
         <title>Blog title</title>

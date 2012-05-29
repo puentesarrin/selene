@@ -11,16 +11,18 @@ import pymongo
 class BaseHandler(tornado.web.RequestHandler):
 
     def get_current_user(self):
-        user = self.get_secure_cookie("current_user") or False
-        if not user:
+        email = self.get_secure_cookie("current_user") or False
+        if not email:
             return None
-        return tornado.escape.json_decode(user)
+        return self.application.db.users.find_one({"email": email})
 
     def get_user_locale(self):
         user = self.current_user
         if not user:
             return None
-        return tornado.locale.get(user.locale)
+        if not user["locale"]:
+            return None
+        return tornado.locale.get(user["locale"])
 
     def render(self, template_name, **kwargs):
         kwargs.update({'selene': self.application.selene})
@@ -71,7 +73,8 @@ class RegisterHandler(BaseHandler):
             self.application.db.users.insert({
                 "name": name,
                 "email": email,
-                "password": bcrypt.hashpw(password, bcrypt.gensalt())
+                "password": bcrypt.hashpw(password, bcrypt.gensalt()),
+                "locale": self.application.default_locale["code"]
                 })
             self.redirect("/login")
 
@@ -91,13 +94,11 @@ class LoginHandler(BaseHandler):
             email = self.get_argument("email", False)
             password = self.get_argument("password", False)
             if email and password:
-                user = self.application.db.users.find_one({"email": email},
-                    {"_id": 0})
+                user = self.application.db.users.find_one({"email": email})
                 pass_check = bcrypt.hashpw(password,
                     user["password"]) == user["password"]
                 if pass_check:
-                    self.set_secure_cookie("current_user",
-                        tornado.escape.json_encode(user))
+                    self.set_secure_cookie("current_user", user["email"])
                     self.redirect("/")
                 else:
                     self.write("User is not exist.")
@@ -107,7 +108,7 @@ class LoginHandler(BaseHandler):
 
 class LogoutHandler(BaseHandler):
 
-    def get(self):
+    def post(self):
         if self.current_user:
             self.clear_cookie("current_user")
         self.redirect("/")
@@ -146,5 +147,5 @@ class RssHandler(BaseHandler):
         self.set_header("Content-Type", "text/xml; charset=UTF-8")
         self.render("rss.xml",
             posts=self.application.db.posts.find().sort("pubdate",
-                pymongo.DESCENDING),
+                pymongo.DESCENDING).limit(10),
             default_language=self.application.default_language["shortcode"])

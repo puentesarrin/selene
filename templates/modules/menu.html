@@ -8,6 +8,11 @@
     {% end %}
     <li><a href="/rss">RSS Sindication</a></li>
     {% if current_user %}
-    <li><a href="/logout">Logout</a></li>
+    <li>
+        <form action="/logout" method="post">
+            {% raw xsrf_form_html() %}
+            <input type="submit" value="Logout" />
+        </form>
+    </li>
     {% end %}
 </ul>
