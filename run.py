@@ -4,7 +4,7 @@ import pymongo
 import tornado.web
 import tornado.httpserver
 
-from selene import options, handlers, modules
+from selene import options, handlers, modules, routes
 from tornado.options import options as opts
 
 
@@ -23,19 +23,9 @@ class Selene(tornado.web.Application):
             'cookie_secret': opts.cookie_secret,
             'ui_modules': modules
         }
-        urls = [
-            (r"/", handlers.HomeHandler),
-            (r"/register/?", handlers.RegisterHandler),
-            (r"/login/?", handlers.LoginHandler),
-            (r"/logout/?", handlers.LogoutHandler),
-            (r"/post/new/?", handlers.NewPostHandler),
-            (r"/post/([a-zA-Z0-9-]+)/?", handlers.PostHandler),
-            (r"/post/([a-zA-Z0-9-]+)/edit/?", handlers.EditPostHandler),
-            (r"/post/delete/?", handlers.DeletePostHandler),
-            (r"/rss/?", handlers.RssHandler),
-            (r"/(favicon\.ico)", tornado.web.StaticFileHandler,
-                 {'path': settings['static_path']})]
-        tornado.web.Application.__init__(self, urls, **settings)
+        tornado.web.Application.__init__(self, routes.urls +
+            [(r"/(favicon\.ico)", tornado.web.StaticFileHandler,
+            {'path': settings['static_path']})], **settings)
 
 if __name__ == '__main__':
     options.setup_options('selene.conf')
