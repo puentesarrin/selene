@@ -1,52 +1,28 @@
 # -*- coding: utf-8 *-*
-import tornado.web
-import tornado.options
-import tornado.httpserver
-from tornado.options import define, options
-import pymongo
 import os
-import base64
-from xml.dom import minidom
-from selene import handlers
-from selene import modules
-from selene.helpers.xmlhelper import xmldom2dict
+import pymongo
+import tornado.web
+import tornado.httpserver
 
-define("debug", default=True, type=bool)
-define("port", default=8081, type=int)
-define("connectionuri", default="mongodb://localhost:27017", type=str)
-define("database", default="selene", type=str)
+from selene import options, handlers, modules
+from tornado.options import options as opts
 
 
 class Selene(tornado.web.Application):
 
-    def set_locales(self):
-        self.locales = dict()
-        for lang in filter(lambda x: x != "#attributes"
-            and not x.endswith("-attrs"),
-            self.selene["locales"].keys()):
-            self.locales[lang] = self.selene["locales"][lang + "-attrs"]
-            self.locales[lang]["code"] = lang
-            self.locales[lang]["name"] = self.selene["locales"][lang]
-        default_locale = self.selene["locales"]["#attributes"]["default"]
-        self.default_locale = self.locales[default_locale]
-
-    def __init__(self):
-        self.xml = minidom.parse("config.xml")
-        self.config = xmldom2dict(self.xml)["#document"]["configuration"]
-        self.selene = self.config["selene"]
-        self.blog = self.config["blog"]
-        self.set_locales()
-        self.db = pymongo.Connection(options.connectionuri)[options.database]
+    def __init__(self, db):
+        self.db = db
         self.path = os.path.dirname(__file__)
         settings = {
-            'static_path': os.path.join(self.path, "static"),
-            'template_path': os.path.join(self.path, "templates"),
-            "ui_modules": modules,
-            "cookie_secret": base64.b64encode(os.urandom(32)),
-            "login_url": "/login",
-            "xsrf_cookies": True,
-            'debug': options.debug
-            }
+            'login_url': '/login',
+            'static_path': os.path.join(self.path, '/'.join([opts.theme_path,
+                'static'])),
+            'template_path': os.path.join(self.path, '/'.join([opts.theme_path,
+                'templates'])),
+            'xsrf_cookies': True,
+            'cookie_secret': opts.cookie_secret,
+            'ui_modules': modules
+        }
         urls = [
             (r"/", handlers.HomeHandler),
             (r"/register/?", handlers.RegisterHandler),
@@ -58,13 +34,14 @@ class Selene(tornado.web.Application):
             (r"/post/delete/?", handlers.DeletePostHandler),
             (r"/rss/?", handlers.RssHandler),
             (r"/(favicon\.ico)", tornado.web.StaticFileHandler,
-                 dict(path=settings['static_path']))]
+                 {'path': settings['static_path']})]
         tornado.web.Application.__init__(self, urls, **settings)
 
 if __name__ == '__main__':
-    tornado.options.parse_command_line()
+    options.setup_options('selene.conf')
+    db = pymongo.MongoClient(opts.db_uri)[opts.db_name]
     tornado.locale.load_translations("translations")
     tornado.web.ErrorHandler = handlers.ErrorHandler
-    http_server = tornado.httpserver.HTTPServer(Selene())
-    http_server.listen(options.port)
+    http_server = tornado.httpserver.HTTPServer(Selene(db))
+    http_server.listen(opts.port)
     tornado.ioloop.IOLoop.instance().start()

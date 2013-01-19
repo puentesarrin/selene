@@ -1,11 +1,8 @@
 # -*- coding: utf-8 *-*
-import tornado.web
-from tornado.options import options
-from tornado.template import Template
 import bcrypt
-import os
-import httplib
-import pymongo
+import tornado.web
+
+from tornado.options import options
 
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -25,9 +22,7 @@ class BaseHandler(tornado.web.RequestHandler):
         return tornado.locale.get(user["locale"])
 
     def render(self, template_name, **kwargs):
-        kwargs.update({'selene': self.application.selene})
-        kwargs.update({'blog': self.application.blog})
-        kwargs.update({'current_user': self.current_user})
+        kwargs.update({'options': options})
         super(BaseHandler, self).render(template_name, **kwargs)
 
 
@@ -147,5 +142,5 @@ class RssHandler(BaseHandler):
         self.set_header("Content-Type", "text/xml; charset=UTF-8")
         self.render("rss.xml",
             posts=self.application.db.posts.find().sort("pubdate",
-                pymongo.DESCENDING).limit(10),
-            default_language=self.application.default_language["shortcode"])
+                -1).limit(10),
+            options=options)

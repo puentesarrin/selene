@@ -17,5 +17,5 @@ class Post(tornado.web.UIModule):
 
 class PoweredBy(tornado.web.UIModule):
 
-    def render(self, selene):
-        return self.render_string("modules/powered_by.html", selene=selene)
+    def render(self):
+        return self.render_string("modules/powered_by.html")

@@ -1,21 +1,19 @@
 <html>
     <head>
-        <title>{{ blog["title"] }}{% block title %}{% end %}</title>
+        <title>{{ options.title }}{% block title %}{% end %}</title>
         <link rel="stylesheet" href="{{ static_url("css/reset.css") }}" type="text/css" />
     </head>
     <body>
         <header>
-            <a href="/"><h1>{{ blog["title"] }}</h1></a>
-            {% if blog["description"] != "" %}
-            <h2>{{ blog["description"] }}</h2>
-            {% end %}
+            <a href="/"><h1>{{ options.title }}</h1></a>
+            <h2>{{ options.slogan }}</h2>
             {% block header %}{% end %}
             <div id="menu">{% module Menu(current_user=current_user) %}</div>
         </header>
         <content>{% block content %}{% end %}</content>
         <footer>
             {% block footer %}{% end %}
-            {% module PoweredBy(selene=selene) %}
+            {% module PoweredBy() %}
         </footer>
     </body>
 </html>
