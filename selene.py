@@ -6,9 +6,9 @@ import pymongo
 import os
 import base64
 from xml.dom import minidom
-import handlers
-import modules
-from helpers.xmlhelper import xmldom2dict
+from selene import handlers
+from selene import modules
+from selene.helpers.xmlhelper import xmldom2dict
 
 define("debug", default=True, type=bool)
 define("port", default=8081, type=int)
