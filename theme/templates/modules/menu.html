@@ -1,10 +1,10 @@
 <ul>
-    <li><a href="/">Home</a></li>
     {% if current_user %}
     <li><a href="/post/new">Write a new post</a></li>
     {% else %}
     <li><a href="/login">Login</a></li>
     <li><a href="/register">Register</a></li>
+    <li><a href="/new-password">Request a new password</a></li>
     {% end %}
     <li><a href="/rss">RSS Sindication</a></li>
     {% if current_user %}

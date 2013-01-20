@@ -2,7 +2,7 @@
 import os
 import tornado.web
 
-from selene import modules, routes
+from selene import modules, routes, smtp
 from tornado.options import options as opts
 
 
@@ -10,6 +10,7 @@ class Selene(tornado.web.Application):
 
     def __init__(self, db):
         self.db = db
+        self.smtp = smtp.SMTP()
         self.path = os.path.dirname(__file__)
         settings = {
             'login_url': '/login',

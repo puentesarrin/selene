@@ -2,6 +2,7 @@
 import bcrypt
 
 from selene.handlers import BaseHandler
+from selene.helpers import random_helper
 from tornado.options import options
 
 
@@ -53,6 +54,35 @@ class LoginHandler(AuthBaseHandler):
                     return
         self.render('login.html',
             message="Incorrect user/password combination")
+
+
+class RequestNewPasswordHandler(AuthBaseHandler):
+
+    def get(self):
+        self.render('newpassword.html', message='')
+
+    def post(self):
+        email = self.get_argument('email', False)
+        if not email:
+            self.render('newpassword.html',
+                message="E-mail address is required.")
+            return
+        user = self.db.users.find_one({'email': email})
+        if user:
+            reset_hash = random_helper.generate_md5()
+            user = self.db.users.find_and_modify({'email': email},
+                {'$set': {'reset_hash': reset_hash}}, new=True)
+            self.smtp.send('Reset password', 'newpassword.html',
+                user["email"], {'user': user})
+            self.redirect('/')
+        else:
+            self.render('newpassword.html', message='User does not exist')
+
+
+class ResetPasswordHandler(AuthBaseHandler):
+
+    def get(self, reset_hash):
+        self.render('resetpassword.html')
 
 
 class LogoutHandler(BaseHandler):

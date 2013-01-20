@@ -7,14 +7,26 @@ import tornado.options
 def setup_options(path):
     #HTTP Server
     tornado.options.define("port", default=8081, type=int, help='Server port')
+
+    #Database
     tornado.options.define("db_uri", default="mongodb://localhost:27017",
         type=str, help='MongoDB database URI')
     tornado.options.define("db_name", default="selene", type=str,
         help='MongoDB database name')
 
+    #SMTP
+    tornado.options.define('smtp_host', default='smtp.gmail.com', type=str,
+        help='SMTP server host')
+    tornado.options.define('smtp_port', default=587, type=int,
+        help='SMTP server port')
+    tornado.options.define('smtp_username', type=str, help='SMTP user')
+    tornado.options.define('smtp_password', type=str, help='SMTP password')
+    tornado.options.define('smtp_use_tls', default=True, type=bool,
+        help='SMTP use TLS flag')
+
     #Blog
-    tornado.options.define('base_url', default='Selene', type=str,
-        help='Base URL')
+    tornado.options.define('base_url', default='http://localhost:8081',
+        type=str, help='Base URL')
     tornado.options.define('title', default='Selene', type=str,
         help='Blog title')
     tornado.options.define('slogan', default=('A simple CMS for blogging built'

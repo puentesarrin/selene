@@ -10,6 +10,10 @@ class BaseHandler(tornado.web.RequestHandler):
     def db(self):
         return self.application.db
 
+    @property
+    def smtp(self):
+        return self.application.smtp
+
     def get_current_user(self):
         email = self.get_secure_cookie("current_user") or False
         if not email:

@@ -1,0 +1,18 @@
+<div>
+    <div>
+        <h1>{{ title }}</h1>
+    </div>
+    <body>
+        <div>{% block content %}{% end %}</div>
+        <div>
+            {% block footer %}{% end %}
+            <em>Powered by
+                <span title="A simple CMS for blogging built with Tornado and MongoDB">
+                    <a href="https://github.com/puentesarrin/selene">
+                        Selene
+                    </a>
+                </span>
+            </em>
+        </div>
+    </div>
+</div>
