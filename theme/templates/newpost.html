@@ -1,17 +1,14 @@
 {% extends "base.html" %}
 
 {% block title %}
- | Login
+ | Write a new post
 {% end %}
 
 {% block header %}
 {% end %}
 
 {% block content %}
-    {% if message %}
-        <em>{{ message }}</em>
-    {% end %}
-    {% module LoginModule() %}
+    {% module NewPostModule() %}
 {% end %}
 
 {% block footer %}

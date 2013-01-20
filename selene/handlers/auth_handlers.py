@@ -91,11 +91,13 @@ class ResetPasswordHandler(AuthBaseHandler):
             password = bcrypt.hashpw(password, bcrypt.gensalt())
             user = self.db.users.find_and_modify({'reset_hash': reset_hash},
                 {'$set': {'password': password}}, new=True)
-            self.smtp.send('Updated password', 'resetpassword.html',
-                user['email'], {'user': user})
-            self.redirect('/login')
-        else:
-            self.render('resetpassword.html', message='Invalid arguments')
+            if user:
+                self.smtp.send('Updated password', 'resetpassword.html',
+                    user['email'], {'user': user})
+                self.redirect('/login')
+                return
+        self.render('resetpassword.html', message='Invalid arguments',
+            reset_hash='')
 
 
 class LogoutHandler(BaseHandler):

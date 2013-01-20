@@ -4,15 +4,21 @@
     </head>
     <body>
         <header>
-            <a href="/"><h1>{{ options.title }}</h1></a>
-            <h2>{{ options.slogan }}</h2>
+            <a href="/">
+                <h1>{{ options.title }}</h1>
+            </a>
+            <h3>{{ options.slogan }}</h3>
             {% block header %}{% end %}
-            <div id="menu">{% module Menu(current_user=current_user) %}</div>
+            <div id="menu">
+                {% module MenuModule(current_user=current_user) %}
+            </div>
         </header>
-        <content>{% block content %}{% end %}</content>
+        <content>
+            {% block content %}{% end %}
+        </content>
         <footer>
             {% block footer %}{% end %}
-            {% module PoweredBy() %}
+            {% module PoweredByModule() %}
         </footer>
     </body>
 </html>

@@ -1,0 +1,10 @@
+<form action="/login" method="post">
+    <dl>
+        <dt><label for="email">E-mail:</label></dt>
+        <dd><input type="text" name="email" id="email" /></dd>
+        <dt><label for="password">Password:</label></dt>
+        <dd><input type="password" name="password" id="password" /></dd>
+    </dl>
+    {% raw xsrf_form_html() %}
+    <input type="submit" value="Login" />
+</form>

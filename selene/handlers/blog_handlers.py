@@ -16,7 +16,7 @@ class NewPostHandler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self):
-        self.render("postnew.html")
+        self.render("newpost.html")
 
 
 class PostHandler(BaseHandler):
