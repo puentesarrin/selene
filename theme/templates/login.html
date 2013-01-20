@@ -8,6 +8,9 @@
 {% end %}
 
 {% block content %}
+    {% if message %}
+        <em>{{ message }}</em>
+    {% end %}
     <form action="/login" method="post">
         <dl>
             <dt><label for="email">E-mail:</label></dt>

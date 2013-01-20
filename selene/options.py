@@ -19,7 +19,7 @@ def setup_options(path):
         help='Blog title')
     tornado.options.define('slogan', default=('A simple CMS for blogging built'
         ' with Tornado and MongoDB'), type=str, help='Blog slogan')
-    tornado.options.define('default_language', default='es', type=str,
+    tornado.options.define('default_language', default='en_US', type=str,
         help='Default language')
 
     #Application settings
