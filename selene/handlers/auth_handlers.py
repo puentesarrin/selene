@@ -81,8 +81,21 @@ class RequestNewPasswordHandler(AuthBaseHandler):
 
 class ResetPasswordHandler(AuthBaseHandler):
 
-    def get(self, reset_hash):
-        self.render('resetpassword.html')
+    def get(self, reset_hash=''):
+        self.render('resetpassword.html', message='', reset_hash=reset_hash)
+
+    def post(self, reset_hash=None):
+        reset_hash = self.get_argument('hash', False)
+        password = self.get_argument('password', False)
+        if reset_hash and password:
+            password = bcrypt.hashpw(password, bcrypt.gensalt())
+            user = self.db.users.find_and_modify({'reset_hash': reset_hash},
+                {'$set': {'password': password}}, new=True)
+            self.smtp.send('Updated password', 'resetpassword.html',
+                user['email'], {'user': user})
+            self.redirect('/login')
+        else:
+            self.render('resetpassword.html', message='Invalid arguments')
 
 
 class LogoutHandler(BaseHandler):

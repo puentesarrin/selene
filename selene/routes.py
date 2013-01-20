@@ -7,7 +7,7 @@ urls = [
     (r"/register/?", handlers.RegisterHandler),
     (r"/login/?", handlers.LoginHandler),
     (r'/new-password', handlers.RequestNewPasswordHandler),
-    (r'/reset-password/(.+)', handlers.ResetPasswordHandler),
+    (r'/reset-password/(.*)', handlers.ResetPasswordHandler),
     (r"/logout/?", handlers.LogoutHandler),
     (r"/post/new/?", handlers.NewPostHandler),
     (r"/post/([a-zA-Z0-9-]+)/?", handlers.PostHandler),
