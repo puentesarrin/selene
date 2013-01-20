@@ -1,0 +1,4 @@
+tornado
+pymongo
+py-bcrypt
+git+https://github.com/equeny/tornadomail.git
