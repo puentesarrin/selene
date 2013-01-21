@@ -87,7 +87,8 @@ class RequestNewPasswordHandler(AuthBaseHandler):
         if user:
             reset_hash = random_helper.generate_md5()
             user = self.db.users.find_and_modify({'email': email},
-                {'$set': {'reset_hash': reset_hash}}, new=True)
+                {'$set': {'reset_hash': reset_hash, 'enabled': True},
+                '$unset': {'join_hash': 1}}, new=True)
             self.smtp.send('Reset password', 'newpassword.html',
                 user["email"], {'user': user})
             self.redirect('/')
