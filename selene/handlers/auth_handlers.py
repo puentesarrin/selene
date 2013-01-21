@@ -1,5 +1,6 @@
 # -*- coding: utf-8 *-*
 import bcrypt
+import datetime
 
 from selene.handlers import BaseHandler
 from selene.helpers import random_helper
@@ -23,16 +24,30 @@ class RegisterHandler(AuthBaseHandler):
         email = self.get_argument("email", "")
         password = self.get_argument("password", "")
         if self.db.users.find_one({'email': email}):
-            self.render('login.html', message='e-mail address already '
+            self.render('login.html', message='E-mail address already '
                 'registered')
             return
-        self.db.users.insert({
+        user = {
             "name": name,
             "email": email,
             "password": bcrypt.hashpw(password, bcrypt.gensalt()),
+            'enabled': False,
+            'join': datetime.datetime.now(),
+            'join_hash': random_helper.generate_md5(),
             "locale": options.default_language
-            })
+            }
+        self.db.users.insert(user)
+        self.smtp.send('Confirm your account', 'newuser.html', user['email'],
+            {'user': user})
         self.redirect("/login")
+
+
+class ConfirmAccountHandler(AuthBaseHandler):
+
+    def get(self, join_hash=None):
+        self.db.users.find_and_modify({'join_hash': join_hash},
+            {'$unset': {'join_hash': 1}, '$set': {'enabled': True}})
+        self.render('confirmaccount.html')
 
 
 class LoginHandler(AuthBaseHandler):
@@ -46,14 +61,15 @@ class LoginHandler(AuthBaseHandler):
         if email and password:
             user = self.db.users.find_one({"email": email})
             if user:
-                pass_check = bcrypt.hashpw(password,
-                    user["password"]) == user["password"]
-                if pass_check:
-                    self.set_secure_cookie("current_user", user["email"])
-                    self.redirect("/")
-                    return
+                if user['enabled']:
+                    pass_check = bcrypt.hashpw(password,
+                        user["password"]) == user["password"]
+                    if pass_check:
+                        self.set_secure_cookie("current_user", user["email"])
+                        self.redirect("/")
+                        return
         self.render('login.html',
-            message="Incorrect user/password combination")
+            message="Incorrect user/password combination or invalid account")
 
 
 class RequestNewPasswordHandler(AuthBaseHandler):
@@ -75,8 +91,8 @@ class RequestNewPasswordHandler(AuthBaseHandler):
             self.smtp.send('Reset password', 'newpassword.html',
                 user["email"], {'user': user})
             self.redirect('/')
-        else:
-            self.render('newpassword.html', message='User does not exist')
+            return
+        self.render('newpassword.html', message='User does not exist')
 
 
 class ResetPasswordHandler(AuthBaseHandler):

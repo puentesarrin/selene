@@ -6,6 +6,7 @@ urls = [
     (r"/", handlers.HomeHandler),
     (r"/register/?", handlers.RegisterHandler),
     (r"/login/?", handlers.LoginHandler),
+    (r'/confirm-account/(.*)', handlers.ConfirmAccountHandler),
     (r'/new-password', handlers.RequestNewPasswordHandler),
     (r'/reset-password/(.*)', handlers.ResetPasswordHandler),
     (r"/logout/?", handlers.LogoutHandler),

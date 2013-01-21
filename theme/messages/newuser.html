@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ title }}
+{% end %}
+
+{% block content %}
+    <h3>Hello {{ user['name'] }}!</h3>
+    <p>Confirm you account!</p>
+    <p>
+        Please, to confirm you account, click on the link below
+        (or copy and paste the URL into your browser):
+        <em>{{ base_url + '/confirm-account/' + user['join_hash'] }}</em>
+    </p>
+{% end %}
+
+{% block footer %}
+{% end %}
