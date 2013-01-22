@@ -1,0 +1,23 @@
+{% if linkable %}
+    <h2><a href="{{ '/post/%s' % post['slug'] }}">{{ post['title'] }}</a></h2>
+{% else %}
+    <h2>{{ post['title'] }}</h2>
+{% end %}
+<div>
+    <dl>
+        <dt>Published:</dt>
+        <dd>{{ post['date'].strftime('%m/%d/%Y') }}</dd>
+        <dt>Tags:</dt>
+        <dd>
+            <ul>
+                {% for tag in post['tags'] %}
+                <li>
+                    <a href="{{ '/tag/%s' % tag }}">{{ tag }}</a>
+                </li>
+                {% end %}
+            <ul>
+        </dd>
+        <dt>Content:</dt>
+        <dd>{{ post['content'] }}</dd>
+    </dl>
+</div>

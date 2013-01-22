@@ -11,5 +11,6 @@ class NewPostModule(tornado.web.UIModule):
 
 class PostModule(tornado.web.UIModule):
 
-    def render(self, post):
-        return self.render_string("modules/post.html", post=post)
+    def render(self, post, linkable=False):
+        return self.render_string("modules/post.html", post=post,
+            linkable=linkable)

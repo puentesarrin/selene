@@ -1,15 +1,14 @@
 {% extends "base.html" %}
 
 {% block title %}
+ | {{ post['title'] }}
 {% end %}
 
 {% block header %}
 {% end %}
 
 {% block content %}
-{% for post in posts %}
-    {% module PostModule(post=post, linkable=True) %}
-{% end %}
+    {% module PostModule(post=post) %}
 {% end %}
 
 {% block footer %}
