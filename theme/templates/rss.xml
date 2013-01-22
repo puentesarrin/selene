@@ -9,14 +9,14 @@
     <item>
         <title>{{ post["title"] }}</title>
         <link>{{ options.base_url + "/post/" + post["slug"] }}</link>
-        <description>{{ post["description"] }}</description>
+        <description>{{ post["content"] }}</description>
         <comments>{{ options.base_url + "/post/" + post["slug"] }}#comments</comments>
         {% for tag in post["tags"] %}
-        <category domain="{{ options.base_url + "/tag/" + tag["slug"] }}">{{ tag["slug"] }}</category>
+        <category domain="{{ "%s/tag/%s" % (options.base_url, tag) }}">{{ tag }}</category>
         {% end %}
-        <pubDate>{{ post["pub_date"] }}</pubDate>
+        <pubDate>{{ post["date"] }}</pubDate>
         <dc:creator>{{ post["author"] }}</dc:creator>
-        <guid isPermaLink="false">{{ post["order_number"] }} at {{ options.base_url }}</guid>
+        {% comment <guid isPermaLink="false">{{ post["order_number"] }} at {{ options.base_url }}</guid> %}
     </item>
     {% end %}
 </channel>

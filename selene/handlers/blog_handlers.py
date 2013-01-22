@@ -10,8 +10,7 @@ from tornado.options import options
 class HomeHandler(BaseHandler):
 
     def get(self):
-        posts = self.application.db.posts.find({'status': 'published'}).sort(
-            'date', -1)
+        posts = self.db.posts.find({'status': 'published'}).sort('date', -1)
         self.render("home.html", posts=posts)
 
 
@@ -34,7 +33,8 @@ class NewPostHandler(BaseHandler):
             'date': datetime.datetime.now(),
             'tags': self.get_argument('tags').split(','),
             'content': self.get_argument('content'),
-            'status': self.get_argument('status')
+            'status': self.get_argument('status'),
+            'author': self.current_user['name']
         }
         self.db.posts.insert(post)
         self.redirect('/post/%s' % post['slug'])
@@ -64,10 +64,19 @@ class DeletePostHandler(BaseHandler):
         self.write("DeletePost")
 
 
+class TagHandler(BaseHandler):
+
+    def get(self, tag):
+        posts = self.db.posts.find({'tags': tag}).sort('date', -1)
+        if not posts.count():
+            raise tornado.web.HTTPError(404)
+        self.render('tag.html', tag=tag, posts=posts)
+
+
 class RssHandler(BaseHandler):
 
     def get(self):
         self.set_header("Content-Type", "text/xml; charset=UTF-8")
         self.render("rss.xml",
-            posts=self.application.db.posts.find().sort("date", -1).limit(10),
+            posts=self.db.posts.find().sort("date", -1).limit(10),
             options=options)

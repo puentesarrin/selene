@@ -18,7 +18,7 @@ class BaseHandler(tornado.web.RequestHandler):
         email = self.get_secure_cookie("current_user") or False
         if not email:
             return None
-        return self.application.db.users.find_one({"email": email})
+        return self.db.users.find_one({"email": email})
 
     def get_user_locale(self):
         user = self.current_user

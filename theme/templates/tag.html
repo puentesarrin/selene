@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}
+ | {{ tag }}
+{% end %}
+
+{% block header %}
+{% end %}
+
+{% block content %}
+<h2>Tag: {{ tag }}</h2>
+{% for post in posts %}
+    {% module PostModule(post=post, linkable=True) %}
+{% end %}
+{% end %}
+
+{% block footer %}
+{% end %}
