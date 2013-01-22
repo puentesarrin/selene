@@ -4,8 +4,9 @@ import tornado.web
 
 class NewPostModule(tornado.web.UIModule):
 
-    def render(self):
-        return self.render_string('modules/newpost.html')
+    def render(self, message, post):
+        return self.render_string('modules/newpost.html', message=message,
+            post=post)
 
 
 class PostModule(tornado.web.UIModule):

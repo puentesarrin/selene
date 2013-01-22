@@ -8,7 +8,7 @@
 {% end %}
 
 {% block content %}
-    {% module NewPostModule() %}
+    {% module NewPostModule(message=message, post=post) %}
 {% end %}
 
 {% block footer %}
