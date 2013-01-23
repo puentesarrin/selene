@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+ | Delete post "{{ post['title'] }}"?
+{% end %}
+
+{% block header %}
+{% end %}
+
+{% block content %}
+    <form method="post" action="{{ '/post/%s/delete' % post['slug'] }}">
+        <h3>Do you want to delete this post "{{ post['title'] }}"?</h3>
+        {% raw xsrf_form_html() %}
+        <input type="submit" value="Delete it"/>
+    </form>
+{% end %}
+
+{% block footer %}
+{% end %}

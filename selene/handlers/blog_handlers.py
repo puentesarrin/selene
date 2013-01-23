@@ -60,8 +60,18 @@ class EditPostHandler(BaseHandler):
 class DeletePostHandler(BaseHandler):
 
     @tornado.web.authenticated
-    def get(self):
-        self.write("DeletePost")
+    def get(self, slug):
+        post = self.db.posts.find_one({'slug': slug}, {'title': 1, 'slug': 1})
+        self.render("deletepost.html", post=post)
+
+    @tornado.web.authenticated
+    def post(self, slug):
+        post = self.db.posts.find({'slug': slug})
+        if not post:
+            raise tornado.web.HTTPError(404)
+        else:
+            self.db.posts.remove({'slug': slug})
+            self.redirect('/posts')
 
 
 class PostsHandlers(BaseHandler):
