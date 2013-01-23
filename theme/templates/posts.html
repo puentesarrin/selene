@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}
+ | List posts
+{% end %}
+
+{% block header %}
+{% end %}
+
+{% block content %}
+<table>
+    <thead>
+        <tr>
+            <td>Title</td>
+            <td>Status</td>
+            <td>Date</td>
+            <td>&nbsp;</td>
+        </tr>
+    </thead>
+    </tbody>
+        {% for post in posts %}
+        <tr>
+            <td>
+                <a href="{{ '/post/%s' % post['slug'] }}">
+                    {{ post['title'] }}
+                </a>
+            </td>
+            <td>
+                {{ post['status'] }}
+            </td>
+            <td>
+                {{ post['date'] }}
+            </td>
+            <td>
+                <a href="{{ '/post/%s/edit' % post['slug'] }}">Edit</a>
+                <a href="{{ '/post/%s/delete' % post['slug'] }}">Delete</a>
+            </td>
+        </tr>
+        {% end %}
+    </thead>
+</table>
+{% end %}
+
+{% block footer %}
+{% end %}

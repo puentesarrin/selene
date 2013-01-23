@@ -64,6 +64,14 @@ class DeletePostHandler(BaseHandler):
         self.write("DeletePost")
 
 
+class PostsHandlers(BaseHandler):
+
+    @tornado.web.authenticated
+    def get(self):
+        posts = self.db.posts.find().sort('date', -1)
+        self.render("posts.html", posts=posts)
+
+
 class TagHandler(BaseHandler):
 
     def get(self, tag):
