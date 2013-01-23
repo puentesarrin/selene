@@ -3,6 +3,14 @@
 {% else %}
     <h2>{{ post['title'] }}</h2>
 {% end %}
+{% if current_user %}
+    <div>
+        <ul>
+            <li><a href="{{ '/post/%s/edit' % post['slug'] }}">Edit</a></li>
+            <li><a href="{{ '/post/%s/delete' % post['slug'] }}">Delete</a></li>
+        </ul>
+    </div>
+{% end %}
 <div>
     <dl>
         <dt>Published:</dt>
