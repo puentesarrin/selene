@@ -31,7 +31,7 @@ class NewPostHandler(BaseHandler):
             'title': self.get_argument('title'),
             'slug': slug,
             'date': datetime.datetime.now(),
-            'tags': self.get_argument('tags').split(','),
+            'tags': helpers.remove_duplicates(self.get_argument('tags')),
             'content': self.get_argument('content'),
             'status': self.get_argument('status'),
             'author': self.current_user['name']
