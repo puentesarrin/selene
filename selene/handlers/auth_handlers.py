@@ -2,8 +2,8 @@
 import bcrypt
 import datetime
 
+from selene import helpers
 from selene.handlers import BaseHandler
-from selene.helpers import random_helper
 from tornado.options import options
 
 
@@ -33,7 +33,7 @@ class RegisterHandler(AuthBaseHandler):
             "password": bcrypt.hashpw(password, bcrypt.gensalt()),
             'enabled': False,
             'join': datetime.datetime.now(),
-            'join_hash': random_helper.generate_md5(),
+            'join_hash': helpers.generate_md5(),
             "locale": options.default_language
             }
         self.db.users.insert(user)
