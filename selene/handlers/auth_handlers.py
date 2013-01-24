@@ -85,7 +85,7 @@ class RequestNewPasswordHandler(AuthBaseHandler):
             return
         user = self.db.users.find_one({'email': email})
         if user:
-            reset_hash = random_helper.generate_md5()
+            reset_hash = helpers.generate_md5()
             user = self.db.users.find_and_modify({'email': email},
                 {'$set': {'reset_hash': reset_hash, 'enabled': True},
                 '$unset': {'join_hash': 1}}, new=True)
