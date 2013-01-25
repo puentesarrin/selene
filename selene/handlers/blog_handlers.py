@@ -18,7 +18,7 @@ class NewPostHandler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self):
-        self.render('newpost.html', message='', post={})
+        self.render('newpost.html', message='', post={}, new=True)
 
     @tornado.web.authenticated
     def post(self):
@@ -53,8 +53,15 @@ class PostHandler(BaseHandler):
 class EditPostHandler(BaseHandler):
 
     @tornado.web.authenticated
-    def get(self):
-        self.write("EditPost")
+    def get(self, slug):
+        post = self.db.posts.find({'slug': slug})
+        if not post:
+            raise tornado.web.HTTPError(404)
+        self.render("newpost.html", message='', post=post, new=False)
+
+    @tornado.web.authenticated
+    def post(self, slug):
+        pass
 
 
 class DeletePostHandler(BaseHandler):
@@ -69,9 +76,8 @@ class DeletePostHandler(BaseHandler):
         post = self.db.posts.find({'slug': slug})
         if not post:
             raise tornado.web.HTTPError(404)
-        else:
-            self.db.posts.remove({'slug': slug})
-            self.redirect('/posts')
+        self.db.posts.remove({'slug': slug})
+        self.redirect('/posts')
 
 
 class PostsHandlers(BaseHandler):

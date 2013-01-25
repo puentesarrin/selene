@@ -30,5 +30,9 @@
         </dd>
     </dl>
     {% raw xsrf_form_html() %}
-    <input type="submit" value="Save it" />
+    {% if new %}
+        <input type="submit" value="Save it" />
+    {% else %}
+        <input type="submit" value="Edit" />
+    {% end %}
 </form>
