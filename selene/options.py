@@ -41,6 +41,8 @@ def setup_options(path):
         'Turn on autoreload, log to stderr only'))
     tornado.options.define('theme_path', default='theme', type=str,
         help='Theme directory')
+    tornado.options.define('static_url_prefix', default=None, type=str,
+        help='Static files prefix')
 
     #Locale
     tornado.options.define('default_locale', default='en', type=str,
