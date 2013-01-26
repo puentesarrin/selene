@@ -61,7 +61,14 @@ class EditPostHandler(BaseHandler):
 
     @tornado.web.authenticated
     def post(self, slug):
-        pass
+        new_post = {
+            'title': self.get_argument('title'),
+            'tags': helpers.remove_duplicates(self.get_argument('tags')),
+            'content': self.get_argument('content'),
+            'status': self.get_argument('status')
+        }
+        self.db.posts.update({'slug': slug}, {'$set': new_post})
+        self.redirect('/post/%s' % slug)
 
 
 class DeletePostHandler(BaseHandler):

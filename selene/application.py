@@ -21,7 +21,7 @@ class Selene(tornado.web.Application):
             'ui_modules': modules
         }
         if opts.static_url_prefix:
-            settings.update({'static_url_prefix': opts.static_url_prefix})
+            settings['static_url_prefix'] = opts.static_url_prefix
         tornado.web.Application.__init__(self, routes.urls +
             [(r"/(favicon\.ico)", tornado.web.StaticFileHandler,
             {'path': settings['static_path']})], **settings)
