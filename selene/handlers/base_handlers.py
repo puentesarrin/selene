@@ -4,6 +4,24 @@ import tornado.web
 from tornado.options import options
 
 
+class BaseMultiDict(object):
+
+    def __init__(self, handler):
+        self.handler = handler
+
+    def __iter__(self):
+        return iter(self.handler.request.arguments)
+
+    def __len__(self):
+        return len(self.handler.request.arguments)
+
+    def __contains__(self, name):
+        return (name in self.handler.request.arguments)
+
+    def getlist(self, name):
+        return self.handler.get_arguments(name, strip=False)
+
+
 class BaseHandler(tornado.web.RequestHandler):
 
     @property
@@ -19,6 +37,9 @@ class BaseHandler(tornado.web.RequestHandler):
         if not email:
             return None
         return self.db.users.find_one({"email": email})
+
+    def get_dict_arguments(self):
+        return BaseMultiDict(self)
 
     def get_user_locale(self):
         user = self.current_user
