@@ -35,7 +35,8 @@ class NewPostHandler(BaseHandler):
             'content': self.get_argument('content'),
             'status': self.get_argument('status'),
             'author': self.current_user['name'],
-            'votes': 0
+            'votes': 0,
+            'views': 0
         }
         self.db.posts.insert(post)
         self.redirect('/post/%s' % post['slug'])
@@ -44,8 +45,8 @@ class NewPostHandler(BaseHandler):
 class PostHandler(BaseHandler):
 
     def get(self, slug_post):
-        post = self.db.posts.find_one({'slug': slug_post,
-            'status': 'published'})
+        post = self.db.posts.find_and_modify({'slug': slug_post,
+            'status': 'published'}, update={'$inc': {'views': 1}}, new=True)
         if not post:
             raise tornado.web.HTTPError(404)
         self.render('post.html', post=post)
