@@ -14,6 +14,7 @@ urls = [
     (r"/post/([a-zA-Z0-9-]+)/?", handlers.PostHandler),
     (r"/post/([a-zA-Z0-9-]+)/edit/?", handlers.EditPostHandler),
     (r"/post/([a-zA-Z0-9-]+)/delete/?", handlers.DeletePostHandler),
+    (r"/post/([a-zA-Z0-9-]+)/vote/?", handlers.VotePostHandler),
     (r'/posts', handlers.PostsHandlers),
     (r'/tag/([a-zA-Z0-9-]+)/?', handlers.TagHandler),
     (r"/rss/?", handlers.RssHandler)]

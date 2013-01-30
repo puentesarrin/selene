@@ -34,7 +34,8 @@ class NewPostHandler(BaseHandler):
             'tags': helpers.remove_duplicates(self.get_argument('tags')),
             'content': self.get_argument('content'),
             'status': self.get_argument('status'),
-            'author': self.current_user['name']
+            'author': self.current_user['name'],
+            'votes': 0
         }
         self.db.posts.insert(post)
         self.redirect('/post/%s' % post['slug'])
@@ -85,6 +86,16 @@ class DeletePostHandler(BaseHandler):
             raise tornado.web.HTTPError(404)
         self.db.posts.remove({'slug': slug})
         self.redirect('/posts')
+
+
+class VotePostHandler(BaseHandler):
+
+    def post(self, slug):
+        post = self.db.posts.find({'slug': slug})
+        if not post:
+            raise tornado.web.HTTPError(404)
+        self.db.posts.update({'slug': slug}, {'$inc': {'votes': 1}})
+        self.redirect('/post/%s' % slug)
 
 
 class PostsHandlers(BaseHandler):
