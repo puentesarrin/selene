@@ -1,0 +1,5 @@
+<strong>Votes: {{ post['votes'] }}</strong>
+<form method="post" action="{{ '/post/%s/vote' % post['slug'] }}">
+    {% raw xsrf_form_html() %}
+    <input type="submit" value="Vote" />
+</form>

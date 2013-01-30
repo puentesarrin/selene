@@ -12,6 +12,7 @@
     </div>
 {% end %}
 <div>
+    {% module VoteModule(post=post) %}
     <dl>
         <dt>Published:</dt>
         <dd>{{ post['date'].strftime('%m/%d/%Y') }}</dd>
