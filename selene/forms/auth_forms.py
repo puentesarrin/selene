@@ -14,3 +14,8 @@ class LoginForm(Form):
 
     email = TextField(u"E-mail", [Required(), Email()])
     password = PasswordField(u"Password", [Required()])
+
+
+class RequestNewPasswordForm(Form):
+
+    email = TextField(u"E-mail", [Required(), Email()])
