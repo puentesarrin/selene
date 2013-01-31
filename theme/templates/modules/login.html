@@ -2,9 +2,9 @@
 {% set form = forms.LoginForm() %}
 <form action="/login" method="post">
     <dl>
-        <dt>{% raw form.email.label() %}</dt>
+        <dt>{% raw form.email.label() %}:</dt>
         <dd>{% raw form.email %}</dd>
-        <dt>{% raw form.password.label() %}</dt>
+        <dt>{% raw form.password.label() %}:</dt>
         <dd>{% raw form.password %}</dd>
     </dl>
     {% raw xsrf_form_html() %}
