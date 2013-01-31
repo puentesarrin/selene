@@ -1,9 +1,11 @@
+{% from selene import forms %}
+{% set form = forms.LoginForm() %}
 <form action="/login" method="post">
     <dl>
-        <dt><label for="email">E-mail:</label></dt>
-        <dd><input type="text" name="email" id="email" /></dd>
-        <dt><label for="password">Password:</label></dt>
-        <dd><input type="password" name="password" id="password" /></dd>
+        <dt>{% raw form.email.label() %}</dt>
+        <dd>{% raw form.email %}</dd>
+        <dt>{% raw form.password.label() %}</dt>
+        <dd>{% raw form.password %}</dd>
     </dl>
     {% raw xsrf_form_html() %}
     <input type="submit" value="Login" />
