@@ -1,7 +1,11 @@
 {% if message %}
     <em>{{ message }}</em>
 {% end %}
+{% if new %}
 <form action="/post/new" method="post">
+{% else %}
+<form action="{{ '/post/%s/edit' % post['slug'] }}" method="post">
+{% end %}
     <dl>
         <dt><label for="title">Title:</label></dt>
         <dd><input type="text" name="title" id="title" value="{{ post.get('title', '') }}" /></dd>

@@ -56,7 +56,7 @@ class EditPostHandler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self, slug):
-        post = self.db.posts.find({'slug': slug})
+        post = self.db.posts.find_one({'slug': slug})
         if not post:
             raise tornado.web.HTTPError(404)
         self.render("newpost.html", message='', post=post, new=False)
