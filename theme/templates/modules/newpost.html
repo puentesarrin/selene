@@ -1,3 +1,9 @@
+{% from selene import forms %}
+{% set form = forms.NewPostForm() %}
+{% set f = form.content.process_data(post.get('content', '')) %}
+{% if 'status' in post %}
+{% set f = form.status.process_data(post['status']) %}
+{% end %}
 {% if message %}
     <em>{{ message }}</em>
 {% end %}
@@ -7,29 +13,23 @@
 <form action="{{ '/post/%s/edit' % post['slug'] }}" method="post">
 {% end %}
     <dl>
-        <dt><label for="title">Title:</label></dt>
-        <dd><input type="text" name="title" id="title" value="{{ post.get('title', '') }}" /></dd>
-        <dt><label for="slug">Custom slug:</label></dt>
+
+        <dt>{% raw form.title.label() %}:</dt>
+        <dd>{% raw form.title(value=post.get('title', '')) %}</dd>
+        <dt>{% raw form.slug.label() %}:</dt>
         <dd>
-            <input type="checkbox" name="slug" id="slug" />
-            <input type="text" name="customslug" id="customslug" value="{{ post.get('customslug', '') }}" />
+            {% raw form.slug() %}
+            {% raw form.customslug(value=post.get('slug', '')) %}
         </dd>
-        <dt><label for="tags">Tags:</label></dt>
-        <dd><input type="text" name="tags" id="tags"  value="{{ ','.join(post.get('tags', [])) }}" /></dd>
-        <dt><label for="content">Content:</label></dt>
-        <dd><textarea name="content" id="content">{{ post.get('content', '') }}</textarea></dd>
-        <dt><label for="status">Status:</label></dt>
+        <dt>{% raw form.tags.label() %}:</dt>
+        <dd>{% raw form.tags(value=','.join(post.get('tags', []))) %}</dd>
+        <dt>{% raw form.content.label() %}:</dt>
+        <dd>{% raw form.content() %}</dd>
+        <dt>{% raw form.status.label() %}:</dt>
         <dd>
-            {% if post.get('status', '') in ['published', ''] %}
-            <input type="radio" name="status" id="published" value="published" checked="checked" />
-            <label for="published">Published</label>
-            <input type="radio" name="status" id="unpublished" value="unpublished" />
-            <label for="unpublished">Unpublished</label>
-            {% else %}
-            <input type="radio" name="status" id="published" value="published" />
-            <label for="published">Published</label>
-            <input type="radio" name="status" id="unpublished" value="unpublished" checked="checked" />
-            <label for="unpublished">Unpublished</label>
+            {% for subfield in form.status %}
+                {% raw subfield() %}
+                {% raw subfield.label() %}
             {% end %}
         </dd>
     </dl>
