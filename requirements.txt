@@ -1,4 +1,5 @@
 tornado
 pymongo
 py-bcrypt
+WTForms
 git+https://github.com/equeny/tornadomail.git
