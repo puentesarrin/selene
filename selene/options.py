@@ -35,8 +35,7 @@ def setup_options(path):
         help='Default language')
 
     #Application settings
-    tornado.options.define('cookie_secret',
-        default=base64.b64encode(os.urandom(32)), type=str)
+    tornado.options.define('cookie_secret', default='', type=str)
     tornado.options.define("debug", default=True, type=bool, help=(
         'Turn on autoreload, log to stderr only'))
     tornado.options.define('theme_path', default='theme', type=str,
@@ -54,4 +53,7 @@ def setup_options(path):
         raise ValueError('No config file at %s' % path)
 
     tornado.options.parse_command_line()
+
+    if not tornado.options.options.cookie_secret:
+        tornado.options.options.cookie_secret = base64.b64encode(os.urandom(32))
     return tornado.options.options
