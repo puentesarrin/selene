@@ -20,3 +20,9 @@ class VoteModule(tornado.web.UIModule):
 
     def render(self, post):
         return self.render_string("modules/vote.html", post=post)
+
+
+class NewCommentModule(tornado.web.UIModule):
+
+    def render(self, post):
+        return self.render_string('modules/newcomment.html', post=post)
