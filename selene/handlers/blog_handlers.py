@@ -123,3 +123,15 @@ class RssHandler(BaseHandler):
         self.render("rss.xml",
             posts=self.db.posts.find().sort("date", -1).limit(10),
             options=options)
+
+
+class NewCommentHandler(BaseHandler):
+
+    def post(self, slug):
+        post_id = self.db.posts.find_one({'slug': slug}, {'_id': 1})['_id']
+        self.db.comments.insert({'postid': post_id,
+                                 'name': self.get_argument('name'),
+                                 'email': self.get_argument('email'),
+                                 'content': self.get_argument('content'),
+                                 'date': datetime.datetime.now()})
+        self.redirect('/post/%s' % slug)
