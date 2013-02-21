@@ -7,10 +7,10 @@ and MongoDB.
 Requirements
 ------------
 
-* Tornado
-* PyMongo
-* WTForms
-* TornadoMail
+* `Tornado`_
+* `PyMongo`_
+* `WTForms`_
+* `TornadoMail`_
 
 TODO list
 ---------
@@ -26,3 +26,8 @@ TODO list
 
 I want to improve this project with your help... I will watch to all of your
 pull-requests!
+
+.. _Tornado: http://www.tornadoweb.org/
+.. _PyMongo: http://api.mongodb.org/python/current/
+.. _WTForms: http://wtforms.simplecodes.com/
+.. _TornadoMail: https://github.com/equeny/tornadomail
