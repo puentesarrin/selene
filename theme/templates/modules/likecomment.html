@@ -1,0 +1,6 @@
+<div>
+    <form method="post" action="/comment/{{ comment['_id'] }}/like">
+        {% raw xsrf_form_html() %}
+        <input type="submit" value="Like!"/>
+    </form>
+</div>
