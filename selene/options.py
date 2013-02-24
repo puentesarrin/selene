@@ -47,6 +47,12 @@ def setup_options(path):
     tornado.options.define('default_locale', default='en', type=str,
         help='Default locale setting')
 
+    #Disqus
+    tornado.options.define('disqus_enabled', default=False, type=bool,
+        help='Disqus widget enabled')
+    tornado.options.define('disqus_shortname', type=str,
+        help='Disqus short name')
+
     if os.path.exists(path):
         tornado.options.parse_config_file(path)
     else:
