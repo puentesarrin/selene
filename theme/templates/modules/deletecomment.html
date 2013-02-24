@@ -1,0 +1,8 @@
+{% if current_user %}
+<div>
+    <form method="post" action="/comment/{{ comment['_id'] }}/delete">
+        {% raw xsrf_form_html() %}
+        <input type="submit" value="Delete it"/>
+    </form>
+</div>
+{% end %}

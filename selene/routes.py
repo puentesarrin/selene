@@ -18,4 +18,5 @@ urls = [
     (r'/posts', handlers.PostsHandlers),
     (r'/tag/([a-zA-Z0-9-]+)/?', handlers.TagHandler),
     (r'/post/([a-zA-Z0-9-]+)/comment/new', handlers.NewCommentHandler),
+    (r'/comment/([a-z0-9]{24})/delete', handlers.DeleteCommentHandler),
     (r"/rss/?", handlers.RssHandler)]

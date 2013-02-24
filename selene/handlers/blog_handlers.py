@@ -2,6 +2,7 @@
 import datetime
 import tornado.web
 
+from bson.objectid import ObjectId
 from selene import helpers
 from selene.handlers import BaseHandler
 from tornado.options import options
@@ -147,3 +148,16 @@ class NewCommentHandler(BaseHandler):
                                  'content': self.get_argument('content'),
                                  'date': datetime.datetime.now()})
         self.redirect('/post/%s' % slug)
+
+
+class DeleteCommentHandler(BaseHandler):
+
+    @tornado.web.authenticated
+    def post(self, comment_id):
+        comment = self.db.comments.find_one({'_id': ObjectId(comment_id)},
+            {'postid': 1})
+        if not comment:
+            raise tornado.web.HTTPError(404)
+        post = self.db.posts.find_one({'_id': comment['postid']})
+        self.db.comments.remove({'_id': ObjectId(comment_id)})
+        self.redirect('/post/%s' % post['slug'])
