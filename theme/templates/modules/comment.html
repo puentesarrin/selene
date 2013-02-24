@@ -3,8 +3,12 @@
         <strong>{{ comment['name'] }}</strong> says:
         <p>{{ comment['content'] }}</p>
         <i>Published at {{ comment['date'] }}</i>
+        <div>
+            <span><strong>Likes:</strong> {{ comment['likes'] }}</span>
+        </div>
     </div>
     <div>
+        {% module LikeComment(comment=comment) %}
         {% module DeleteComment(comment=comment) %}
     </div>
 </div>

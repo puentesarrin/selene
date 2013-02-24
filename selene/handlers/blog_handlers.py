@@ -146,8 +146,21 @@ class NewCommentHandler(BaseHandler):
                                  'name': self.get_argument('name'),
                                  'email': self.get_argument('email'),
                                  'content': self.get_argument('content'),
-                                 'date': datetime.datetime.now()})
+                                 'date': datetime.datetime.now(),
+                                 'likes': 0})
         self.redirect('/post/%s' % slug)
+
+
+class LikeCommentHandler(BaseHandler):
+
+    def post(self, comment_id):
+        comment_id = ObjectId(comment_id)
+        comment = self.db.comments.find_and_modify({'_id': comment_id},
+            fields={'postid': 1}, update={'$inc': {'likes': 1}}, new=True)
+        if not comment:
+            raise tornado.web.HTTPError(404)
+        post = self.db.posts.find_one({'_id': comment['postid']})
+        self.redirect('/post/%s' % post['slug'])
 
 
 class DeleteCommentHandler(BaseHandler):
