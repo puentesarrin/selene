@@ -5,10 +5,12 @@
         <i>Published at {{ comment['date'] }}</i>
         <div>
             <span><strong>Likes:</strong> {{ comment['likes'] }}</span>
+            <span><strong>Dislikes:</strong> {{ comment['dislikes'] }}</span>
         </div>
     </div>
     <div>
         {% module LikeComment(comment=comment) %}
+        {% module DislikeComment(comment=comment) %}
         {% module DeleteComment(comment=comment) %}
     </div>
 </div>

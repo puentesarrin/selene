@@ -40,6 +40,13 @@ class LikeComment(tornado.web.UIModule):
         return self.render_string("modules/likecomment.html", comment=comment)
 
 
+class DislikeComment(tornado.web.UIModule):
+
+    def render(self, comment):
+        return self.render_string("modules/dislikecomment.html",
+            comment=comment)
+
+
 class DeleteComment(tornado.web.UIModule):
 
     def render(self, comment):
