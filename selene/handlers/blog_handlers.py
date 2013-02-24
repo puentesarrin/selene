@@ -153,10 +153,12 @@ class NewCommentHandler(BaseHandler):
 
 class LikeCommentHandler(BaseHandler):
 
-    def post(self, comment_id):
+    def post(self, comment_id, action):
+        if action not in ['like', 'dislike']:
+            raise tornado.web.HTTPError(404)
         comment_id = ObjectId(comment_id)
         comment = self.db.comments.find_and_modify({'_id': comment_id},
-            fields={'postid': 1}, update={'$inc': {'likes': 1}}, new=True)
+            fields={'postid': 1}, update={'$inc': {action + 's': 1}}, new=True)
         if not comment:
             raise tornado.web.HTTPError(404)
         post = self.db.posts.find_one({'_id': comment['postid']})
