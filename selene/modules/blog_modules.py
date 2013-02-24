@@ -32,3 +32,9 @@ class CommentModule(tornado.web.UIModule):
 
     def render(self, comment):
         return self.render_string("modules/comment.html", comment=comment)
+
+
+class DisqusModule(tornado.web.UIModule):
+
+    def render(self):
+        return self.render_string('modules/disqus.html')
