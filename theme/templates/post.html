@@ -13,7 +13,7 @@
         {% module DisqusModule() %}
     {% else %}
         {% if len(comments) > 0 %}
-            <h4>Comments:</h4>
+            <h4>Comments ({{ len(comments) }}):</h4>
             <ul>
             {% for comment in comments %}
                 <li>
@@ -21,6 +21,8 @@
                 </li>
             {% end %}
             </ul>
+        {% else %}
+            <p>No one has commented yet</p>
         {% end %}
         {% module NewCommentModule(post=post) %}
     {% end %}
