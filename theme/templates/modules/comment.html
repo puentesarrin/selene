@@ -1,5 +1,10 @@
 <div>
-    <strong>{{ comment['name'] }}</strong> says:
-    <p>{{ comment['content'] }}</p>
-    <i>Published at {{ comment['date'] }}</i>
+    <div>
+        <strong>{{ comment['name'] }}</strong> says:
+        <p>{{ comment['content'] }}</p>
+        <i>Published at {{ comment['date'] }}</i>
+    </div>
+    <div>
+        {% module DeleteComment(comment=comment) %}
+    </div>
 </div>
