@@ -3,6 +3,7 @@ import tornado.web
 
 from selene.modules.auth_modules import *
 from selene.modules.blog_modules import *
+from selene.modules.social_modules import *
 
 
 class MenuModule(tornado.web.UIModule):

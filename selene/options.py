@@ -47,6 +47,21 @@ def setup_options(path):
     tornado.options.define('default_locale', default='en', type=str,
         help='Default locale setting')
 
+    #Twitter
+    tornado.options.define('twitter_button_enabled', default=True, type=bool,
+        help='Twitter share button enabled')
+    tornado.options.define('twitter_button_counter', default=True, type=bool,
+        help='Twitter share button counter')
+    tornado.options.define('twitter_button_via', type=str,
+        help='Twitter share button data via')
+    tornado.options.define('twitter_button_hashtags', type=str,
+        help='Twitter share button data hashtags')
+    tornado.options.define('twitter_button_large', default=False, type=bool,
+        help='Twitter share button large size')
+    tornado.options.define('twitter_button_title_post_only', default=True,
+        type=bool, help=('Twitter share button title post only, without blog '
+        'title'))
+
     #Disqus
     tornado.options.define('disqus_enabled', default=False, type=bool,
         help='Disqus widget enabled')

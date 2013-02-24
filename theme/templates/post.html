@@ -9,6 +9,9 @@
 
 {% block content %}
     {% module PostModule(post=post) %}
+    {% if options.twitter_button_enabled %}
+        {% module TwitterShareModule(post=post) %}
+    {% end %}
     {% if options.disqus_enabled %}
         {% module DisqusModule() %}
     {% else %}
