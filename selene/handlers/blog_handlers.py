@@ -39,7 +39,10 @@ class NewPostHandler(BaseHandler):
             'views': 0
         }
         self.db.posts.insert(post)
-        self.redirect('/post/%s' % post['slug'])
+        if post['status'] == 'published':
+            self.redirect('/post/%s' % post['slug'])
+        else:
+            self.redirect('/')
 
 
 class PostHandler(BaseHandler):
@@ -71,7 +74,10 @@ class EditPostHandler(BaseHandler):
             'status': self.get_argument('status')
         }
         self.db.posts.update({'slug': slug}, {'$set': new_post})
-        self.redirect('/post/%s' % slug)
+        if new_post['status'] == 'published':
+            self.redirect('/post/%s' % slug)
+        else:
+            self.redirect('/')
 
 
 class DeletePostHandler(BaseHandler):
