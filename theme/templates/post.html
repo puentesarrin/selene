@@ -9,6 +9,16 @@
 
 {% block content %}
     {% module PostModule(post=post) %}
+    {% if len(comments) > 0 %}
+        <h4>Comments:</h4>
+        <ul>
+        {% for comment in comments %}
+            <li>
+            {% module CommentModule(comment=comment) %}
+            </li>
+        {% end %}
+        </ul>
+    {% end %}
     {% module NewCommentModule(post=post) %}
 {% end %}
 

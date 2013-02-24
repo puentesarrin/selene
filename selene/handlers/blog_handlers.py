@@ -49,7 +49,8 @@ class PostHandler(BaseHandler):
             'status': 'published'}, update={'$inc': {'views': 1}}, new=True)
         if not post:
             raise tornado.web.HTTPError(404)
-        self.render('post.html', post=post)
+        comments = list(self.db.comments.find({'postid': post['_id']}))
+        self.render('post.html', post=post, comments=comments)
 
 
 class EditPostHandler(BaseHandler):
