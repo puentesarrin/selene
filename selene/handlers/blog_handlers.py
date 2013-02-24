@@ -38,6 +38,11 @@ class NewPostHandler(BaseHandler):
             'votes': 0,
             'views': 0
         }
+        existing_post = self.db.posts.find_one({'slug': slug}, {'_id': 1})
+        if existing_post:
+            self.render('newpost.html', message=('There are already an '
+                'existing post with this title or slug.'), post={}, new=True)
+            return
         self.db.posts.insert(post)
         if post['status'] == 'published':
             self.redirect('/post/%s' % post['slug'])
