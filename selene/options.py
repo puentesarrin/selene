@@ -62,6 +62,24 @@ def setup_options(path):
         type=bool, help=('Twitter share button title post only, without blog '
         'title'))
 
+    #Facebook
+    tornado.options.define('facebook_button_enabled', default=True, type=bool,
+        help='Facebook share button enabled')
+    tornado.options.define('facebook_button_send', default=False, type=bool,
+        help='Facebook share button send option')
+    tornado.options.define('facebook_button_style', default='standar', type=str,
+        help='Facebook share button layout style')
+    tornado.options.define('facebook_button_width', default=450, type=int,
+        help='Facebook share button width')
+    tornado.options.define('facebook_button_faces', default=False, type=bool,
+        help='Facebook share button show faces flag')
+    tornado.options.define('facebook_button_font', type=str,
+        help='Facebook share button font')
+    tornado.options.define('facebook_button_color', default='light', type=str,
+        help='Facebook share button color scheme')
+    tornado.options.define('facebook_button_verb', default='like', type=str,
+        help='Facebook share button verb to display')
+
     #Disqus
     tornado.options.define('disqus_enabled', default=False, type=bool,
         help='Disqus widget enabled')
