@@ -12,6 +12,9 @@
     {% if options.twitter_button_enabled %}
         {% module TwitterShareModule(post=post) %}
     {% end %}
+    {% if options.facebook_button_enabled %}
+        {% module FacebookShareModule(post=post) %}
+    {% end %}
     {% if options.disqus_enabled %}
         {% module DisqusModule() %}
     {% else %}
