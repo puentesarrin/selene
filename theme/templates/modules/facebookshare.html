@@ -1,20 +1,22 @@
 {% from tornado.options import options %}
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-<div class="fb-like"
-data-send="{{ str(options.facebook_button_send).lower() }}"
-data-layout="{{ options.facebook_button_style }}"
-data-width="{{ options.facebook_button_width }}"
-data-show-faces="{{ str(options.facebook_button_faces).lower() }}"
-{% if options.facebook_button_font %}
-    data-font="{{ options.facebook_button_font }}"
+{% if options.facebook_button_enabled %}
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+    <div class="fb-like"
+    data-send="{{ str(options.facebook_button_send).lower() }}"
+    data-layout="{{ options.facebook_button_style }}"
+    data-width="{{ options.facebook_button_width }}"
+    data-show-faces="{{ str(options.facebook_button_faces).lower() }}"
+    {% if options.facebook_button_font %}
+        data-font="{{ options.facebook_button_font }}"
+    {% end %}
+    data-colorscheme="{{ options.facebook_button_color }}"
+    data-action="{{ options.facebook_button_verb }}"
+    ></div>
 {% end %}
-data-colorscheme="{{ options.facebook_button_color }}"
-data-action="{{ options.facebook_button_verb }}"
-></div>
