@@ -11,23 +11,7 @@
     {% module PostModule(post=post) %}
     {% module TwitterShareModule(post=post) %}
     {% module FacebookShareModule(post=post) %}
-    {% if options.disqus_enabled %}
-        {% module DisqusModule() %}
-    {% else %}
-        {% if len(comments) > 0 %}
-            <h4>Comments ({{ len(comments) }}):</h4>
-            <ul>
-            {% for comment in comments %}
-                <li>
-                {% module CommentModule(comment=comment) %}
-                </li>
-            {% end %}
-            </ul>
-        {% else %}
-            <p>No one has commented yet</p>
-        {% end %}
-        {% module NewCommentModule(post=post) %}
-    {% end %}
+    {% module CommentsModule(post=post, comments=comments)%}
 {% end %}
 
 {% block footer %}
