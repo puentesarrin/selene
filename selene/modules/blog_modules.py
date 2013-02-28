@@ -28,6 +28,13 @@ class NewCommentModule(tornado.web.UIModule):
         return self.render_string('modules/newcomment.html', post=post)
 
 
+class CommentsModule(tornado.web.UIModule):
+
+    def render(self, post, comments):
+        return self.render_string("modules/comments.html", post=post,
+            comments=comments)
+
+
 class CommentModule(tornado.web.UIModule):
 
     def render(self, comment):
