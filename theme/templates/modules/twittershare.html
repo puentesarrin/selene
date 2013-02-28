@@ -1,20 +1,22 @@
 {% from tornado.options import options %}
-<a href="https://twitter.com/share"
-    class="twitter-share-button"
-    {% if not options.twitter_button_counter %}
-        data-count="none"
-    {% end %}
-    {% if options.twitter_button_via %}
-        data-via="{{ options.twitter_button_via }}"
-    {% end %}
-    {% if options.twitter_button_hashtags %}
-        data-hashtags="{{ options.twitter_button_hashtags }}"
-    {% end %}
-    {% if options.twitter_button_large %}
-        data-size="large"
-    {% end %}
-    {% if options.twitter_button_title_post_only %}
-        data-text="{{ post['title'] }}"
-    {% end %}
-     >Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+{% if options.twitter_button_enabled %}
+    <a href="https://twitter.com/share"
+        class="twitter-share-button"
+        {% if not options.twitter_button_counter %}
+            data-count="none"
+        {% end %}
+        {% if options.twitter_button_via %}
+            data-via="{{ options.twitter_button_via }}"
+        {% end %}
+        {% if options.twitter_button_hashtags %}
+            data-hashtags="{{ options.twitter_button_hashtags }}"
+        {% end %}
+        {% if options.twitter_button_large %}
+            data-size="large"
+        {% end %}
+        {% if options.twitter_button_title_post_only %}
+            data-text="{{ post['title'] }}"
+        {% end %}
+         >Tweet</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+{% end %}
