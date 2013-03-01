@@ -8,35 +8,57 @@
     <em>{{ message }}</em>
 {% end %}
 {% if new %}
-<form action="/post/new" method="post">
+<form class="form-horizontal" action="/post/new" method="post">
 {% else %}
-<form action="{{ '/post/%s/edit' % post['slug'] }}" method="post">
+<form class="form-horizontal" action="{{ '/post/%s/edit' % post['slug'] }}" method="post">
 {% end %}
-    <dl>
-
-        <dt>{% raw form.title.label() %}:</dt>
-        <dd>{% raw form.title(value=post.get('title', '')) %}</dd>
-        <dt>{% raw form.slug.label() %}:</dt>
-        <dd>
-            {% raw form.slug() %}
-            {% raw form.customslug(value=post.get('slug', '')) %}
-        </dd>
-        <dt>{% raw form.tags.label() %}:</dt>
-        <dd>{% raw form.tags(value=','.join(post.get('tags', []))) %}</dd>
-        <dt>{% raw form.content.label() %}:</dt>
-        <dd>{% raw form.content() %}</dd>
-        <dt>{% raw form.status.label() %}:</dt>
-        <dd>
-            {% for subfield in form.status %}
-                {% raw subfield() %}
-                {% raw subfield.label() %}
-            {% end %}
-        </dd>
-    </dl>
-    {% raw xsrf_form_html() %}
-    {% if new %}
-        <input type="submit" value="Save it" />
-    {% else %}
-        <input type="submit" value="Edit" />
-    {% end %}
+    <fieldset>
+        <legend>Write a new post</legend>
+        <div class="control-group">
+            {% raw form.title.label(class_="control-label") %}
+            <div class="controls">
+                {% raw form.title(value=post.get('title', ''), placeholder="Title") %}
+            </div>
+        </div>
+        <div class="control-group">
+            {% raw form.tags.label(class_="control-label") %}
+            <div class="controls">
+                {% raw form.title(value=','.join(post.get('tags', [])), placeholder="Tags") %}
+            </div>
+        </div>
+        <div class="control-group">
+            {% raw form.slug.label(class_="control-label") %}
+            <div class="controls">
+                {% raw form.slug() %}
+                {% raw form.customslug(value=post.get('slug', ''), placeholder='Custom slug') %}
+            </div>
+        </div>
+        <div class="control-group">
+            {% raw form.content.label(class_="control-label") %}
+            <div class="controls">
+                {% raw form.content(placeholder="Content") %}
+            </div>
+        </div>
+        <div class="control-group">
+            {% raw form.status.label(class_="control-label") %}
+            <div class="controls">
+                {% for subfield in form.status %}
+                    {% raw subfield() %}
+                    {% raw subfield.label() %}
+                {% end %}
+            </div>
+        </div>
+        {% raw xsrf_form_html() %}
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn">
+                    {% if new %}
+                        Save it
+                    {% else %}
+                        Edit
+                    {% end %}
+                </button>
+            </div>
+        </div>
+    </fieldset>
 </form>

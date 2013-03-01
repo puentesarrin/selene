@@ -17,14 +17,14 @@ class AuthBaseHandler(BaseHandler):
 class RegisterHandler(AuthBaseHandler):
 
     def get(self):
-        self.render("register.html")
+        self.render("register.html", message='')
 
     def post(self):
         name = self.get_argument("name", "")
         email = self.get_argument("email", "")
         password = self.get_argument("password", "")
         if self.db.users.find_one({'email': email}):
-            self.render('login.html', message='E-mail address already '
+            self.render('register.html', message='E-mail address already '
                 'registered')
             return
         user = {
