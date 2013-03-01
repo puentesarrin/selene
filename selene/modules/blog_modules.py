@@ -16,6 +16,12 @@ class PostModule(tornado.web.UIModule):
             linkable=linkable)
 
 
+class RecentPosts(tornado.web.UIModule):
+
+    def render(self, posts):
+        return self.render_string("modules/recentposts.html", posts=posts)
+
+
 class VoteModule(tornado.web.UIModule):
 
     def render(self, post):

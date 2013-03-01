@@ -50,7 +50,12 @@ class BaseHandler(tornado.web.RequestHandler):
         return tornado.locale.get(user["locale"])
 
     def render(self, template_name, **kwargs):
-        kwargs.update({'options': options})
+        posts = self.db.posts.find({'status': 'published'}).sort('date',
+            -1).limit(10)
+        kwargs.update({
+            'options': options,
+            '_posts': posts
+        })
         super(BaseHandler, self).render(template_name, **kwargs)
 
 
