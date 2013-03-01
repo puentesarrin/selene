@@ -1,23 +1,25 @@
 {% from selene import forms %}
 {% set form = forms.LoginForm() %}
 <form class="form-horizontal" action="/login" method="post">
-    <legend>Login</legend>
-    <div class="control-group">
-        {% raw form.email.label(class_="control-label") %}
-        <div class="controls">
-            {% raw form.email(placeholder="Email") %}
+    <fieldset>
+        <legend>Login</legend>
+        <div class="control-group">
+            {% raw form.email.label(class_="control-label") %}
+            <div class="controls">
+                {% raw form.email(placeholder="Email") %}
+            </div>
         </div>
-    </div>
-    <div class="control-group">
-        {% raw form.password.label(class_="control-label") %}
-        <div class="controls">
-            {% raw form.password(placeholder="Password") %}
+        <div class="control-group">
+            {% raw form.password.label(class_="control-label") %}
+            <div class="controls">
+                {% raw form.password(placeholder="Password") %}
+            </div>
         </div>
-    </div>
-    {% raw xsrf_form_html() %}
-    <div class="control-group">
-        <div class="controls">
-            <button type="submit" class="btn">Login</button>
+        {% raw xsrf_form_html() %}
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn">Login</button>
+            </div>
         </div>
-    </div>
+    </fieldset>
 </form>

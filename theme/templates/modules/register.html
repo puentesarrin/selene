@@ -1,29 +1,31 @@
 {% from selene import forms %}
 {% set form = forms.RegisterForm() %}
 <form class="form-horizontal" action="/register" method="post">
-    <legend>Register</legend>
-    <div class="control-group">
-        {% raw form.name.label(class_="control-label") %}
-        <div class="controls">
-            {% raw form.name(placeholder="Name") %}
+    <fieldset>
+        <legend>Register</legend>
+        <div class="control-group">
+            {% raw form.name.label(class_="control-label") %}
+            <div class="controls">
+                {% raw form.name(placeholder="Name") %}
+            </div>
         </div>
-    </div>
-    <div class="control-group">
-        {% raw form.email.label(class_="control-label") %}
-        <div class="controls">
-            {% raw form.email(placeholder="Email") %}
+        <div class="control-group">
+            {% raw form.email.label(class_="control-label") %}
+            <div class="controls">
+                {% raw form.email(placeholder="Email") %}
+            </div>
         </div>
-    </div>
-    <div class="control-group">
-        {% raw form.password.label(class_="control-label") %}
-        <div class="controls">
-            {% raw form.password(placeholder="Password") %}
+        <div class="control-group">
+            {% raw form.password.label(class_="control-label") %}
+            <div class="controls">
+                {% raw form.password(placeholder="Password") %}
+            </div>
         </div>
-    </div>
-    {% raw xsrf_form_html() %}
-    <div class="control-group">
-        <div class="controls">
-            <button type="submit" class="btn">Register</button>
+        {% raw xsrf_form_html() %}
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn">Register</button>
+            </div>
         </div>
-    </div>
+    </fieldset>
 </form>
