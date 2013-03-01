@@ -147,7 +147,8 @@ class NewCommentHandler(BaseHandler):
                                  'email': self.get_argument('email'),
                                  'content': self.get_argument('content'),
                                  'date': datetime.datetime.now(),
-                                 'likes': 0})
+                                 'likes': 0,
+                                 'dislikes': 0})
         self.redirect('/post/%s' % slug)
 
 
