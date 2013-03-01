@@ -8,6 +8,11 @@
 {% end %}
 
 {% block content %}
+    {% if message %}
+        <div class="alert alert-error">
+            {{ message }}
+        </div>
+    {% end %}
     {% module RegisterModule() %}
 {% end %}
 
