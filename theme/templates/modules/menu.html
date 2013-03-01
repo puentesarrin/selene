@@ -13,7 +13,7 @@
     <li>
         <form action="/logout" method="post">
             {% raw xsrf_form_html() %}
-            <input type="submit" value="Logout" />
+            <button type="submit" class="btn btn-link">Logout</button>
         </form>
     </li>
     {% end %}
