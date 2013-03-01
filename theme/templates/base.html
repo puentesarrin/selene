@@ -28,8 +28,11 @@
                     </div>
                     {% block sidebar %}{% end %}
                 </div>
-                <div class="span10">
+                <div class="span7">
                     {% block content %}{% end %}
+                </div>
+                <div class="span3">
+                    {% module RecentPosts(posts=_posts) %}
                 </div>
             </div>
         </div>
