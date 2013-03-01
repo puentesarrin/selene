@@ -9,21 +9,32 @@
         <script src="http://code.jquery.com/jquery.js"></script>
         <script src="{{ static_url('js/bootstrap.min.js') }}"></script>
         <header>
-            <a href="/">
-                <h1>{{ options.title }}</h1>
-            </a>
-            <h3>{{ options.slogan }}</h3>
-            {% block header %}{% end %}
-            <div id="menu">
-                {% module MenuModule(current_user=current_user) %}
+            <div class="container-fluid">
+                <a href="/">
+                    <h1>{{ options.title }}</h1>
+                </a>
+                <h3>{{ options.slogan }}</h3>
+                {% block header %}{% end %}
             </div>
         </header>
-        <content>
-            {% block content %}{% end %}
-        </content>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span2">
+                    <div id="menu">
+                        {% module MenuModule(current_user=current_user) %}
+                    </div>
+                    {% block sidebar %}{% end %}
+                </div>
+                <div class="span10">
+                    {% block content %}{% end %}
+                </div>
+            </div>
+        </div>
         <footer>
-            {% block footer %}{% end %}
-            {% module PoweredByModule() %}
+            <div class="container-fluid">
+                {% block footer %}{% end %}
+                {% module PoweredByModule() %}
+            </div>
         </footer>
     </body>
 </html>
