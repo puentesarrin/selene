@@ -1,18 +1,32 @@
 {% from selene import forms %}
 {% set form = forms.NewCommentForm() %}
-<form action="{{ '/post/%s/comment/new' % post['slug'] }}" method="post">
+<form class="form-horizontal" action="{{ '/post/%s/comment/new' % post['slug'] }}" method="post">
     <fieldset>
         <legend>New comment</legend>
-            <dl>
-                <dt>{% raw form.name.label() %}:</dt>
-                <dd>{% raw form.name %}</dd>
-                <dt>{% raw form.email.label() %}:</dt>
-                <dd>{% raw form.email %}</dd>
-                <dt>{% raw form.content.label() %}:</dt>
-                <dd>{% raw form.content %}</dd>
-            </dl>
+            <div class="control-group">
+                {% raw form.name.label(class_="control-label") %}
+                <div class="controls">
+                    {% raw form.name(placeholder="Name") %}
+                </div>
+            </div>
+            <div class="control-group">
+                {% raw form.email.label(class_="control-label") %}
+                <div class="controls">
+                    {% raw form.email(placeholder="Email") %}
+                </div>
+            </div>
+            <div class="control-group">
+                {% raw form.content.label(class_="control-label") %}
+                <div class="controls">
+                    {% raw form.content(placeholder="Content") %}
+                </div>
+            </div>
             {% raw xsrf_form_html() %}
-            <input type="submit" value="Comment" />
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn">Comment</button>
+                </div>
+            </div>
         </form>
     </fieldset>
 </form>
