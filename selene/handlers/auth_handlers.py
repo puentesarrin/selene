@@ -53,11 +53,14 @@ class ConfirmAccountHandler(AuthBaseHandler):
 class LoginHandler(AuthBaseHandler):
 
     def get(self):
-        self.render("login.html", message='')
+        self.render("login.html", message='',
+            next_=self.get_argument('next', ''))
 
     def post(self):
         email = self.get_argument("email", False)
         password = self.get_argument("password", False)
+        next_ = self.get_argument('next_', '/')
+        self.write(next_)
         if email and password:
             user = self.db.users.find_one({"email": email})
             if user:
@@ -66,7 +69,7 @@ class LoginHandler(AuthBaseHandler):
                         user["password"]) == user["password"]
                     if pass_check:
                         self.set_secure_cookie("current_user", user["email"])
-                        self.redirect("/")
+                        self.redirect(next_)
                         return
         self.render('login.html',
             message="Incorrect user/password combination or invalid account")
