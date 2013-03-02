@@ -23,7 +23,7 @@
         <div class="control-group">
             {% raw form.tags.label(class_="control-label") %}
             <div class="controls">
-                {% raw form.title(value=','.join(post.get('tags', [])), placeholder="Tags") %}
+                {% raw form.tags(value=','.join(post.get('tags', [])), placeholder="Tags") %}
             </div>
         </div>
         <div class="control-group">
