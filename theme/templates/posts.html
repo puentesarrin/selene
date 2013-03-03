@@ -34,8 +34,14 @@
                 {{ post['date'] }}
             </td>
             <td>
-                <a class="btn btn-primary" href="{{ '/post/%s/edit' % post['slug'] }}">Edit</a>
-                <a class="btn" href="{{ '/post/%s/delete' % post['slug'] }}">Delete</a>
+                <a class="btn btn-primary" href="{{ '/post/%s/edit' % post['slug'] }}">
+                    <i class="icon-edit"></i>
+                    Edit
+                </a>
+                <a class="btn" href="{{ '/post/%s/delete' % post['slug'] }}">
+                    <i class="icon-remove"></i>
+                    Delete
+                </a>
             </td>
         </tr>
         {% end %}
