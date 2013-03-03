@@ -28,6 +28,13 @@ class SearchPostsModule(tornado.web.UIModule):
         return self.render_string('modules/searchposts.html', title=title)
 
 
+class RecentCommentsModule(tornado.web.UIModule):
+
+    def render(self, comments):
+        return self.render_string('modules/recentcomments.html',
+            comments=comments)
+
+
 class TagsCloudModule(tornado.web.UIModule):
 
     def render(self, tags):

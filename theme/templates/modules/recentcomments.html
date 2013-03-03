@@ -1,0 +1,19 @@
+{% if len(comments) > 0 %}
+    <fieldset>
+        <legend>Recent comments</legend>
+        <ul>
+            {% for comment in comments %}
+                <li title="{{ 'Published at %s' %comment['date'] }}">
+                    {{ comment['name'] }} commented on
+                    <a href="{{ '/post/%s' % comment['post']['slug'] }}">{{ comment['post']['title'] }}</a>:
+                    <blockquote>
+                        {{ comment['content'] }}
+                    </blockquote>
+                </li>
+            {% end %}
+        </ul>
+    </fieldset>
+    <ul>
+{% else %}
+    <p>No one has comment yet</p>
+{% end %}
