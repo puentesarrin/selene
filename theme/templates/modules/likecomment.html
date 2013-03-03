@@ -1,9 +1,7 @@
-<div>
-    <form method="post" action="/comment/{{ comment['_id'] }}/like">
-        {% raw xsrf_form_html() %}
-        <button class="btn" type="submit">
-            <i class="icon-thumbs-up"></i>
-            Like!
-        </button>
-    </form>
-</div>
+<form class="form-inline" method="post" action="/comment/{{ comment['_id'] }}/like">
+    {% raw xsrf_form_html() %}
+    <button class="btn" type="submit">
+        <i class="icon-thumbs-up"></i>
+        Like!
+    </button>
+</form>
