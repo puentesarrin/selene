@@ -1,0 +1,8 @@
+{% if len(tags) > 0 %}
+    <h4>Tag cloud</h4>
+    {% for tag in tags %}
+        <a href="{{ '/tag/%s' % tag['_id'] }}">{{ tag['_id'] }}</a>
+    {% end %}
+{% else %}
+    <p>No one has tags yet</p>
+{% end %}
