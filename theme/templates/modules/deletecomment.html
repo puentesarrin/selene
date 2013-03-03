@@ -2,7 +2,10 @@
 <div>
     <form method="post" action="/comment/{{ comment['_id'] }}/delete">
         {% raw xsrf_form_html() %}
-        <button type="submit" class="btn">Delete it</button>
+        <button type="submit" class="btn">
+            <i class="icon-remove"></i>
+            Delete it
+        </button>
     </form>
 </div>
 {% end %}
