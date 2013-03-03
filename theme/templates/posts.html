@@ -8,13 +8,14 @@
 {% end %}
 
 {% block content %}
-<table>
+<h2>List posts</h2>
+<table class="table table-striped">
     <thead>
         <tr>
-            <td>Title</td>
-            <td>Status</td>
-            <td>Date</td>
-            <td>&nbsp;</td>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>&nbsp;</th>
         </tr>
     </thead>
     </tbody>
@@ -32,8 +33,8 @@
                 {{ post['date'] }}
             </td>
             <td>
-                <a href="{{ '/post/%s/edit' % post['slug'] }}">Edit</a>
-                <a href="{{ '/post/%s/delete' % post['slug'] }}">Delete</a>
+                <a class="btn btn-primary" href="{{ '/post/%s/edit' % post['slug'] }}">Edit</a>
+                <a class="btn" href="{{ '/post/%s/delete' % post['slug'] }}">Delete</a>
             </td>
         </tr>
         {% end %}
