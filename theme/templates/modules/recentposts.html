@@ -1,12 +1,14 @@
 {% if posts.count() > 0 %}
-    <h4>Recent posts</h4>
-    <ul>
-    {% for post in posts %}
-        <li>
-            <a href="{{ '/post/%s' % post['slug'] }}">{{ post['title'] }}</a>
-        </li>
-    {% end %}
-    </ul>
+    <fieldset>
+        <legend>Recent posts</legend>
+        <ul>
+            {% for post in posts %}
+                <li>
+                    <a href="{{ '/post/%s' % post['slug'] }}">{{ post['title'] }}</a>
+                </li>
+            {% end %}
+        </ul>
+    </fieldset>
 {% else %}
     <p>No one has post yet</p>
 {% end %}

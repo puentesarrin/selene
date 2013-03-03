@@ -32,8 +32,9 @@
                     {% block content %}{% end %}
                 </div>
                 <div class="span3">
-                    {% module RecentPostsModule(posts=_posts) %}
                     {% module TagsCloudModule(tags=_tags) %}
+                    {% module RecentPostsModule(posts=_posts) %}
+                    {% module RecentCommentsModule(comments=_comments) %}
                 </div>
             </div>
         </div>
