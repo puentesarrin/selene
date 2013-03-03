@@ -4,8 +4,8 @@ import tornado.web
 
 class LoginModule(tornado.web.UIModule):
 
-    def render(self, next_):
-        return self.render_string('modules/login.html', next_=next_)
+    def render(self, _next):
+        return self.render_string('modules/login.html', _next=_next)
 
 
 class RegisterModule(tornado.web.UIModule):

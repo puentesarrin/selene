@@ -53,14 +53,12 @@ class ConfirmAccountHandler(AuthBaseHandler):
 class LoginHandler(AuthBaseHandler):
 
     def get(self):
-        self.render("login.html", message='',
-            next_=self.get_argument('next', ''))
+        self.render("login.html", message='')
 
     def post(self):
         email = self.get_argument("email", False)
         password = self.get_argument("password", False)
         next_ = self.get_argument('next_', '/')
-        self.write(next_)
         if email and password:
             user = self.db.users.find_one({"email": email})
             if user:

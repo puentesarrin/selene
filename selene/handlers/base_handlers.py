@@ -59,6 +59,7 @@ class BaseHandler(tornado.web.RequestHandler):
         ])['result']
         kwargs.update({
             'options': options,
+            '_next': self.get_argument('next', ''),
             '_posts': posts,
             '_tags': tags
         })
