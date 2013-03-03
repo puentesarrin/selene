@@ -22,6 +22,12 @@ class RecentPostsModule(tornado.web.UIModule):
         return self.render_string("modules/recentposts.html", posts=posts)
 
 
+class SearchPostsModule(tornado.web.UIModule):
+
+    def render(self, title):
+        return self.render_string('modules/searchposts.html', title=title)
+
+
 class TagsCloudModule(tornado.web.UIModule):
 
     def render(self, tags):

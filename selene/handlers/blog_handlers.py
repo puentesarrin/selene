@@ -1,5 +1,6 @@
 # -*- coding: utf-8 *-*
 import datetime
+import re
 import tornado.web
 
 from bson.objectid import ObjectId
@@ -116,8 +117,10 @@ class PostsHandlers(BaseHandler):
 
     @tornado.web.authenticated
     def get(self):
-        posts = self.db.posts.find().sort('date', -1)
-        self.render("posts.html", posts=posts)
+        title = self.get_argument('title', '')
+        title_filter = re.compile('.*%s.*' % title, re.IGNORECASE)
+        posts = self.db.posts.find({'title': title_filter}).sort('date', -1)
+        self.render("posts.html", title=title, posts=posts)
 
 
 class TagHandler(BaseHandler):
