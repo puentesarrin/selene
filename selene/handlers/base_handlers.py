@@ -57,13 +57,14 @@ class BaseHandler(tornado.web.RequestHandler):
             return comment
 
         posts = self.db.posts.find({'status': 'published'}).sort('date',
-            -1).limit(10)
-        comments = self.db.comments.find().sort('date', -1).limit(10)
+            -1).limit(options.recent_posts_limit)
+        comments = self.db.comments.find().sort('date',
+            -1).limit(options.recent_comments_limit)
         comments = map(find_post, list(comments))
         tags = self.db.posts.aggregate([
             {'$unwind': '$tags'},
             {'$group': {'_id': '$tags', 'sum': {'$sum': 1}}},
-            {'$limit': 20}
+            {'$limit': options.tag_cloud_limit}
         ])['result']
         kwargs.update({
             'options': options,
