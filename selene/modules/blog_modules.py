@@ -16,7 +16,7 @@ class PostModule(tornado.web.UIModule):
             linkable=linkable)
 
 
-class RecentPosts(tornado.web.UIModule):
+class RecentPostsModule(tornado.web.UIModule):
 
     def render(self, posts):
         return self.render_string("modules/recentposts.html", posts=posts)
@@ -47,20 +47,20 @@ class CommentModule(tornado.web.UIModule):
         return self.render_string("modules/comment.html", comment=comment)
 
 
-class LikeComment(tornado.web.UIModule):
+class LikeCommentModule(tornado.web.UIModule):
 
     def render(self, comment):
         return self.render_string("modules/likecomment.html", comment=comment)
 
 
-class DislikeComment(tornado.web.UIModule):
+class DislikeCommentModule(tornado.web.UIModule):
 
     def render(self, comment):
         return self.render_string("modules/dislikecomment.html",
             comment=comment)
 
 
-class DeleteComment(tornado.web.UIModule):
+class DeleteCommentModule(tornado.web.UIModule):
 
     def render(self, comment):
         return self.render_string("modules/deletecomment.html",
