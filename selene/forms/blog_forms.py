@@ -19,3 +19,8 @@ class NewCommentForm(Form):
     name = TextField(u'Name', [Required()])
     email = TextField(u"E-mail", [Required(), Email()])
     content = TextAreaField(u'Content', [Required()])
+
+
+class SearchForm(Form):
+
+    q = TextField(u'Query', [Required()])

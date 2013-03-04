@@ -41,6 +41,7 @@ class NewPostHandler(BaseHandler):
             'date': datetime.datetime.now(),
             'tags': helpers.remove_duplicates(self.get_argument('tags')),
             'content': self.get_argument('content'),
+            'plain_content': self.get_argument('content'),
             'status': self.get_argument('status'),
             'author': self.current_user['name'],
             'votes': 0,
@@ -153,6 +154,15 @@ class TagsHandlers(BaseHandler):
             {'$sort': {'_id': 1}}
         ])['result']
         self.render('tags.html', tags=tags)
+
+
+class SearchHandler(BaseHandler):
+
+    def get(self):
+        q = self.get_argument('q', '')
+        q_filter = re.compile('.*%s.*' % q, re.IGNORECASE)
+        posts = self.db.posts.find({'plain_content': q_filter})
+        self.render('search.html', posts=posts, q=q)
 
 
 class RssHandler(BaseHandler):

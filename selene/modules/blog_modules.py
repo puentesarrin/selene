@@ -16,10 +16,22 @@ class PostModule(tornado.web.UIModule):
             comments=comments, linkable=linkable)
 
 
+class PostSummaryModule(tornado.web.UIModule):
+
+    def render(self, post):
+        return self.render_string('modules/postsummary.html', post=post)
+
+
 class RecentPostsModule(tornado.web.UIModule):
 
     def render(self, posts):
         return self.render_string("modules/recentposts.html", posts=posts)
+
+
+class SearchModule(tornado.web.UIModule):
+
+    def render(self, header=True, q=''):
+        return self.render_string('modules/search.html', header=header, q=q)
 
 
 class SearchPostsModule(tornado.web.UIModule):
