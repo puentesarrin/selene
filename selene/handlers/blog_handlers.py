@@ -132,8 +132,14 @@ class PostsHandlers(BaseHandler):
 class TagHandler(BaseHandler):
 
     def get(self, tag):
+        def find_comments(post):
+            post['comments'] = list(self.db.comments.find({'postid':
+                post['_id']}))
+            return post
+
         posts = self.db.posts.find({'tags': tag}).sort('date', -1)
-        if not posts.count():
+        posts = map(find_comments, posts)
+        if not len(posts):
             raise tornado.web.HTTPError(404)
         self.render('tag.html', tag=tag, posts=posts)
 
