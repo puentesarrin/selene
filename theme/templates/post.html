@@ -8,7 +8,7 @@
 {% end %}
 
 {% block content %}
-    {% module PostModule(post=post) %}
+    {% module PostModule(post=post, comments=comments) %}
     {% module TwitterShareModule(post=post) %}
     {% module FacebookShareModule(post=post) %}
     {% module CommentsModule(post=post, comments=comments)%}

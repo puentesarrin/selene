@@ -11,15 +11,34 @@ class NewPostModule(tornado.web.UIModule):
 
 class PostModule(tornado.web.UIModule):
 
-    def render(self, post, linkable=False):
+    def render(self, post, comments, linkable=False):
         return self.render_string("modules/post.html", post=post,
-            linkable=linkable)
+            comments=comments, linkable=linkable)
 
 
-class RecentPosts(tornado.web.UIModule):
+class RecentPostsModule(tornado.web.UIModule):
 
     def render(self, posts):
         return self.render_string("modules/recentposts.html", posts=posts)
+
+
+class SearchPostsModule(tornado.web.UIModule):
+
+    def render(self, title):
+        return self.render_string('modules/searchposts.html', title=title)
+
+
+class RecentCommentsModule(tornado.web.UIModule):
+
+    def render(self, comments):
+        return self.render_string('modules/recentcomments.html',
+            comments=comments)
+
+
+class TagsCloudModule(tornado.web.UIModule):
+
+    def render(self, tags):
+        return self.render_string('modules/tagscloud.html', tags=tags)
 
 
 class VoteModule(tornado.web.UIModule):
@@ -47,20 +66,20 @@ class CommentModule(tornado.web.UIModule):
         return self.render_string("modules/comment.html", comment=comment)
 
 
-class LikeComment(tornado.web.UIModule):
+class LikeCommentModule(tornado.web.UIModule):
 
     def render(self, comment):
         return self.render_string("modules/likecomment.html", comment=comment)
 
 
-class DislikeComment(tornado.web.UIModule):
+class DislikeCommentModule(tornado.web.UIModule):
 
     def render(self, comment):
         return self.render_string("modules/dislikecomment.html",
             comment=comment)
 
 
-class DeleteComment(tornado.web.UIModule):
+class DeleteCommentModule(tornado.web.UIModule):
 
     def render(self, comment):
         return self.render_string("modules/deletecomment.html",

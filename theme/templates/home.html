@@ -8,7 +8,7 @@
 
 {% block content %}
 {% for post in posts %}
-    {% module PostModule(post=post, linkable=True) %}
+    {% module PostModule(post=post, comments=post['comments'], linkable=True) %}
 {% end %}
 {% end %}
 

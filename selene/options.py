@@ -33,6 +33,12 @@ def setup_options(path):
         ' with Tornado and MongoDB'), type=str, help='Blog slogan')
     tornado.options.define('default_language', default='en_US', type=str,
         help='Default language')
+    tornado.options.define('tag_cloud_limit', default=20, type=int,
+        help='Limit for items on tag cloud module')
+    tornado.options.define('recent_posts_limit', default=10, type=int,
+        help='Limit for items on recent posts module')
+    tornado.options.define('recent_comments_limit', default=10, type=int,
+        help='Limit for items on recent comments module')
 
     #Application settings
     tornado.options.define('cookie_secret', default='', type=str)

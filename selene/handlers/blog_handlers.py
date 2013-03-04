@@ -1,5 +1,6 @@
 # -*- coding: utf-8 *-*
 import datetime
+import re
 import tornado.web
 
 from bson.objectid import ObjectId
@@ -11,7 +12,13 @@ from tornado.options import options
 class HomeHandler(BaseHandler):
 
     def get(self):
+        def find_comments(post):
+            post['comments'] = list(self.db.comments.find({'postid':
+                post['_id']}))
+            return post
+
         posts = self.db.posts.find({'status': 'published'}).sort('date', -1)
+        posts = map(find_comments, posts)
         self.render("home.html", posts=posts)
 
 
@@ -116,15 +123,23 @@ class PostsHandlers(BaseHandler):
 
     @tornado.web.authenticated
     def get(self):
-        posts = self.db.posts.find().sort('date', -1)
-        self.render("posts.html", posts=posts)
+        title = self.get_argument('title', '')
+        title_filter = re.compile('.*%s.*' % title, re.IGNORECASE)
+        posts = self.db.posts.find({'title': title_filter}).sort('date', -1)
+        self.render("posts.html", title=title, posts=posts)
 
 
 class TagHandler(BaseHandler):
 
     def get(self, tag):
+        def find_comments(post):
+            post['comments'] = list(self.db.comments.find({'postid':
+                post['_id']}))
+            return post
+
         posts = self.db.posts.find({'tags': tag}).sort('date', -1)
-        if not posts.count():
+        posts = map(find_comments, posts)
+        if not len(posts):
             raise tornado.web.HTTPError(404)
         self.render('tag.html', tag=tag, posts=posts)
 

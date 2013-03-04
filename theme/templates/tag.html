@@ -10,7 +10,7 @@
 {% block content %}
 <h2>Tag: {{ tag }}</h2>
 {% for post in posts %}
-    {% module PostModule(post=post, linkable=True) %}
+    {% module PostModule(post=post, comments=post['comments'], linkable=True) %}
 {% end %}
 {% end %}
 

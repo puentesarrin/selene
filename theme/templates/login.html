@@ -13,7 +13,7 @@
             {{ message }}
         </div>
     {% end %}
-    {% module LoginModule() %}
+    {% module LoginModule(_next=_next) %}
 {% end %}
 
 {% block footer %}

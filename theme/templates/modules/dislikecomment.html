@@ -1,6 +1,6 @@
-<div>
-    <form method="post" action="/comment/{{ comment['_id'] }}/dislike">
-        {% raw xsrf_form_html() %}
-        <input type="submit" value="Dislike!"/>
-    </form>
-</div>
+<form class="form-inline" method="post" action="/comment/{{ comment['_id'] }}/dislike">
+    {% raw xsrf_form_html() %}
+    <button class="btn" type="submit">
+        <i class="icon-thumbs-down"></i>
+    </button>
+</form>
