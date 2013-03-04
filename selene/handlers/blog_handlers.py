@@ -129,6 +129,16 @@ class TagHandler(BaseHandler):
         self.render('tag.html', tag=tag, posts=posts)
 
 
+class TagsHandlers(BaseHandler):
+
+    def get(self):
+        tags = self.db.posts.aggregate([
+            {'$unwind': '$tags'},
+            {'$group': {'_id': '$tags', 'sum': {'$sum': 1}}},
+        ])['result']
+        self.render('tags.html', tags=tags)
+
+
 class RssHandler(BaseHandler):
 
     def get(self):
