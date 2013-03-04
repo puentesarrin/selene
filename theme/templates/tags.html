@@ -8,10 +8,16 @@
 {% end %}
 
 {% block content %}
-<h2>Tags:</h2>
-{% for tag in tags %}
-    <a href="{{ '/tag/%s' % tag['_id'] }}">{{ tag['_id'] }}</a>
-{% end %}
+<fieldset>
+    <legend><h2>Tags:</h2></legend>
+    <ul class="unstyled inline">
+        {% for tag in tags %}
+            <li>
+                <a href="{{ '/tag/%s' % tag['_id'] }}">{{ tag['_id'] }}</a>
+            </li>
+        {% end %}
+    </ul>
+</fieldset>
 {% end %}
 
 {% block footer %}
