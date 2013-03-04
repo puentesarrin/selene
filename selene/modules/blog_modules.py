@@ -11,9 +11,9 @@ class NewPostModule(tornado.web.UIModule):
 
 class PostModule(tornado.web.UIModule):
 
-    def render(self, post, linkable=False):
+    def render(self, post, comments, linkable=False):
         return self.render_string("modules/post.html", post=post,
-            linkable=linkable)
+            comments=comments, linkable=linkable)
 
 
 class RecentPostsModule(tornado.web.UIModule):

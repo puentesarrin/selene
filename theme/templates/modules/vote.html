@@ -1,8 +1,7 @@
-<strong>Votes: {{ post['votes'] }}</strong>
-<form method="post" action="{{ '/post/%s/vote' % post['slug'] }}">
+<form style="margin:0" method="post" action="{{ '/post/%s/vote' % post['slug'] }}">
     {% raw xsrf_form_html() %}
     <button class="btn" type="submit">
-        <i class="icon-plus-sign"></i>
+        <i class="icon-star"></i>
         Vote
     </button>
 </form>

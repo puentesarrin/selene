@@ -12,7 +12,13 @@ from tornado.options import options
 class HomeHandler(BaseHandler):
 
     def get(self):
+        def find_comments(post):
+            post['comments'] = list(self.db.comments.find({'postid':
+                post['_id']}))
+            return post
+
         posts = self.db.posts.find({'status': 'published'}).sort('date', -1)
+        posts = map(find_comments, posts)
         self.render("home.html", posts=posts)
 
 
