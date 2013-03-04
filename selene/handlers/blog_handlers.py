@@ -150,6 +150,7 @@ class TagsHandlers(BaseHandler):
         tags = self.db.posts.aggregate([
             {'$unwind': '$tags'},
             {'$group': {'_id': '$tags', 'sum': {'$sum': 1}}},
+            {'$sort': {'_id': 1}}
         ])['result']
         self.render('tags.html', tags=tags)
 

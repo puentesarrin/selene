@@ -8,10 +8,12 @@
 {% end %}
 
 {% block content %}
-<h2>Tag: {{ tag }}</h2>
-{% for post in posts %}
-    {% module PostModule(post=post, comments=post['comments'], linkable=True) %}
-{% end %}
+<fieldset>
+    <legend><h2>Tag: {{ tag }}</h2></legend>
+    {% for post in posts %}
+        {% module PostModule(post=post, comments=post['comments'], linkable=True) %}
+    {% end %}
+</fieldset>
 {% end %}
 
 {% block footer %}
