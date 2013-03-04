@@ -50,11 +50,27 @@ class BaseHandler(tornado.web.RequestHandler):
         return tornado.locale.get(user["locale"])
 
     def render(self, template_name, **kwargs):
+        def find_post(comment):
+            comment['post'] = self.db.posts.find_one({'_id':
+                comment['postid']})
+            return comment
+
         posts = self.db.posts.find({'status': 'published'}).sort('date',
-            -1).limit(10)
+            -1).limit(options.recent_posts_limit)
+        comments = self.db.comments.find().sort('date',
+            -1).limit(options.recent_comments_limit)
+        comments = map(find_post, list(comments))
+        tags = self.db.posts.aggregate([
+            {'$unwind': '$tags'},
+            {'$group': {'_id': '$tags', 'sum': {'$sum': 1}}},
+            {'$limit': options.tag_cloud_limit}
+        ])['result']
         kwargs.update({
             'options': options,
-            '_posts': posts
+            '_next': self.get_argument('next', ''),
+            '_posts': posts,
+            '_comments': comments,
+            '_tags': tags
         })
         super(BaseHandler, self).render(template_name, **kwargs)
 

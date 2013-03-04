@@ -1,5 +1,5 @@
 # -*- coding: utf-8 *-*
-from wtforms import Form, TextField, PasswordField
+from wtforms import Form, HiddenField, TextField, PasswordField
 from wtforms.validators import Required, Email
 
 
@@ -14,6 +14,7 @@ class LoginForm(Form):
 
     email = TextField(u"E-mail", [Required(), Email()])
     password = PasswordField(u"Password", [Required()])
+    next_ = HiddenField()
 
 
 class RequestNewPasswordForm(Form):

@@ -3,14 +3,16 @@
     {% module DisqusModule() %}
 {% else %}
     {% if len(comments) > 0 %}
-        <h4>Comments ({{ len(comments) }}):</h4>
-        <ul>
-        {% for comment in comments %}
-            <li>
-            {% module CommentModule(comment=comment) %}
-            </li>
-        {% end %}
+        <fieldset>
+            <legend>Comments ({{ len(comments) }})</legend>
+        <ul class="unstyled">
+            {% for comment in comments %}
+                <li>
+                {% module CommentModule(comment=comment) %}
+                </li>
+            {% end %}
         </ul>
+        </fieldset>
     {% else %}
         <p>No one has commented yet</p>
     {% end %}

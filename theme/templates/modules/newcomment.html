@@ -1,30 +1,39 @@
 {% from selene import forms %}
 {% set form = forms.NewCommentForm() %}
-<form class="form-horizontal" action="{{ '/post/%s/comment/new' % post['slug'] }}" method="post">
+<form id="new-comment" class="form" action="{{ '/post/%s/comment/new' % post['slug'] }}" method="post">
     <fieldset>
         <legend>New comment</legend>
-            <div class="control-group">
-                {% raw form.name.label(class_="control-label") %}
-                <div class="controls">
-                    {% raw form.name(placeholder="Name") %}
+            <div class="span12">
+                <div class="span5">
+                    <div class="control-group">
+                        {% raw form.name.label(class_="control-label") %}
+                        <div class="controls">
+                            {% raw form.name(placeholder="Name", class_="input-block-level") %}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        {% raw form.email.label(class_="control-label") %}
+                        <div class="controls">
+                            {% raw form.email(placeholder="Email", class_="input-block-level") %}
+                        </div>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="control-group">
+                        {% raw form.content.label(class_="control-label") %}
+                        <div class="controls">
+                            {% raw form.content(placeholder="Content", class_="input-block-level", rows="5") %}
+                        </div>
+                    </div>
+                    {% raw xsrf_form_html() %}
                 </div>
             </div>
-            <div class="control-group">
-                {% raw form.email.label(class_="control-label") %}
-                <div class="controls">
-                    {% raw form.email(placeholder="Email") %}
-                </div>
-            </div>
-            <div class="control-group">
-                {% raw form.content.label(class_="control-label") %}
-                <div class="controls">
-                    {% raw form.content(placeholder="Content") %}
-                </div>
-            </div>
-            {% raw xsrf_form_html() %}
-            <div class="control-group">
-                <div class="controls">
-                    <button type="submit" class="btn">Comment</button>
+            <div class="control-group span11">
+                <div class="controls pull-right">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="icon-comment"></i>
+                        Comment
+                    </button>
                 </div>
             </div>
         </form>

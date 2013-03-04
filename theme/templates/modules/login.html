@@ -15,10 +15,14 @@
                 {% raw form.password(placeholder="Password") %}
             </div>
         </div>
+        {% raw form.next_(value=_next or '') %}
         {% raw xsrf_form_html() %}
         <div class="control-group">
             <div class="controls">
-                <button type="submit" class="btn">Login</button>
+                <button type="submit" class="btn">
+                    <i class="icon-lock"></i>
+                    Login
+                </button>
             </div>
         </div>
     </fieldset>
