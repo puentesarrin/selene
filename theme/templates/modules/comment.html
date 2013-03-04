@@ -1,28 +1,26 @@
-<div>
+<div class="span12">
     <div class="span10">
         <div class="span12">
-            <div>
-                <div class="span8">
-                    <strong>{{ comment['name'] }}</strong> says:
-                </div>
-                <div class="span4">
-                    <span><b>Likes:</b> {{ comment['likes'] }}</span>
-                    <span><b>Dislikes:</b> {{ comment['dislikes'] }}</span>
-                </div>
-            </div>
-            <div>
-                <blockquote>
-                    <p>{{ comment['content'] }}</p>
-                    <small class="pull-right">
-                        Published at {{ comment['date'] }}
-                    </small>
-                </blockquote>
-            </div>
+            <strong>{{ comment['name'] }}</strong> says:
+        </div>
+        <div>
+            <blockquote>
+                <p>{{ comment['content'] }}</p>
+                <small class="pull-right">
+                    Published at {{ comment['date'] }}
+                </small>
+            </blockquote>
         </div>
     </div>
     <div class="span2">
+        <div>
         {% module LikeCommentModule(comment=comment) %}
+        </div>
+        <div>
+        <span class="badge badge-info">{{ '%d' % comment['likes'] }}</span>
+        </div>
         {% module DislikeCommentModule(comment=comment) %}
+        <span class="badge">{{ '%d' % comment['dislikes'] }}</span>
         {% module DeleteCommentModule(comment=comment) %}
     </div>
 </div>

@@ -50,7 +50,6 @@ class BaseHandler(tornado.web.RequestHandler):
         return tornado.locale.get(user["locale"])
 
     def render(self, template_name, **kwargs):
-
         def find_post(comment):
             comment['post'] = self.db.posts.find_one({'_id':
                 comment['postid']})
