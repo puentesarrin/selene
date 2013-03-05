@@ -151,7 +151,7 @@ class TagsHandlers(BaseHandler):
 
     def get(self):
         tags = self.db.posts.aggregate([
-            {'$match': {'$status': 'published'}},
+            {'$match': {'status': 'published'}},
             {'$unwind': '$tags'},
             {'$group': {'_id': '$tags', 'sum': {'$sum': 1}}},
             {'$sort': {'_id': 1}}

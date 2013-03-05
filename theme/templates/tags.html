@@ -10,13 +10,19 @@
 {% block content %}
 <fieldset>
     <legend><h2>Tags</h2></legend>
-    <ul class="unstyled inline">
-        {% for tag in tags %}
-            <li>
-                <a href="{{ '/tag/%s' % tag['_id'] }}">{{ tag['_id'] }}</a>
-            </li>
-        {% end %}
-    </ul>
+    {% if len(tags) %}
+        <p>
+            <ul class="unstyled inline">
+                {% for tag in tags %}
+                    <li>
+                        <a href="{{ '/tag/%s' % tag['_id'] }}">{{ tag['_id'] }}</a>
+                    </li>
+                {% end %}
+            </ul>
+        </p>
+    {% else %}
+        <p>No one has tags yet</p>
+    {% end %}
 </fieldset>
 {% end %}
 

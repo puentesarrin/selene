@@ -1,10 +1,19 @@
 <fieldset>
     <legend>Tags cloud</legend>
     {% if len(tags) > 0 %}
-        {% for tag in tags %}
-            <a href="{{ '/tag/%s' % tag['_id'] }}">{{ tag['_id'] }}</a>
-        {% end %}
+        <div>
+            {% for tag in tags %}
+                <a href="{{ '/tag/%s' % tag['_id'] }}">{{ tag['_id'] }}</a>
+            {% end %}
+        </div>
+        <div class="pull-right">
+            <a href="/tags">
+                <small>View more tags</small>
+            </a>
+        </div>
     {% else %}
-        <p>No one has tags yet</p>
+        <div>
+            <p>No one has tags yet</p>
+        </div>
     {% end %}
 </fieldset>
