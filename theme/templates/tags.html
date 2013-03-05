@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+ | Tags
+{% end %}
+
+{% block header %}
+{% end %}
+
+{% block content %}
+<fieldset>
+    <legend><h2>Tags:</h2></legend>
+    <ul class="unstyled inline">
+        {% for tag in tags %}
+            <li>
+                <a href="{{ '/tag/%s' % tag['_id'] }}">{{ tag['_id'] }}</a>
+            </li>
+        {% end %}
+    </ul>
+</fieldset>
+{% end %}
+
+{% block footer %}
+{% end %}

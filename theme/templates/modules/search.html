@@ -1,0 +1,17 @@
+{% from selene import forms %}
+{% set form = forms.SearchForm() %}
+<form action="/search">
+    {% if header %}
+        <fieldset>
+            <legend>Search</legend>
+    {%end%}
+    <div class="input-append">
+        {% raw form.q(placeholder="Search", class_="input-block-level", value=q) %}
+        <button class="btn" type="submit">
+            <i class="icon-search"></i>
+        </button>
+    </div>
+    {% if header %}
+        </fieldset>
+    {% end %}
+</form>
