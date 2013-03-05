@@ -103,7 +103,7 @@ class DeletePostHandler(BaseHandler):
 
     @tornado.web.authenticated
     def post(self, slug):
-        post = self.db.posts.find({'slug': slug})
+        post = self.db.posts.find_one({'slug': slug})
         if not post:
             raise tornado.web.HTTPError(404)
         self.db.comments.remove({'postid': post['_id']})
@@ -139,7 +139,8 @@ class TagHandler(BaseHandler):
                 post['_id']}))
             return post
 
-        posts = self.db.posts.find({'tags': tag}).sort('date', -1)
+        posts = self.db.posts.find({'tags': tag,
+            'status': 'published'}).sort('date', -1)
         posts = map(find_comments, posts)
         if not len(posts):
             raise tornado.web.HTTPError(404)
@@ -150,6 +151,7 @@ class TagsHandlers(BaseHandler):
 
     def get(self):
         tags = self.db.posts.aggregate([
+            {'$match': {'$status': 'published'}},
             {'$unwind': '$tags'},
             {'$group': {'_id': '$tags', 'sum': {'$sum': 1}}},
             {'$sort': {'_id': 1}}

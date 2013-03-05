@@ -61,6 +61,7 @@ class BaseHandler(tornado.web.RequestHandler):
             -1).limit(options.recent_comments_limit)
         comments = map(find_post, list(comments))
         tags = self.db.posts.aggregate([
+            {'$match': {'$status': 'published'}},
             {'$unwind': '$tags'},
             {'$group': {'_id': '$tags', 'sum': {'$sum': 1}}},
             {'$limit': options.tag_cloud_limit}
