@@ -1,6 +1,6 @@
-{% if posts.count() > 0 %}
-    <fieldset>
-        <legend>Recent posts</legend>
+<fieldset>
+    <legend>Recent posts</legend>
+    {% if posts.count() > 0 %}
         <ul>
             {% for post in posts %}
                 <li>
@@ -8,7 +8,7 @@
                 </li>
             {% end %}
         </ul>
-    </fieldset>
-{% else %}
-    <p>No one has post yet</p>
-{% end %}
+    {% else %}
+        <p>No one has post yet</p>
+    {% end %}
+</fieldset>
