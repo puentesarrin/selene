@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 
 {% block title %}
+{% if new %}
  | Write a new post
+{% else %}
+ | Edit post: {{ post.get('title', '') }}
+{% end %}
 {% end %}
 
 {% block header %}
