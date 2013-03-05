@@ -17,6 +17,8 @@ urls = [
     (r"/post/([a-zA-Z0-9-]+)/vote/?", handlers.VotePostHandler),
     (r'/posts', handlers.PostsHandlers),
     (r'/tag/([a-zA-Z0-9-]+)/?', handlers.TagHandler),
+    (r'/tags', handlers.TagsHandlers),
+    (r'/search', handlers.SearchHandler),
     (r'/post/([a-zA-Z0-9-]+)/comment/new', handlers.NewCommentHandler),
     (r'/comment/([a-z0-9]{24})/(like|dislike)', handlers.LikeCommentHandler),
     (r'/comment/([a-z0-9]{24})/delete', handlers.DeleteCommentHandler),

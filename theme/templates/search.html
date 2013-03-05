@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}
+ | Search results for "{{ q }}"
+{% end %}
+
+{% block header %}
+{% end %}
+
+{% block content %}
+<fieldset>
+    <legend>Search results for "{{ q }}"</legend>
+    {% module SearchModule(header=False, q=q) %}
+    {% if posts.count() == 0 %}
+        No found results for "{{ q }}"
+    {% else %}
+        <ul class="unstyled">
+            {% for post in posts %}
+                <li>
+                    {% module PostSummaryModule(post=post) %}
+                </li>
+            {% end %}
+        </ul>
+    {% end %}
+</fieldset>
+{% end %}
+
+{% block footer %}
+{% end %}

@@ -41,6 +41,7 @@ class NewPostHandler(BaseHandler):
             'date': datetime.datetime.now(),
             'tags': helpers.remove_duplicates(self.get_argument('tags')),
             'content': self.get_argument('content'),
+            'plain_content': self.get_argument('content'),
             'status': self.get_argument('status'),
             'author': self.current_user['name'],
             'votes': 0,
@@ -142,6 +143,26 @@ class TagHandler(BaseHandler):
         if not len(posts):
             raise tornado.web.HTTPError(404)
         self.render('tag.html', tag=tag, posts=posts)
+
+
+class TagsHandlers(BaseHandler):
+
+    def get(self):
+        tags = self.db.posts.aggregate([
+            {'$unwind': '$tags'},
+            {'$group': {'_id': '$tags', 'sum': {'$sum': 1}}},
+            {'$sort': {'_id': 1}}
+        ])['result']
+        self.render('tags.html', tags=tags)
+
+
+class SearchHandler(BaseHandler):
+
+    def get(self):
+        q = self.get_argument('q', '')
+        q_filter = re.compile('.*%s.*' % q, re.IGNORECASE)
+        posts = self.db.posts.find({'plain_content': q_filter})
+        self.render('search.html', posts=posts, q=q)
 
 
 class RssHandler(BaseHandler):
