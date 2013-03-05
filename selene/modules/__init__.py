@@ -8,8 +8,8 @@ from selene.modules.social_modules import *
 
 class MenuModule(tornado.web.UIModule):
 
-    def render(self, current_user):
-        return self.render_string("modules/menu.html",
+    def render(self, url_path, current_user):
+        return self.render_string("modules/menu.html", url_path=url_path,
             current_user=current_user)
 
 
