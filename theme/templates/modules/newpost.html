@@ -49,18 +49,17 @@
             </div>
         </div>
         {% raw xsrf_form_html() %}
-        <div class="control-group">
-            <div class="controls">
-                <button type="submit" class="btn">
-                    {% if new %}
-                        <i class="icon-ok"></i>
-                        Save it
-                    {% else %}
-                        <i class="icon-edit"></i>
-                        Edit
-                    {% end %}
+        <div class="form-actions">
+            {% if new %}
+                <button type="submit" class="btn btn-primary">
+                    <i class="icon-ok"></i>Save it
                 </button>
-            </div>
+            {% else %}
+                <button type="submit" class="btn btn-primary">
+                    <i class="icon-edit"></i>Edit
+                </button>
+                <a href="{{ '/post/%s' % post['slug'] }}" class="btn">Cancel</a>
+            {% end %}
         </div>
     </fieldset>
 </form>
