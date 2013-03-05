@@ -106,6 +106,7 @@ class DeletePostHandler(BaseHandler):
         post = self.db.posts.find({'slug': slug})
         if not post:
             raise tornado.web.HTTPError(404)
+        self.db.comments.remove({'postid': post['_id']})
         self.db.posts.remove({'slug': slug})
         self.redirect('/posts')
 
