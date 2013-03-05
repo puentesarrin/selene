@@ -2,6 +2,7 @@
 import tornado.web
 
 from tornado.options import options
+from selene import helpers
 
 
 class BaseMultiDict(object):
@@ -67,6 +68,7 @@ class BaseHandler(tornado.web.RequestHandler):
             {'$limit': options.tag_cloud_limit}
         ])['result']
         kwargs.update({
+            'url_path': helpers.Url(self.request.uri).path,
             'options': options,
             '_next': self.get_argument('next', ''),
             '_posts': posts,

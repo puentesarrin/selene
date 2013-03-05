@@ -24,7 +24,7 @@
             <div class="row-fluid">
                 <div class="span2">
                     <div id="menu">
-                        {% module MenuModule(current_user=current_user) %}
+                        {% module MenuModule(url_path=url_path, current_user=current_user) %}
                     </div>
                     {% block sidebar %}{% end %}
                 </div>
