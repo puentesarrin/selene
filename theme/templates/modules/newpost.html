@@ -5,7 +5,9 @@
 {% set f = form.status.process_data(post['status']) %}
 {% end %}
 {% if message %}
-    <em>{{ message }}</em>
+    <div class="alert alert-error">
+        {{ message }}
+    </div>
 {% end %}
 {% if new %}
     <form class="form" action="/post/new" method="post">

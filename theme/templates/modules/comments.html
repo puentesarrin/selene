@@ -14,7 +14,9 @@
         </ul>
         </fieldset>
     {% else %}
-        <p>No one has commented yet</p>
+        <div class="alert alert-info">
+            No one has commented yet
+        </div>
     {% end %}
     {% module NewCommentModule(post=post) %}
 {% end %}
