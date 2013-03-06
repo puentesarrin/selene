@@ -1,4 +1,9 @@
-<h4>
-    <a href="{{ '/post/%s' % post['slug'] }}">{{ post['title'] }}</a>
-</h4>
-<p>{{ post['content'] }}</p>
+<p>
+    <h4>
+        <a href="{{ '/post/%s' % post['slug'] }}">{{ post['title'] }}</a>
+    </h4>
+    <blockquote>
+        {{ post['content'] }}
+        <small>Published at {{ post['date'] }}</small>
+    </blockquote>
+</p>

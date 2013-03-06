@@ -85,6 +85,7 @@ class EditPostHandler(BaseHandler):
             'title': self.get_argument('title'),
             'tags': helpers.remove_duplicates(self.get_argument('tags')),
             'content': self.get_argument('content'),
+            'plain_content': helpers.get_plain(self.get_argument('content')),
             'status': self.get_argument('status')
         }
         self.db.posts.update({'slug': slug}, {'$set': new_post})
