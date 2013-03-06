@@ -8,13 +8,21 @@
                 <div class="control-group">
                     {% raw form.name.label(class_="control-label") %}
                     <div class="controls">
-                        {% raw form.name(placeholder="Name", class_="input-block-level") %}
+                        {% if current_user %}
+                            {% raw form.name(placeholder="Name", class_="input-block-level", disabled="disabled", value=current_user['name']) %}
+                        {% else %}
+                            {% raw form.name(placeholder="Name", class_="input-block-level") %}
+                        {% end %}
                     </div>
                 </div>
                 <div class="control-group">
                     {% raw form.email.label(class_="control-label") %}
                     <div class="controls">
-                        {% raw form.email(placeholder="Email", class_="input-block-level") %}
+                        {% if current_user %}
+                            {% raw form.email(placeholder="Email", class_="input-block-level", disabled="disabled", value=current_user['email']) %}
+                        {% else %}
+                            {% raw form.email(placeholder="Email", class_="input-block-level") %}
+                        {% end %}
                     </div>
                 </div>
             </div>

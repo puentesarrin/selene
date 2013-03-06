@@ -180,10 +180,18 @@ class RssHandler(BaseHandler):
 class NewCommentHandler(BaseHandler):
 
     def post(self, slug):
-        post_id = self.db.posts.find_one({'slug': slug}, {'_id': 1})['_id']
-        self.db.comments.insert({'postid': post_id,
-                                 'name': self.get_argument('name'),
-                                 'email': self.get_argument('email'),
+        post = self.db.posts.find_one({'slug': slug}, {'_id': 1})
+        if not post:
+            raise tornado.web.HTTPError(500)
+        if not self.current_user:
+            name = self.get_argument('name')
+            email = self.get_argument('email')
+        else:
+            name = self.current_user['name']
+            email = self.current_user['email']
+        self.db.comments.insert({'postid': post['_id'],
+                                 'name': name,
+                                 'email': email,
                                  'content': self.get_argument('content'),
                                  'date': datetime.datetime.now(),
                                  'likes': 0,
