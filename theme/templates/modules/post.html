@@ -9,7 +9,7 @@
     <div class="row-fluid">
         <div class="span5">
             <p>
-                Posted by: {{ post['author'] }}
+                <strong>Posted by:</strong> {{ post['author'] }}
             </p>
         </div>
         <div class="span7">
@@ -68,7 +68,7 @@
     </div>
     <div class="row-fluid">
         <small class="pull-right">
-            Published at {{ post['date'].strftime('%m/%d/%Y') }}
+            <em>Published at {{ post['date'].strftime('%m/%d/%Y') }}</em>
         </small>
     </div>
 </fieldset>
