@@ -15,16 +15,16 @@
         <div class="span7">
             <div class="row-fluid">
                 <div class="span7">
-                    <div class="btn-group">
-                        {% if current_user %}
+                    {% if current_user %}
+                        <div class="btn-group">
                             <a class="btn btn-primary" href="{{ '/post/%s/edit' % post['slug'] }}">
                                 <i class="icon-edit"></i>Edit
                             <a class="btn" href="{{ '/post/%s/delete' % post['slug'] }}">
                                 <i class="icon-remove"></i>Delete
                             </a>
-                        {% end %}
-                    </div>
-                    <div class="btn-group">
+                        </div>
+                    {% end %}
+                    <div class="btn-group pull-right">
                         {% module VoteModule(post=post) %}
                     </div>
                 </div>
