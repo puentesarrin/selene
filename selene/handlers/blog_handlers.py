@@ -236,6 +236,31 @@ class LikeCommentHandler(BaseHandler):
         self.redirect('/post/%s' % post['slug'])
 
 
+class EditCommentHandler(BaseHandler):
+
+    @tornado.web.authenticated
+    def get(self, comment_id):
+        comment = self.db.comments.find_one({'_id': ObjectId(comment_id)})
+        if not comment:
+            raise tornado.web.HTTPError(404)
+        post = self.db.posts.find_one({'_id': comment['postid']})
+        self.render('editcomment.html', post=post, comment=comment)
+
+    @tornado.web.authenticated
+    def post(self, comment_id):
+        comment = self.db.comments.find_one({'_id': ObjectId(comment_id)},
+            {'postid': 1})
+        if not comment:
+            raise tornado.web.HTTPError(404)
+        self.db.comments.update({'_id': ObjectId(comment_id)}, {'$set': {
+            'name': self.get_argument('name'),
+            'email': self.get_argument('email'),
+            'content': self.get_argument('content')
+        }})
+        post = self.db.posts.find_one({'_id': comment['postid']})
+        self.redirect('/post/%s' % post['slug'])
+
+
 class DeleteCommentHandler(BaseHandler):
 
     @tornado.web.authenticated

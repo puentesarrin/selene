@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}
+ | Edit comment
+{% end %}
+
+{% block header %}
+{% end %}
+
+{% block content %}
+    <div class="row-fluid">
+        <form method="post">
+            <fieldset>
+                <legend>
+                    <h2>Edit comment</h2>
+                </legend>
+                <p>
+                    Commented on post "<a href="{{ '/post/%s' % post['slug'] }}">{{ post['title'] }}</a>":
+                </p>
+                {% from selene import forms %}
+                {% set form = forms.NewCommentForm() %}
+                {% set f = form.content.process_data(comment.get('content', '')) %}
+                <div class="row-fluid">
+                    <div class="span5">
+                        <div class="control-group">
+                            {% raw form.name.label(class_="control-label") %}
+                            <div class="controls">
+                                {% raw form.name(placeholder="Name", class_="input-block-level", value=comment['name']) %}
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            {% raw form.email.label(class_="control-label") %}
+                            <div class="controls">
+                                {% raw form.email(placeholder="Email", class_="input-block-level", value=comment['email']) %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span7">
+                        <div class="control-group">
+                            {% raw form.content.label(class_="control-label") %}
+                            <div class="controls">
+                                {% raw form.content(placeholder="Content", class_="input-block-level", rows="5") %}
+                            </div>
+                        </div>
+                        {% raw xsrf_form_html() %}
+                    </div>
+                </div>
+            <fieldset>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Edit it</button>
+                <a href="{{ '/post/%s' % post['slug'] }}" class="btn">Cancel</a>
+            </div>
+        </form>
+    </div>
+{% end %}
+
+{% block footer %}
+{% end %}

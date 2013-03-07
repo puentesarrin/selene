@@ -1,0 +1,5 @@
+{% if current_user %}
+    <a href="/comment/{{ comment['_id'] }}/edit" class="btn btn-primary">
+        <i class="icon-edit"></i>
+    </a>
+{% end %}

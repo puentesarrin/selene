@@ -22,5 +22,6 @@ urls = [
     (r'/search', handlers.SearchHandler),
     (r'/post/([a-zA-Z0-9-]+)/comment/new', handlers.NewCommentHandler),
     (r'/comment/([a-z0-9]{24})/(like|dislike)', handlers.LikeCommentHandler),
+    (r'/comment/([a-z0-9]{24})/edit', handlers.EditCommentHandler),
     (r'/comment/([a-z0-9]{24})/delete', handlers.DeleteCommentHandler),
     (r"/rss/?", handlers.RssHandler)]
