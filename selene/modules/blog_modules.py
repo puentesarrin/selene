@@ -16,6 +16,13 @@ class PostModule(tornado.web.UIModule):
             comments=comments, linkable=linkable)
 
 
+class PagerPostsModule(tornado.web.UIModule):
+
+    def render(self, older, newer):
+        return self.render_string('modules/pagerposts.html', older=older,
+            newer=newer)
+
+
 class PostSummaryModule(tornado.web.UIModule):
 
     def render(self, post):
