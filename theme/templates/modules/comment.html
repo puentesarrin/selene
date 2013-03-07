@@ -11,14 +11,20 @@
         </div>
     </div>
     <div class="span2">
-        <div>
-        {% module LikeCommentModule(comment=comment) %}
+        <div class="row-fluid">
+            <div class="span12">
+                {% module LikeCommentModule(comment=comment) %}
+            </div>
         </div>
-        <div>
-        <span class="badge badge-info">{{ '%d' % comment['likes'] }}</span>
+        <div class="row-fluid">
+            <div class="span12">
+                {% module DislikeCommentModule(comment=comment) %}
+            </div>
         </div>
-        {% module DislikeCommentModule(comment=comment) %}
-        <span class="badge">{{ '%d' % comment['dislikes'] }}</span>
-        {% module DeleteCommentModule(comment=comment) %}
+        <div class="row-fluid text-center">
+            <div class="span12">
+                {% module DeleteCommentModule(comment=comment) %}
+            </div>
+        </div>
     </div>
 </div>
