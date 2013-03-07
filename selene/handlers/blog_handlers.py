@@ -68,7 +68,14 @@ class PostHandler(BaseHandler):
         if not post:
             raise tornado.web.HTTPError(404)
         comments = list(self.db.comments.find({'postid': post['_id']}))
-        self.render('post.html', post=post, comments=comments)
+        older = self.db.posts.find({'_id': {'$lt': post['_id']},
+            'status': 'published'}).sort('date', -1).limit(1)
+        newer = self.db.posts.find({'_id': {'$gt': post['_id']},
+            'status': 'published'}).sort('date', 1).limit(1)
+        older = None if older.count() == 0 else older[0]
+        newer = None if newer.count() == 0 else newer[0]
+        self.render('post.html', post=post, comments=comments, older=older,
+            newer=newer)
 
 
 class EditPostHandler(BaseHandler):
