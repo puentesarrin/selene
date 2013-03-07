@@ -4,6 +4,7 @@ from selene import handlers
 
 urls = [
     (r"/", handlers.HomeHandler),
+    (r"/page/([0-9]+)", handlers.HomeHandler),
     (r"/register/?", handlers.RegisterHandler),
     (r"/login/?", handlers.LoginHandler),
     (r'/confirm-account/(.*)', handlers.ConfirmAccountHandler),
