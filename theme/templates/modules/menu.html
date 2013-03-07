@@ -1,37 +1,39 @@
-<ul class="nav nav-pills nav-stacked">
-    <li {% if url_path == '/' %}class="active"{% end %}>
-        <a href="/">Home</a>
-    </li>
-    {% if current_user %}
-        <li {% if url_path == '/posts' %}class="active"{% end %}>
-            <a href="/posts">List posts</a>
+<div class="row-fluid">
+    <ul class="nav nav-pills nav-stacked">
+        <li {% if url_path == '/' %}class="active"{% end %}>
+            <a href="/">Home</a>
         </li>
-        <li {% if url_path == '/post/new' %}class="active"{% end %}>
-            <a href="/post/new">Write a new post</a>
+        {% if current_user %}
+            <li {% if url_path == '/posts' %}class="active"{% end %}>
+                <a href="/posts">List posts</a>
+            </li>
+            <li {% if url_path == '/post/new' %}class="active"{% end %}>
+                <a href="/post/new">Write a new post</a>
+            </li>
+        {% else %}
+            <li {% if url_path == '/login' %}class="active"{% end %}>
+                <a href="/login">Login</a>
+            </li>
+            <li {% if url_path == '/register' %}class="active"{% end %}>
+                <a href="/register">Register</a>
+            </li>
+            <li {% if url_path == '/new-password' %}class="active"{% end %}>
+                <a href="/new-password">Request a new password</a>
+            </li>
+        {% end %}
+        <li {% if url_path == '/tags' %}class="active"{% end %}>
+            <a href="/tags">Tags</a>
         </li>
-    {% else %}
-        <li {% if url_path == '/login' %}class="active"{% end %}>
-            <a href="/login">Login</a>
-        </li>
-        <li {% if url_path == '/register' %}class="active"{% end %}>
-            <a href="/register">Register</a>
-        </li>
-        <li {% if url_path == '/new-password' %}class="active"{% end %}>
-            <a href="/new-password">Request a new password</a>
-        </li>
-    {% end %}
-    <li {% if url_path == '/tags' %}class="active"{% end %}>
-        <a href="/tags">Tags</a>
-    </li>
-    <li>
-        <a href="/rss">RSS Sindication</a>
-    </li>
-    {% if current_user %}
         <li>
-            <form action="/logout" method="post">
-                {% raw xsrf_form_html() %}
-                <button type="submit" class="btn btn-link">Logout</button>
-            </form>
+            <a href="/rss">RSS Sindication</a>
         </li>
-    {% end %}
-</ul>
+        {% if current_user %}
+            <li>
+                <form action="/logout" method="post">
+                    {% raw xsrf_form_html() %}
+                    <button type="submit" class="btn btn-link">Logout</button>
+                </form>
+            </li>
+        {% end %}
+    </ul>
+</div>

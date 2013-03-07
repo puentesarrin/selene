@@ -1,7 +1,7 @@
 <fieldset>
     <legend>Tags cloud</legend>
     {% if len(tags) > 0 %}
-        <div>
+        <div class="row-fluid">
             {% for tag in tags %}
                 <a href="{{ '/tag/%s' % tag['_id'] }}">{{ tag['_id'] }}</a>
             {% end %}

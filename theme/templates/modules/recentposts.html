@@ -1,13 +1,15 @@
 <fieldset>
     <legend>Recent posts</legend>
     {% if posts.count() > 0 %}
-        <ul>
-            {% for post in posts %}
-                <li>
-                    <a href="{{ '/post/%s' % post['slug'] }}">{{ post['title'] }}</a>
-                </li>
-            {% end %}
-        </ul>
+        <div class="row-fluid">
+            <ul>
+                {% for post in posts %}
+                    <li>
+                        <a href="{{ '/post/%s' % post['slug'] }}">{{ post['title'] }}</a>
+                    </li>
+                {% end %}
+            </ul>
+        </div>
     {% else %}
         <div class="alert alert-info">
             No one has post yet
