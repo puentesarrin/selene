@@ -11,15 +11,22 @@ from tornado.options import options
 
 class HomeHandler(BaseHandler):
 
-    def get(self):
+    def get(self, page=1):
         def find_comments(post):
             post['comments'] = list(self.db.comments.find({'postid':
                 post['_id']}))
             return post
 
-        posts = self.db.posts.find({'status': 'published'}).sort('date', -1)
+        page = int(page)
+        posts = self.db.posts.find({'status': 'published'}).sort('date',
+            -1).skip((page - 1) * options.page_size_posts).limit(
+                options.page_size_posts)
+        if posts.count(with_limit_and_skip=True) == 0:
+            raise tornado.web.HTTPError(404)
         posts = map(find_comments, posts)
-        self.render("home.html", posts=posts)
+        total = self.db.posts.find({'status': 'published'}).count()
+        self.render("home.html", posts=posts, total=total, page=int(page),
+            page_size=options.page_size_posts)
 
 
 class NewPostHandler(BaseHandler):

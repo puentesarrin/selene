@@ -10,6 +10,7 @@
 {% for post in posts %}
     {% module PostModule(post=post, comments=post['comments'], linkable=True) %}
 {% end %}
+{% module PostsPaginatorModule(total=total, page=page, page_size=page_size) %}
 {% end %}
 
 {% block footer %}
