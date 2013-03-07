@@ -239,6 +239,14 @@ class LikeCommentHandler(BaseHandler):
 class DeleteCommentHandler(BaseHandler):
 
     @tornado.web.authenticated
+    def get(self, comment_id):
+        comment = self.db.comments.find_one({'_id': ObjectId(comment_id)})
+        if not comment:
+            raise tornado.web.HTTPError(404)
+        post = self.db.posts.find_one({'_id': comment['postid']})
+        self.render('deletecomment.html', post=post, comment=comment)
+
+    @tornado.web.authenticated
     def post(self, comment_id):
         comment = self.db.comments.find_one({'_id': ObjectId(comment_id)},
             {'postid': 1})
