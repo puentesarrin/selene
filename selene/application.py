@@ -2,7 +2,7 @@
 import os
 import tornado.web
 
-from selene import modules, routes, smtp
+from selene import ui_modules, routes, smtp
 from tornado.options import options as opts
 
 
@@ -18,7 +18,7 @@ class Selene(tornado.web.Application):
             'template_path': os.path.join(opts.theme_path, 'templates'),
             'xsrf_cookies': True,
             'cookie_secret': opts.cookie_secret,
-            'ui_modules': modules
+            'ui_modules': ui_modules
         }
         if opts.static_url_prefix:
             settings['static_url_prefix'] = opts.static_url_prefix
