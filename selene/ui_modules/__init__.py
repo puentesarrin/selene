@@ -1,9 +1,9 @@
 # -*- coding: utf-8 *-*
 import tornado.web
 
-from selene.modules.auth_modules import *
-from selene.modules.blog_modules import *
-from selene.modules.social_modules import *
+from selene.ui_modules.auth_modules import *
+from selene.ui_modules.blog_modules import *
+from selene.ui_modules.social_modules import *
 
 
 class MenuModule(tornado.web.UIModule):
