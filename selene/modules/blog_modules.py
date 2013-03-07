@@ -105,6 +105,12 @@ class DislikeCommentModule(tornado.web.UIModule):
             comment=comment)
 
 
+class EditCommentModule(tornado.web.UIModule):
+
+    def render(self, comment):
+        return self.render_string("modules/editcomment.html", comment=comment)
+
+
 class DeleteCommentModule(tornado.web.UIModule):
 
     def render(self, comment):
