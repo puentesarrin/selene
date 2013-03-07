@@ -23,10 +23,10 @@ class PostsPaginatorModule(tornado.web.UIModule):
             page=page, page_size=page_size)
 
 
-class PagerPostsModule(tornado.web.UIModule):
+class OlderNewerPostsModule(tornado.web.UIModule):
 
     def render(self, older, newer):
-        return self.render_string('modules/pagerposts.html', older=older,
+        return self.render_string('modules/oldernewerposts.html', older=older,
             newer=newer)
 
 
