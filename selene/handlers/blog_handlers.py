@@ -89,8 +89,14 @@ class EditPostHandler(BaseHandler):
 
     @tornado.web.authenticated
     def post(self, slug):
+        slug_flag = self.get_argument('slug', False)
+        if slug_flag:
+            new_slug = self.get_argument('customslug', '')
+        else:
+            new_slug = helpers.get_slug(self.get_argument('title'))
         new_post = {
             'title': self.get_argument('title'),
+            'slug': new_slug,
             'tags': helpers.remove_duplicates(self.get_argument('tags')),
             'content': self.get_argument('content'),
             'plain_content': helpers.get_plain(self.get_argument('content')),
@@ -99,7 +105,7 @@ class EditPostHandler(BaseHandler):
         }
         self.db.posts.update({'slug': slug}, {'$set': new_post})
         if new_post['status'] == 'published':
-            self.redirect('/post/%s' % slug)
+            self.redirect('/post/%s' % new_slug)
         else:
             self.redirect('/')
 
