@@ -8,10 +8,16 @@
 {% end %}
 
 {% block content %}
-    {% module PostModule(post=post, comments=comments) %}
-    {% module TwitterShareModule(post=post) %}
-    {% module FacebookShareModule(post=post) %}
-    {% module CommentsModule(post=post, comments=comments)%}
+    <div class="row-fluid">
+        {% module PostModule(post=post, comments=comments) %}
+    </div>
+    <div class="row-fluid">
+        {% module TwitterShareModule(post=post) %}
+        {% module FacebookShareModule(post=post) %}
+    </div>
+    <div class="row-fluid">
+        {% module CommentsModule(post=post, comments=comments)%}
+    </div>
 {% end %}
 
 {% block footer %}
