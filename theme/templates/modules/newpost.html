@@ -2,7 +2,10 @@
 {% set form = forms.NewPostForm() %}
 {% set f = form.content.process_data(post.get('content', '')) %}
 {% if 'status' in post %}
-{% set f = form.status.process_data(post['status']) %}
+    {% set f = form.status.process_data(post['status']) %}
+{% end %}
+{% if 'text_type' in post %}
+    {% set f = form.text_type.process_data(post['text_type']) %}
 {% end %}
 {% if message %}
     <div class="alert alert-error">
@@ -50,12 +53,21 @@
                         {% end %}
                     </div>
                 </div>
+                <div class="control-group">
+                    {% raw form.text_type.label(class_="control-label") %}
+                    <div class="controls">
+                        {% for subfield in form.text_type %}
+                            {% raw subfield() %}
+                            {% raw subfield.label() %}
+                        {% end %}
+                    </div>
+                </div>
             </div>
             <div class="span6">
                 <div class="control-group">
                     {% raw form.content.label(class_="control-label") %}
                     <div class="controls">
-                        {% raw form.content(placeholder="Content", class_="input-block-level", rows="20") %}
+                        {% raw form.content(placeholder="Content", class_="input-block-level", rows="25") %}
                     </div>
                 </div>
             </div>
