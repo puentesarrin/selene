@@ -12,6 +12,8 @@ class NewPostForm(Form):
     content = TextAreaField(u'Content', [Required()])
     status = RadioField(u'Status', [Required()],
         choices=[('published', 'Published'), ('unpublished', 'Unpublished')])
+    text_type = RadioField(u'Text type', [Required()],
+        choices=[('text', 'Text'), ('html', 'HTML')])
 
 
 class NewCommentForm(Form):

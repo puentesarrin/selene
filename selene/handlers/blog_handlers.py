@@ -43,6 +43,7 @@ class NewPostHandler(BaseHandler):
             'content': self.get_argument('content'),
             'plain_content': helpers.get_plain(self.get_argument('content')),
             'status': self.get_argument('status'),
+            'text_type': self.get_argument('text_type'),
             'author': self.current_user['name'],
             'votes': 0,
             'views': 0
@@ -86,7 +87,8 @@ class EditPostHandler(BaseHandler):
             'tags': helpers.remove_duplicates(self.get_argument('tags')),
             'content': self.get_argument('content'),
             'plain_content': helpers.get_plain(self.get_argument('content')),
-            'status': self.get_argument('status')
+            'status': self.get_argument('status'),
+            'text_type': self.get_argument('text_type')
         }
         self.db.posts.update({'slug': slug}, {'$set': new_post})
         if new_post['status'] == 'published':
