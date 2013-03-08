@@ -10,18 +10,27 @@
 {% block content %}
 <fieldset>
     <legend>Search results for "{{ q }}"</legend>
-    {% module SearchModule(header=False, q=q) %}
+    <div class="row-fluid">
+        {% module SearchModule(header=False, q=q) %}
+    </div>
     {% if posts.count() == 0 %}
-        No found results for "{{ q }}"
+        <div class="alert alert-info">
+            No found results for "{{ q }}"
+        </div>
     {% else %}
-        <ul class="unstyled">
-            {% for post in posts %}
-                <li>
-                    {% module PostSummaryModule(post=post) %}
-                </li>
-            {% end %}
-        </ul>
+        <div class="row-fluid">
+            <ul class="unstyled">
+                {% for post in posts %}
+                    <li>
+                        {% module PostSummaryModule(post=post) %}
+                    </li>
+                {% end %}
+            </ul>
+        </div>
     {% end %}
+    <div class="row-fluid">
+        {% module SearchPostsPaginatorModule(q=q, total=total, page=page, page_size=page_size) %}
+    </div>
 </fieldset>
 {% end %}
 
