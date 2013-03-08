@@ -23,6 +23,13 @@ class PostsPaginatorModule(tornado.web.UIModule):
             page=page, page_size=page_size)
 
 
+class SearchPostsPaginatorModule(tornado.web.UIModule):
+
+    def render(self, q, total, page, page_size):
+        return self.render_string('modules/searchpostspaginator.html', q=q,
+            total=total, page=page, page_size=page_size)
+
+
 class OlderNewerPostsModule(tornado.web.UIModule):
 
     def render(self, older, newer):

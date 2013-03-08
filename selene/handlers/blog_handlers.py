@@ -185,10 +185,18 @@ class TagsHandlers(BaseHandler):
 class SearchHandler(BaseHandler):
 
     def get(self):
+        page = int(self.get_argument('page', 1))
         q = self.get_argument('q', '')
         q_filter = re.compile('.*%s.*' % q, re.IGNORECASE)
-        posts = self.db.posts.find({'plain_content': q_filter})
-        self.render('search.html', posts=posts, q=q)
+        posts = self.db.posts.find({'plain_content': q_filter}).sort('date',
+            -1).skip((page - 1) * options.page_size_search_posts).limit(
+                options.page_size_search_posts)
+        if posts.count(with_limit_and_skip=True) == 0:
+            raise tornado.web.HTTPError(404)
+        total = self.db.posts.find({'plain_content': q_filter, 'status':
+            'published'}).count()
+        self.render('search.html', posts=posts, q=q, total=total, page=page,
+            page_size=options.page_size_search_posts)
 
 
 class RssHandler(BaseHandler):
