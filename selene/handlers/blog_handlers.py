@@ -21,8 +21,6 @@ class HomeHandler(BaseHandler):
         posts = self.db.posts.find({'status': 'published'}).sort('date',
             -1).skip((page - 1) * options.page_size_posts).limit(
                 options.page_size_posts)
-        if posts.count(with_limit_and_skip=True) == 0:
-            raise tornado.web.HTTPError(404)
         posts = map(find_comments, posts)
         total = self.db.posts.find({'status': 'published'}).count()
         self.render("home.html", posts=posts, total=total, page=int(page),
@@ -192,8 +190,6 @@ class SearchHandler(BaseHandler):
             'published'}).sort('date', -1).skip((page - 1) *
             options.page_size_search_posts).limit(
                 options.page_size_search_posts)
-        if posts.count(with_limit_and_skip=True) == 0:
-            raise tornado.web.HTTPError(404)
         total = self.db.posts.find({'plain_content': q_filter, 'status':
             'published'}).count()
         self.render('search.html', posts=posts, q=q, total=total, page=page,
