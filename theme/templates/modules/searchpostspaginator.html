@@ -14,7 +14,7 @@
                 <li><a href="/search?q={{ q }}&page={{ item }}">{{ item }}</a></li>
             {% end %}
         {% end %}
-        {% if page == total_pages %}
+        {% if page >= total_pages %}
             <li class="disabled"><a>Next</a></li>
         {% else %}
             <li><a href="/search?q={{ q }}&page={{ page + 1 }}">Next</a></li>
