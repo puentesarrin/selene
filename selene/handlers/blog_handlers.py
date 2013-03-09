@@ -154,18 +154,22 @@ class PostsHandlers(BaseHandler):
 
 class TagHandler(BaseHandler):
 
-    def get(self, tag):
+    def get(self, tag, page=1):
         def find_comments(post):
             post['comments'] = list(self.db.comments.find({'postid':
                 post['_id']}))
             return post
 
-        posts = self.db.posts.find({'tags': tag,
-            'status': 'published'}).sort('date', -1)
-        posts = map(find_comments, posts)
-        if not len(posts):
+        page = int(page)
+        posts = self.db.posts.find({'tags': tag, 'status': 'published'}).sort(
+            'date', -1).skip((page - 1) * options.page_size_posts).limit(
+                options.page_size_tag_posts)
+        if not posts.count():
             raise tornado.web.HTTPError(404)
-        self.render('tag.html', tag=tag, posts=posts)
+        posts = map(find_comments, posts)
+        total = self.db.posts.find({'tags': tag, 'status': 'published'}).count()
+        self.render('tag.html', tag=tag, posts=posts, total=total, page=page,
+            page_size=options.page_size_tag_posts)
 
 
 class TagsHandlers(BaseHandler):
