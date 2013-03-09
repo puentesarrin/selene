@@ -8,12 +8,17 @@
 {% end %}
 
 {% block content %}
-<fieldset>
-    <legend><h2>Tag: {{ tag }}</h2></legend>
-    {% for post in posts %}
-        {% module PostModule(post=post, comments=post['comments'], linkable=True) %}
-    {% end %}
-</fieldset>
+<div class="row-fluid">
+    <fieldset>
+        <legend><h2>Tag: {{ tag }}</h2></legend>
+        {% for post in posts %}
+            {% module PostModule(post=post, comments=post['comments'], linkable=True) %}
+        {% end %}
+    </fieldset>
+</div>
+<div class="row-fluid">
+    {% module TagPostsPaginatorModule(tag=tag, total=total, page=page, page_size=page_size) %}
+</div>
 {% end %}
 
 {% block footer %}

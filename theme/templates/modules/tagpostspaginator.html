@@ -1,0 +1,23 @@
+{% import math %}
+{% set total_pages = int(math.ceil(total/page_size)) %}
+<div class="pagination pagination-centered">
+    <ul>
+        {% if page > 1 %}
+            <li><a href="/tag/{{ tag }}/page/{{ page - 1 }}">Prev</a></li>
+        {% else %}
+            <li class="disabled"><a>Prev</a></li>
+        {% end %}
+        {% for item in range(1, total_pages + 1) %}
+            {% if item == page %}
+                <li class="active"><a>{{ item }}</a></li>
+            {% else %}
+                <li><a href="/tag/{{ tag }}/page/{{ item }}">{{ item }}</a></li>
+            {% end %}
+        {% end %}
+        {% if page >= total_pages %}
+            <li class="disabled"><a>Next</a></li>
+        {% else %}
+            <li><a href="/tag/{{ tag }}/page/{{ page + 1 }}">Next</a></li>
+        {% end %}
+    </ul>
+</div>

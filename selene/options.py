@@ -35,6 +35,8 @@ def setup_options(path):
         help='Default language')
     tornado.options.define('page_size_posts', default=10, type=int,
         help='Page size for posts')
+    tornado.options.define('page_size_tag_posts', default=10, type=int,
+        help='Page size for tag showing posts')
     tornado.options.define('page_size_search_posts', default=10, type=int,
         help='Page size for searching posts')
     tornado.options.define('tag_cloud_limit', default=20, type=int,
