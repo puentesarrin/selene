@@ -92,6 +92,16 @@ def setup_options(path):
     tornado.options.define('facebook_button_verb', default='like', type=str,
         help='Facebook share button verb to display')
 
+    #Google+
+    tornado.options.define('googleplus_button_enabled', default=True, type=bool,
+        help='Google+ share button enabled')
+    tornado.options.define('googleplus_button_size', default='standar',
+        type=str, help='Google+ share button size')
+    tornado.options.define('googleplus_button_annotation', default='inline',
+        type=str, help='Google+ share button annotation')
+    tornado.options.define('googleplus_button_width', default=300,
+        type=int, help='Google+ share button width')
+
     #Disqus
     tornado.options.define('disqus_enabled', default=False, type=bool,
         help='Disqus widget enabled')
