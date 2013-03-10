@@ -80,15 +80,27 @@ class LoginGoogleHandler(AuthBaseHandler, tornado.auth.GoogleMixin):
     @tornado.web.asynchronous
     def get(self):
         if self.get_argument("openid.mode", None):
+            self.next_ = self.get_argument('next', '/')
             self.get_authenticated_user(self.async_callback(self._on_auth))
             return
         self.authenticate_redirect(ax_attrs=['name', 'email', 'language'])
 
-    def _on_auth(self, user):
-        if not user:
-            raise tornado.web.HTTPError(500, "Google auth failed")
-        self.write(user)
-        # TODO: Save user data and create cookie for auth
+    def _on_auth(self, data):
+        if not data:
+            raise tornado.web.HTTPError(500)
+        user = {
+            'name': data['name'],
+            'email': data['email'],
+            'enabled': True,
+            'join': datetime.datetime.now(),
+            'locale': data['locale'],
+            'accounts': ['google'],
+            'google_claimed_id': data['claimed_id']
+        }
+        self.db.users.update({'email': data['email']}, {'$set': user},
+            upsert=True)
+        self.set_secure_cookie("current_user", user["email"])
+        self.redirect(self.next_)
 
 
 class RequestNewPasswordHandler(AuthBaseHandler):
