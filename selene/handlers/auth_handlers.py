@@ -116,8 +116,18 @@ class LoginTwitterHandler(AuthBaseHandler, tornado.auth.TwitterMixin):
     def _on_auth(self, data):
         if not data:
             raise tornado.web.HTTPError(500)
-        self.write(data)
-        self.finish()
+        user = {
+            'username': data['username'],
+            'name': data['name'],
+            'enabled': True,
+            'join': datetime.datetime.now(),
+            'locale': data['lang'],
+            'accounts': ['twitter'],
+            'twitter_access_token': data['access_token']
+        }
+        self.db.users.insert(user)
+        self.set_secure_cookie("current_user", user["username"])
+        self.redirect(self.next_)
 
 
 class RequestNewPasswordHandler(AuthBaseHandler):

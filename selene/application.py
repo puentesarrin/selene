@@ -22,6 +22,9 @@ class Selene(tornado.web.Application):
         }
         if opts.static_url_prefix:
             settings['static_url_prefix'] = opts.static_url_prefix
+        if opts.twitter_consumer_key and opts.twitter_consumer_secret:
+            settings['twitter_consumer_key'] = opts.twitter_consumer_key
+            settings['twitter_consumer_secret'] = opts.twitter_consumer_secret
         tornado.web.Application.__init__(self, routes.urls +
             [(r"/(favicon\.ico)", tornado.web.StaticFileHandler,
             {'path': settings['static_path']})], **settings)

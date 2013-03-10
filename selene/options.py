@@ -59,6 +59,12 @@ def setup_options(path):
     tornado.options.define('default_locale', default='en', type=str,
         help='Default locale setting')
 
+    #Twitter auth
+    tornado.options.define('twitter_consumer_key', default=None, type=str,
+        help='Twitter consumer key for authentication')
+    tornado.options.define('twitter_consumer_secret', default=None, type=str,
+        help='Twitter consumer secret for authentication')
+
     #Twitter
     tornado.options.define('twitter_button_enabled', default=True, type=bool,
         help='Twitter share button enabled')
