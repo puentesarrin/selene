@@ -1,6 +1,7 @@
 # -*- coding: utf-8 *-*
 import bcrypt
 import datetime
+import tornado.auth
 
 from selene import helpers
 from selene.handlers import BaseHandler
@@ -71,6 +72,22 @@ class LoginHandler(AuthBaseHandler):
                         return
         self.render('login.html',
             message="Incorrect user/password combination or invalid account")
+
+
+class LoginGoogleHandler(AuthBaseHandler, tornado.auth.GoogleMixin):
+
+    @tornado.web.asynchronous
+    def get(self):
+        if self.get_argument("openid.mode", None):
+            self.get_authenticated_user(self.async_callback(self._on_auth))
+            return
+        self.authenticate_redirect(ax_attrs=['name', 'email', 'language'])
+
+    def _on_auth(self, user):
+        if not user:
+            raise tornado.web.HTTPError(500, "Google auth failed")
+        self.write(user)
+        # TODO: Save user data and create cookie for auth
 
 
 class RequestNewPasswordHandler(AuthBaseHandler):
