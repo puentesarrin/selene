@@ -8,6 +8,7 @@ urls = [
     (r"/register/?", handlers.RegisterHandler),
     (r"/login/?", handlers.LoginHandler),
     (r"/login/google/?", handlers.LoginGoogleHandler),
+    (r"/login/twitter/?", handlers.LoginTwitterHandler),
     (r'/confirm-account/(.*)', handlers.ConfirmAccountHandler),
     (r'/new-password', handlers.RequestNewPasswordHandler),
     (r'/reset-password/(.*)', handlers.ResetPasswordHandler),
