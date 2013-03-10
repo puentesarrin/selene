@@ -14,6 +14,12 @@ class GoogleLoginModule(tornado.web.UIModule):
         return self.render_string('modules/googlelogin.html')
 
 
+class TwitterLoginModule(tornado.web.UIModule):
+
+    def render(self):
+        return self.render_string('modules/twitterlogin.html')
+
+
 class RegisterModule(tornado.web.UIModule):
 
     def render(self):
