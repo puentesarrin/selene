@@ -2,6 +2,7 @@
 import bcrypt
 import datetime
 import tornado.auth
+import tornado.web
 
 from selene import helpers
 from selene.handlers import BaseHandler
