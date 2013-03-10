@@ -59,7 +59,7 @@ def setup_options(path):
     tornado.options.define('default_locale', default='en', type=str,
         help='Default locale setting')
 
-    #Twitter
+    #Twitter share
     tornado.options.define('twitter_button_enabled', default=True, type=bool,
         help='Twitter share button enabled')
     tornado.options.define('twitter_button_counter', default=True, type=bool,
@@ -74,7 +74,7 @@ def setup_options(path):
         type=bool, help=('Twitter share button title post only, without blog '
         'title'))
 
-    #Facebook
+    #Facebook share
     tornado.options.define('facebook_button_enabled', default=True, type=bool,
         help='Facebook share button enabled')
     tornado.options.define('facebook_button_send', default=False, type=bool,
@@ -92,7 +92,7 @@ def setup_options(path):
     tornado.options.define('facebook_button_verb', default='like', type=str,
         help='Facebook share button verb to display')
 
-    #Google+
+    #Google+ share
     tornado.options.define('googleplus_button_enabled', default=True, type=bool,
         help='Google+ share button enabled')
     tornado.options.define('googleplus_button_size', default='standar',
