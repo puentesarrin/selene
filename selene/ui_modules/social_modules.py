@@ -14,6 +14,12 @@ class FacebookShareModule(tornado.web.UIModule):
         return self.render_string('modules/facebookshare.html', post=post)
 
 
+class GooglePlusShareModule(tornado.web.UIModule):
+
+    def render(self, post):
+        return self.render_string('modules/googleplusshare.html', post=post)
+
+
 class DisqusModule(tornado.web.UIModule):
 
     def render(self):
