@@ -8,6 +8,12 @@ class LoginModule(tornado.web.UIModule):
         return self.render_string('modules/login.html', _next=_next)
 
 
+class GoogleLoginModule(tornado.web.UIModule):
+
+    def render(self):
+        return self.render_string('modules/googlelogin.html')
+
+
 class RegisterModule(tornado.web.UIModule):
 
     def render(self):

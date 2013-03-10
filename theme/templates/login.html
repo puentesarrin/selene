@@ -13,7 +13,17 @@
             {{ message }}
         </div>
     {% end %}
-    {% module LoginModule(_next=_next) %}
+    <div class="row-fluid">
+        <div class="span8">
+            {% module LoginModule(_next=_next) %}
+        </div>
+        <div class="span4">
+            <fieldset>
+                <legend>Third-party login</legend>
+                {% module GoogleLoginModule() %}
+            </fieldset>
+        </div>
+    </div>
 {% end %}
 
 {% block footer %}
