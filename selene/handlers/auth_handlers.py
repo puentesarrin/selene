@@ -125,7 +125,9 @@ class LoginTwitterHandler(AuthBaseHandler, tornado.auth.TwitterMixin):
             'accounts': ['twitter'],
             'twitter_access_token': data['access_token']
         }
-        self.db.users.insert(user)
+        user_doc = self.db.users.insert(user)
+        self.accounts.update({'userid': user_doc['_id'], 'type': 'twitter'},
+            data, upsert=True)
         self.set_secure_cookie("current_user", user["username"])
         self.redirect(self.next_)
 
