@@ -2,9 +2,7 @@
 {% if options.twitter_button_enabled %}
     <a href="https://twitter.com/share"
         class="twitter-share-button"
-        {% if not options.twitter_button_counter %}
-            data-count="none"
-        {% end %}
+        data-count="{{ options.twitter_button_counter }}"
         {% if options.twitter_button_via %}
             data-via="{{ options.twitter_button_via }}"
         {% end %}

@@ -62,7 +62,7 @@ def setup_options(path):
     #Twitter share
     tornado.options.define('twitter_button_enabled', default=True, type=bool,
         help='Twitter share button enabled')
-    tornado.options.define('twitter_button_counter', default=True, type=bool,
+    tornado.options.define('twitter_button_counter', default='none', type=str,
         help='Twitter share button counter')
     tornado.options.define('twitter_button_via', type=str,
         help='Twitter share button data via')
