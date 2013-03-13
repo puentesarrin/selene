@@ -103,6 +103,35 @@ class LoginGoogleHandler(AuthBaseHandler, tornado.auth.GoogleMixin):
         self.redirect(self.next_)
 
 
+class LoginTwitterHandler(AuthBaseHandler, tornado.auth.TwitterMixin):
+
+    @tornado.web.asynchronous
+    def get(self):
+        if self.get_argument("oauth_token", None):
+            self.next_ = self.get_argument('next', '/')
+            self.get_authenticated_user(self.async_callback(self._on_auth))
+            return
+        self.authorize_redirect()
+
+    def _on_auth(self, data):
+        if not data:
+            raise tornado.web.HTTPError(500)
+        user = {
+            'username': data['username'],
+            'name': data['name'],
+            'enabled': True,
+            'join': datetime.datetime.now(),
+            'locale': data['lang'],
+            'accounts': ['twitter'],
+            'twitter_access_token': data['access_token']
+        }
+        user_doc = self.db.users.insert(user)
+        self.accounts.update({'userid': user_doc['_id'], 'type': 'twitter'},
+            data, upsert=True)
+        self.set_secure_cookie("current_user", user["username"])
+        self.redirect(self.next_)
+
+
 class RequestNewPasswordHandler(AuthBaseHandler):
 
     def get(self):
