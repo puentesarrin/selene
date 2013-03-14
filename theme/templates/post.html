@@ -12,9 +12,17 @@
         {% module PostModule(post=post, comments=comments) %}
     </div>
     <div class="row-fluid">
-        {% module TwitterShareModule(post=post) %}
-        {% module FacebookShareModule(post=post) %}
-        {% module GooglePlusShareModule(post=post) %}
+        <ul class="unstyled inline pull-right">
+            <li>
+                {% module GooglePlusShareModule(post=post) %}
+            </li>
+            <li>
+                {% module TwitterShareModule(post=post) %}
+            </li>
+            <li>
+                {% module FacebookShareModule(post=post) %}
+            </li>
+        </ul>
     </div>
     <div class="row-fluid">
         {% module OlderNewerPostsModule(older=older, newer=newer)%}
