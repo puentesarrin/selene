@@ -45,20 +45,24 @@ def get_plain_from_html(html):
     return parser.value()
 
 
-class NoHeaderHTMLTranslator(HTMLTranslator):
+class CleanedHTMLTranslator(HTMLTranslator):
 
     def __init__(self, document):
         HTMLTranslator.__init__(self, document)
-        self.doctype = ("")
-        self.head_prefix_template = ("")
-        self.meta = [""]
+        self.head = ""
         self.head_prefix = ['', '', '', '', '']
         self.body_prefix = []
         self.body_suffix = []
         self.stylesheet = []
 
+    def visit_document(self, node):
+        pass
+
+    def depart_document(self, node):
+        self.fragment = self.body
+
 _w = Writer()
-_w.translator_class = NoHeaderHTMLTranslator
+_w.translator_class = CleanedHTMLTranslator
 
 
 def get_html_from_rst(rst):
