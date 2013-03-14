@@ -46,7 +46,8 @@ class NewPostHandler(BaseHandler):
             'date': datetime.datetime.now(),
             'tags': helpers.remove_duplicates(self.get_argument('tags')),
             'content': self.get_argument('content'),
-            'plain_content': helpers.get_plain(self.get_argument('content')),
+            'plain_content': helpers.get_plain_from_html(
+                self.get_argument('content')),
             'status': self.get_argument('status'),
             'text_type': self.get_argument('text_type'),
             'author': self.current_user['name'],
@@ -104,7 +105,8 @@ class EditPostHandler(BaseHandler):
             'slug': new_slug,
             'tags': helpers.remove_duplicates(self.get_argument('tags')),
             'content': self.get_argument('content'),
-            'plain_content': helpers.get_plain(self.get_argument('content')),
+            'plain_content': helpers.get_plain_from_html(
+                self.get_argument('content')),
             'status': self.get_argument('status'),
             'text_type': self.get_argument('text_type')
         }

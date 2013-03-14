@@ -37,7 +37,7 @@ class HTMLStripTags(HTMLParser):
         return whitespace.sub(' ', self.out).strip()
 
 
-def get_plain(html):
+def get_plain_from_html(html):
     parser = HTMLStripTags()
     parser.feed(html)
     return parser.value()
