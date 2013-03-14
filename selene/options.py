@@ -60,10 +60,16 @@ def setup_options(path):
         help='Default locale setting')
 
     #Twitter share
+    tornado.options.define('twitter_consumer_key', default=None, type=str,
+        help='Twitter consumer key for authentication')
+    tornado.options.define('twitter_consumer_secret', default=None, type=str,
+        help='Twitter consumer secret for authentication')
+
+    #Twitter auth
     tornado.options.define('twitter_button_enabled', default=True, type=bool,
         help='Twitter share button enabled')
-    tornado.options.define('twitter_button_counter', default=True, type=bool,
-        help='Twitter share button counter')
+    tornado.options.define('twitter_button_counter', default='vertical',
+        type=str, help='Twitter share button counter')
     tornado.options.define('twitter_button_via', type=str,
         help='Twitter share button data via')
     tornado.options.define('twitter_button_hashtags', type=str,
@@ -79,8 +85,8 @@ def setup_options(path):
         help='Facebook share button enabled')
     tornado.options.define('facebook_button_send', default=False, type=bool,
         help='Facebook share button send option')
-    tornado.options.define('facebook_button_style', default='standar', type=str,
-        help='Facebook share button layout style')
+    tornado.options.define('facebook_button_style', default='box_count',
+        type=str, help='Facebook share button layout style')
     tornado.options.define('facebook_button_width', default=450, type=int,
         help='Facebook share button width')
     tornado.options.define('facebook_button_faces', default=False, type=bool,
@@ -95,9 +101,9 @@ def setup_options(path):
     #Google+ share
     tornado.options.define('googleplus_button_enabled', default=True, type=bool,
         help='Google+ share button enabled')
-    tornado.options.define('googleplus_button_size', default='standar',
-        type=str, help='Google+ share button size')
-    tornado.options.define('googleplus_button_annotation', default='inline',
+    tornado.options.define('googleplus_button_size', default='tall', type=str,
+        help='Google+ share button size')
+    tornado.options.define('googleplus_button_annotation', default='bubble',
         type=str, help='Google+ share button annotation')
     tornado.options.define('googleplus_button_width', default=300,
         type=int, help='Google+ share button width')
