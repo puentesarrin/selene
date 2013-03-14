@@ -1,6 +1,8 @@
 # -*- coding: utf-8 *-*
 import re
 
+from docutils import core
+from docutils.writers.html4css1 import Writer, HTMLTranslator
 from HTMLParser import HTMLParser
 from unicodedata import normalize
 
@@ -41,3 +43,23 @@ def get_plain_from_html(html):
     parser = HTMLStripTags()
     parser.feed(html)
     return parser.value()
+
+
+class NoHeaderHTMLTranslator(HTMLTranslator):
+
+    def __init__(self, document):
+        HTMLTranslator.__init__(self, document)
+        self.doctype = ("")
+        self.head_prefix_template = ("")
+        self.meta = [""]
+        self.head_prefix = ['', '', '', '', '']
+        self.body_prefix = []
+        self.body_suffix = []
+        self.stylesheet = []
+
+_w = Writer()
+_w.translator_class = NoHeaderHTMLTranslator
+
+
+def get_html_from_rst(rst):
+    return core.publish_string(rst, writer=_w)
