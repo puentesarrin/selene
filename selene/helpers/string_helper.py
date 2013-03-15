@@ -80,5 +80,5 @@ def get_html_and_plain(text, text_input_type):
         html_content = get_html_from_rst(text)
         plain_content = get_plain_from_html(html_content)
     else:
-        return '', ''
+        return text, text
     return html_content, plain_content
