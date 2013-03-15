@@ -56,10 +56,7 @@
                 <div class="control-group">
                     {% raw form.text_type.label(class_="control-label") %}
                     <div class="controls">
-                        {% for subfield in form.text_type %}
-                            {% raw subfield() %}
-                            {% raw subfield.label() %}
-                        {% end %}
+                        {% raw form.text_type %}
                     </div>
                 </div>
             </div>
