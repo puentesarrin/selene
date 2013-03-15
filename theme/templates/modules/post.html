@@ -60,11 +60,7 @@
         </div>
     </div>
     <div class="row-fluid">
-        {% if post['text_type'] == 'html' %}
-            {% raw post['content'] %}
-        {% else %}
-            {{ post['content'] }}
-        {% end %}
+        {% raw post['html_content'] %}
     </div>
     <div class="row-fluid">
         <small class="pull-right">
