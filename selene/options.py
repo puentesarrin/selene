@@ -33,6 +33,8 @@ def setup_options(path):
         ' with Tornado and MongoDB'), type=str, help='Blog slogan')
     tornado.options.define('default_language', default='en_US', type=str,
         help='Default language')
+    tornado.options.define('allowed_text_types', default='text,html,rst',
+        type=str, help='Allowed text types on posts')
     tornado.options.define('page_size_posts', default=10, type=int,
         help='Page size for posts')
     tornado.options.define('page_size_tag_posts', default=10, type=int,
