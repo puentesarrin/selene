@@ -13,7 +13,8 @@ class NewPostForm(Form):
     status = RadioField(u'Status', [Required()],
         choices=[('published', 'Published'), ('unpublished', 'Unpublished')])
     text_type = RadioField(u'Text type', [Required()],
-        choices=[('text', 'Text'), ('html', 'HTML')])
+        choices=[('text', 'Text'), ('html', 'HTML'),
+                 ('rst', 'reStructuredText')])
 
 
 class NewCommentForm(Form):
