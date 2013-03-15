@@ -3,11 +3,7 @@
         <a href="{{ '/post/%s' % post['slug'] }}">{{ post['title'] }}</a>
     </h4>
     <blockquote>
-        {% if post['text_type'] == 'html' %}
-            {% raw post['content'] %}
-        {% else %}
-            {{ post['content'] }}
-        {% end %}
+        {% raw post['html_content'] %}
         <small class="pull-right">Published at {{ post['date'] }}</small>
     </blockquote>
 </p>
