@@ -59,6 +59,12 @@ def setup_options(path):
     tornado.options.define('default_locale', default='en', type=str,
         help='Default locale setting')
 
+    #Google Analytics
+    tornado.options.define("googleanalytics_enabled", default=True, type=bool,
+        help="Enable Google Analytics module")
+    tornado.options.define("googleanalytics_trackercode", default="", type=str,
+        help="Set Google Analytics tracker code")
+
     #Twitter share
     tornado.options.define('twitter_consumer_key', default=None, type=str,
         help='Twitter consumer key for authentication')
