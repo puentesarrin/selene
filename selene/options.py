@@ -13,6 +13,9 @@ def setup_options(path):
         type=str, help='MongoDB database URI')
     tornado.options.define("db_name", default="selene", type=str,
         help='MongoDB database name')
+    tornado.options.define("db_use_fts", default=False, type=bool,
+        help='MongoDB full text search activated for searching posts, if is '
+        'not activated this feature on server, regex are used')
 
     #SMTP
     tornado.options.define('smtp_host', default='smtp.gmail.com', type=str,
@@ -33,6 +36,8 @@ def setup_options(path):
         ' with Tornado and MongoDB'), type=str, help='Blog slogan')
     tornado.options.define('default_language', default='en_US', type=str,
         help='Default language')
+    tornado.options.define('allowed_text_types', default='text,html,rst',
+        type=str, help='Allowed text types on posts')
     tornado.options.define('page_size_posts', default=10, type=int,
         help='Page size for posts')
     tornado.options.define('page_size_tag_posts', default=10, type=int,

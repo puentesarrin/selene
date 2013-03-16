@@ -40,13 +40,17 @@ class NewPostHandler(BaseHandler):
             slug = self.get_argument('customslug', '')
         else:
             slug = helpers.get_slug(self.get_argument('title'))
+        html_content, plain_content = helpers.get_html_and_plain(
+            self.get_argument('content'), self.get_argument('text_type'))
         post = {
             'title': self.get_argument('title'),
             'slug': slug,
             'date': datetime.datetime.now(),
             'tags': helpers.remove_duplicates(self.get_argument('tags')),
+            'text_type': self.get_argument('text_type'),
             'content': self.get_argument('content'),
-            'plain_content': helpers.get_plain(self.get_argument('content')),
+            'html_content': html_content,
+            'plain_content': plain_content,
             'status': self.get_argument('status'),
             'text_type': self.get_argument('text_type'),
             'author': self.current_user['name'],
@@ -99,12 +103,15 @@ class EditPostHandler(BaseHandler):
             new_slug = self.get_argument('customslug', '')
         else:
             new_slug = helpers.get_slug(self.get_argument('title'))
+        html_content, plain_content = helpers.get_html_and_plain(
+            self.get_argument('content'), self.get_argument('text_type'))
         new_post = {
             'title': self.get_argument('title'),
             'slug': new_slug,
             'tags': helpers.remove_duplicates(self.get_argument('tags')),
             'content': self.get_argument('content'),
-            'plain_content': helpers.get_plain(self.get_argument('content')),
+            'html_content': html_content,
+            'plain_content': plain_content,
             'status': self.get_argument('status'),
             'text_type': self.get_argument('text_type')
         }

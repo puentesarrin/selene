@@ -45,18 +45,15 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    {% raw form.status.label(class_="control-label") %}
+                    {% raw form.text_type.label(class_="control-label") %}
                     <div class="controls">
-                        {% for subfield in form.status %}
-                            {% raw subfield() %}
-                            {% raw subfield.label() %}
-                        {% end %}
+                        {% raw form.text_type %}
                     </div>
                 </div>
                 <div class="control-group">
-                    {% raw form.text_type.label(class_="control-label") %}
+                    {% raw form.status.label(class_="control-label") %}
                     <div class="controls">
-                        {% for subfield in form.text_type %}
+                        {% for subfield in form.status %}
                             {% raw subfield() %}
                             {% raw subfield.label() %}
                         {% end %}

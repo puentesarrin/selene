@@ -60,15 +60,11 @@
         </div>
     </div>
     <div class="row-fluid">
-        {% if post['text_type'] == 'html' %}
-            {% raw post['content'] %}
-        {% else %}
-            {{ post['content'] }}
-        {% end %}
+        {% raw post['html_content'] %}
     </div>
     <div class="row-fluid">
         <small class="pull-right">
-            <em>Published at {{ post['date'].strftime('%m/%d/%Y') }}</em>
+            <em>Published at {{ post['date'].strftime('%b-%d-%G') }}</em>
         </small>
     </div>
 </fieldset>
