@@ -20,6 +20,8 @@ class Selene(tornado.web.Application):
             'cookie_secret': opts.cookie_secret,
             'ui_modules': ui_modules
         }
+        opts.db_use_fts = (opts.db_use_fts and
+            'text' in db.command("listCommands")['commands'])
         if opts.static_url_prefix:
             settings['static_url_prefix'] = opts.static_url_prefix
         if opts.twitter_consumer_key and opts.twitter_consumer_secret:
