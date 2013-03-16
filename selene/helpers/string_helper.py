@@ -1,6 +1,8 @@
 # -*- coding: utf-8 *-*
 import re
 
+from docutils import core
+from docutils.writers.html4css1 import Writer, HTMLTranslator
 from HTMLParser import HTMLParser
 from unicodedata import normalize
 
@@ -37,7 +39,46 @@ class HTMLStripTags(HTMLParser):
         return whitespace.sub(' ', self.out).strip()
 
 
-def get_plain(html):
+def get_plain_from_html(html):
     parser = HTMLStripTags()
     parser.feed(html)
     return parser.value()
+
+
+class CleanedHTMLTranslator(HTMLTranslator):
+
+    def __init__(self, document):
+        HTMLTranslator.__init__(self, document)
+        self.head = ""
+        self.head_prefix = ['', '', '', '', '']
+        self.body_prefix = []
+        self.body_suffix = []
+        self.stylesheet = []
+
+    def visit_document(self, node):
+        pass
+
+    def depart_document(self, node):
+        self.fragment = self.body
+
+_w = Writer()
+_w.translator_class = CleanedHTMLTranslator
+
+
+def get_html_from_rst(rst):
+    return core.publish_string(rst, writer=_w)
+
+
+def get_html_and_plain(text, text_input_type):
+    if text_input_type == 'text':
+        html_content = text
+        plain_content = text
+    elif text_input_type == 'html':
+        html_content = text
+        plain_content = get_plain_from_html(html_content),
+    elif text_input_type == 'rst':
+        html_content = get_html_from_rst(text)
+        plain_content = get_plain_from_html(html_content)
+    else:
+        return text, text
+    return html_content, plain_content

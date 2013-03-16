@@ -1,6 +1,15 @@
 # -*- coding: utf-8 *-*
-from wtforms import Form, TextField, BooleanField, TextAreaField, RadioField
+from tornado.options import options
+from wtforms import (Form, TextField, BooleanField, TextAreaField, RadioField,
+                     SelectField)
 from wtforms.validators import Required, Email
+
+_text_types = [('text', 'Text'), ('html', 'HTML'), ('rst', 'reStructuredText')]
+_selected_text_types = []
+_allowed_text_types = options.allowed_text_types.split(',')
+for text_type in _text_types:
+    if text_type[0] in _allowed_text_types:
+        _selected_text_types.append(text_type)
 
 
 class NewPostForm(Form):
@@ -12,8 +21,9 @@ class NewPostForm(Form):
     content = TextAreaField(u'Content', [Required()])
     status = RadioField(u'Status', [Required()],
         choices=[('published', 'Published'), ('unpublished', 'Unpublished')])
-    text_type = RadioField(u'Text type', [Required()],
-        choices=[('text', 'Text'), ('html', 'HTML')])
+
+    text_type = SelectField(u'Text type', [Required()],
+        choices=_selected_text_types)
 
 
 class NewCommentForm(Form):
