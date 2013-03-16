@@ -4,6 +4,6 @@
     </h4>
     <blockquote>
         {% raw post['html_content'] %}
-        <small class="pull-right">Published at {{ post['date'] }}</small>
+        <small class="pull-right">Published at {{ post['date'].strftime('%b-%d-%G') }}</small>
     </blockquote>
 </p>
