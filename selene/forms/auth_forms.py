@@ -5,23 +5,23 @@ from wtforms.validators import Required, Email
 
 class RegisterForm(Form):
 
-    name = TextField(u"Full name", [Required()])
-    email = TextField(u"E-mail", [Required(), Email()])
-    password = PasswordField(u"Password", [Required()])
+    name = TextField(validators=[Required()])
+    email = TextField(validators=[Required(), Email()])
+    password = PasswordField(validators=[Required()])
 
 
 class LoginForm(Form):
 
-    email = TextField(u"E-mail", [Required(), Email()])
-    password = PasswordField(u"Password", [Required()])
+    email = TextField(validators=[Required(), Email()])
+    password = PasswordField(validators=[Required()])
     next_ = HiddenField()
 
 
 class RequestNewPasswordForm(Form):
 
-    email = TextField(u"E-mail", [Required(), Email()])
+    email = TextField(validators=[Required(), Email()])
 
 
 class ResetPasswordForm(Form):
 
-    password = PasswordField(u"Password", [Required()])
+    password = PasswordField(validators=[Required()])
