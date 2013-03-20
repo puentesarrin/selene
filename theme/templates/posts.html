@@ -1,21 +1,21 @@
 {% extends "base.html" %}
 
 {% block title %}
- | List posts
+ | {{ _("List posts") }}
 {% end %}
 
 {% block header %}
 {% end %}
 
 {% block content %}
-<h2>List posts</h2>
+<h2>{{ _("List posts") }}</h2>
 {% module SearchPostsModule(title=title) %}
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Title</th>
-            <th>Status</th>
-            <th>Date</th>
+            <th>{{ _("Title") }}</th>
+            <th>{{ _("Status") }}</th>
+            <th>{{ _("Date") }}</th>
             <th>&nbsp;</th>
         </tr>
     </thead>
@@ -36,11 +36,11 @@
             <td>
                 <a class="btn btn-primary" href="{{ '/post/%s/edit' % post['slug'] }}">
                     <i class="icon-edit"></i>
-                    Edit
+                    {{ _("Edit") }}
                 </a>
                 <a class="btn" href="{{ '/post/%s/delete' % post['slug'] }}">
                     <i class="icon-remove"></i>
-                    Delete
+                    {{ _("Delete") }}
                 </a>
             </td>
         </tr>

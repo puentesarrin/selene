@@ -1,14 +1,14 @@
 <ul class="pager">
     {% if older %}
         <li class="previous">
-            <a href="{{ '/post/%s' % older['slug'] }}" title="Previous post: {{ older['title'] }}">
+            <a href="{{ '/post/%s' % older['slug'] }}" title="{{ _("Previous post") }}: {{ older['title'] }}">
                 &larr; {{ older['title'] }}
             </a>
         </li>
     {% end %}
     {% if newer %}
         <li class="next">
-            <a href="{{ '/post/%s' % newer['slug'] }}" title="Next post: {{ newer['title'] }}">
+            <a href="{{ '/post/%s' % newer['slug'] }}" title="{{ _("Next post") }}: {{ newer['title'] }}">
                 {{ newer['title'] }} &rarr;
             </a>
         </li>

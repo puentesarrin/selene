@@ -3,7 +3,7 @@
     {% module DisqusModule() %}
 {% else %}
     <fieldset>
-        <legend>Comments ({{ len(comments) }})</legend>
+        <legend>{{ _("Comments") }} ({{ len(comments) }})</legend>
         {% if len(comments) > 0 %}
             <ul class="unstyled">
                 {% for comment in comments %}
