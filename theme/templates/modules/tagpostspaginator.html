@@ -3,9 +3,9 @@
 <div class="pagination pagination-centered">
     <ul>
         {% if page > 1 %}
-            <li><a href="/tag/{{ tag }}/page/{{ page - 1 }}">Prev</a></li>
+            <li><a href="/tag/{{ tag }}/page/{{ page - 1 }}">{{ _("Prev") }}</a></li>
         {% else %}
-            <li class="disabled"><a>Prev</a></li>
+            <li class="disabled"><a>{{ _("Prev") }}</a></li>
         {% end %}
         {% for item in range(1, total_pages + 1) %}
             {% if item == page %}
@@ -15,9 +15,9 @@
             {% end %}
         {% end %}
         {% if page >= total_pages %}
-            <li class="disabled"><a>Next</a></li>
+            <li class="disabled"><a>{{ _("Next") }}</a></li>
         {% else %}
-            <li><a href="/tag/{{ tag }}/page/{{ page + 1 }}">Next</a></li>
+            <li><a href="/tag/{{ tag }}/page/{{ page + 1 }}">{{ _("Next") }}</a></li>
         {% end %}
     </ul>
 </div>

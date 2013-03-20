@@ -3,7 +3,7 @@
     {% comment TODO: Get recent comments from Disqus %}
 {% else %}
     <fieldset>
-        <legend>Recent comments</legend>
+        <legend>{{ _("Recent comments") }}</legend>
         {% if len(comments) > 0 %}
             <div class="row-fluid">
                 <ul class="unstyled">

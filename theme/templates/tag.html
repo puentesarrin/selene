@@ -10,7 +10,7 @@
 {% block content %}
 <div class="row-fluid">
     <fieldset>
-        <legend><h2>Tag: {{ tag }}</h2></legend>
+        <legend><h2>{{ _("Tag") }}: {{ tag }}</h2></legend>
         {% for post in posts %}
             {% module PostModule(post=post, comments=post['comments'], linkable=True) %}
         {% end %}

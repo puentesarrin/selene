@@ -61,7 +61,7 @@ def setup_options(path):
         help='Static files prefix')
 
     #Locale
-    tornado.options.define('default_locale', default='en', type=str,
+    tornado.options.define('default_locale', default='en_US', type=str,
         help='Default locale setting')
 
     #Google Analytics
