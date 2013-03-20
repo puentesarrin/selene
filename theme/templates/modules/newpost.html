@@ -26,32 +26,32 @@
         <div class="row-fluid">
             <div class="span5">
                 <div class="control-group">
-                    {% raw form.title.label(class_="control-label") %}
+                    {% raw form.title.label(text=_("Title"), class_="control-label") %}
                     <div class="controls">
                         {% raw form.title(value=post.get('title', ''), placeholder=_("Title"), class_="input-block-level") %}
                     </div>
                 </div>
                 <div class="control-group">
-                    {% raw form.tags.label(class_="control-label") %}
+                    {% raw form.tags.label(text=_("Tags"), class_="control-label") %}
                     <div class="controls">
                         {% raw form.tags(value=','.join(post.get('tags', [])), placeholder=_("Tags"), class_="input-block-level") %}
                     </div>
                 </div>
                 <div class="control-group">
-                    {% raw form.slug.label(class_="control-label") %}
+                    {% raw form.slug.label(text=_("Slug"), class_="control-label") %}
                     <div class="controls">
                         {% raw form.slug() %}
                         {% raw form.customslug(value=post.get('slug', ''), placeholder=_("Custom slug"), class_="input-block-level") %}
                     </div>
                 </div>
                 <div class="control-group">
-                    {% raw form.text_type.label(class_="control-label") %}
+                    {% raw form.text_type.label(text=_("Text type"), class_="control-label") %}
                     <div class="controls">
                         {% raw form.text_type(class_="input-block-level") %}
                     </div>
                 </div>
                 <div class="control-group">
-                    {% raw form.status.label(class_="control-label") %}
+                    {% raw form.status.label(text=_("Status"), class_="control-label") %}
                     <div class="controls">
                         {% for subfield in form.status %}
                             {% raw subfield() %}
@@ -62,7 +62,7 @@
             </div>
             <div class="span7">
                 <div class="control-group">
-                    {% raw form.content.label(class_="control-label") %}
+                    {% raw form.content.label(text=_("Content"), class_="control-label") %}
                     <div class="controls">
                         {% raw form.content(placeholder=_("Content"), class_="input-block-level", rows="25") %}
                     </div>
