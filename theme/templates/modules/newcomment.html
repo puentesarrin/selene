@@ -6,7 +6,7 @@
         <div class="row-fluid">
             <div class="span5">
                 <div class="control-group">
-                    {% raw form.name.label(class_="control-label") %}
+                    {% raw form.name.label(text=_("Name"), class_="control-label") %}
                     <div class="controls">
                         {% if current_user %}
                             {% raw form.name(placeholder=_("Name"), class_="input-block-level", disabled="disabled", value=current_user['name']) %}
@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    {% raw form.email.label(class_="control-label") %}
+                    {% raw form.email.label(text=_("Email"), class_="control-label") %}
                     <div class="controls">
                         {% if current_user %}
                             {% raw form.email(placeholder=_("Email"), class_="input-block-level", disabled="disabled", value=current_user['email']) %}
@@ -28,7 +28,7 @@
             </div>
             <div class="span7">
                 <div class="control-group">
-                    {% raw form.content.label(class_="control-label") %}
+                    {% raw form.content.label(text=_("Content"), class_="control-label") %}
                     <div class="controls">
                         {% raw form.content(placeholder=_("Content"), class_="input-block-level", rows="5") %}
                     </div>

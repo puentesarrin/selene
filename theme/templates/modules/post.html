@@ -35,9 +35,9 @@
                         <i class="icon-star"></i>
                         <span class="badge badge-info">{{ '%d' % post['votes'] }}</span>
                         {% if linkable %}
-                            <a href="{{ '/post/%s' % post['slug'] }}#new-comment" title="Click to comment">
+                            <a href="{{ '/post/%s' % post['slug'] }}#new-comment" title="{{ _('Click to comment') }}">
                         {% else %}
-                            <a href="#new-comment" title="Click to comment">
+                            <a href="#new-comment" title="{{ _('Click to comment') }}">
                         {% end %}
                             <i class="icon-comment"></i>
                             <span class="badge badge-info">{{ len(comments) }}</span>
