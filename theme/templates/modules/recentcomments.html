@@ -19,7 +19,7 @@
                                         {{ comment['content'] }}
                                     {% end %}
                                     <small class="pull-right">
-                                        Published at {{ comment['date'] }}
+                                        {{ _("Posted") }} {{ comment['date'].strftime('%b-%d-%G') }}
                                     </small>
                                 </blockquote>
                             </p>
@@ -29,7 +29,7 @@
             </div>
         {% else %}
             <div class="alert alert-info">
-                No one has comment yet
+                {{ _("No one has comment yet") }}
             <div>
         {% end %}
     </fieldset>
