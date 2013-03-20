@@ -9,8 +9,11 @@
     <div class="row-fluid">
         <div class="span5">
             <p>
-                <strong>{{ _("Posted by") }}:</strong> {{ post['author'] }}
+                <strong>{{ _("Posted") }}</strong> {{ post['date'].strftime('%b-%d-%G') }}
             </p>
+            <em>
+                <strong>{{ _("By") }}</strong> {{ post['author'] }}
+            </em>
         </div>
         <div class="span7">
             <div class="row-fluid">
@@ -61,10 +64,5 @@
     </div>
     <div class="row-fluid">
         {% raw post['html_content'] %}
-    </div>
-    <div class="row-fluid">
-        <small class="pull-right">
-            <em>Published at {{ post['date'].strftime('%b-%d-%G') }}</em>
-        </small>
     </div>
 </fieldset>
