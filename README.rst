@@ -14,6 +14,17 @@ Requirements
 * `docutils`_
 * `TornadoMail`_
 
+Core features
+-------------
+
+* Responsive UI with Twitter-Bootstrap.
+* Text types for posting (Text, HTML, and reStructuredText.)
+* Posts sharing via Google+, Twitter and Facebook.
+* Optional comments management via Disqus.
+* Supported localization (en_US, and es_ES.)
+* Customizable search for publications using regular expressions or full text
+  search.
+
 TODO list
 ---------
 
