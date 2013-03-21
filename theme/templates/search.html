@@ -13,7 +13,7 @@
     <div class="row-fluid">
         {% module SearchModule(header=False, q=q) %}
     </div>
-    {% if posts.count() == 0 %}
+    {% if len(posts) == 0 %}
         <div class="alert alert-info">
             No found results for "{{ q }}"
         </div>
