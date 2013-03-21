@@ -30,6 +30,8 @@ class Selene(tornado.web.Application):
                 'MongoDB server, If you want to activated it, use 2.4 version '
                 'and issue the following command on admin database:\n'
                 'db.runCommand({ setParameter: 1, textSearchEnabled: true })')
+        else:
+            db.posts.ensure_index([('plain_content', 'text')])
         if opts.static_url_prefix:
             settings['static_url_prefix'] = opts.static_url_prefix
         if opts.twitter_consumer_key and opts.twitter_consumer_secret:
