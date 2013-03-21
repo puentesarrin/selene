@@ -20,10 +20,10 @@
                 <div class="span7">
                     {% if current_user %}
                         <div class="btn-group">
-                            <a class="btn btn-primary" href="{{ '/post/%s/edit' % post['slug'] }}">
-                                <i class="icon-edit"></i>{{ _("Edit") }}
-                            <a class="btn" href="{{ '/post/%s/delete' % post['slug'] }}">
-                                <i class="icon-remove"></i>{{ _("Delete") }}
+                            <a class="btn btn-primary" href="{{ '/post/%s/edit' % post['slug'] }}" title="{{ _('Edit post') }}">
+                                <i class="icon-edit"></i>
+                            <a class="btn" href="{{ '/post/%s/delete' % post['slug'] }}" title="{{ _('Delete post') }}">
+                                <i class="icon-remove"></i>
                             </a>
                         </div>
                     {% end %}
