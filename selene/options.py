@@ -67,6 +67,8 @@ def setup_options(path):
     #Google Analytics
     tornado.options.define("googleanalytics_enabled", default=True, type=bool,
         help="Enable Google Analytics module")
+    tornado.options.define("googleanalytics_enabled_for_logged_users",
+        default=False, type=bool, help="Enable Google Analytics module")
     tornado.options.define("googleanalytics_trackercode",
         default="UA-XXXXXXXX-X", type=str,
         help="Set Google Analytics tracker code")
