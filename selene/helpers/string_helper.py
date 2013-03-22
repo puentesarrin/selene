@@ -8,12 +8,14 @@ from unicodedata import normalize
 
 _punct_re = re.compile(r'[\t !"#$%&\'()*\:\;\-/<=>?@\[\\\]^_`{|},.]+')
 
+stop_words = []
+
 
 def get_slug(input_text, delim=u"-"):
     result = []
     for word in _punct_re.split(input_text.lower()):
         word = normalize('NFKD', word).encode('ascii', 'ignore')
-        if word:
+        if word and word not in stop_words:
             result.append(word)
     return unicode(delim.join(result))
 

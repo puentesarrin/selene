@@ -4,6 +4,7 @@ import os
 import tornado.web
 
 from selene import ui_modules, routes, smtp
+from selene.helpers import string_helper
 from tornado.options import options as opts
 
 
@@ -21,6 +22,7 @@ class Selene(tornado.web.Application):
             'cookie_secret': opts.cookie_secret,
             'ui_modules': ui_modules
         }
+        string_helper.stop_words = opts.stop_words.split(',')
         if opts.db_use_fts:
             opts.db_use_fts = ('text' in db.command("listCommands")['commands']
                 and db.connection.admin.command('getParameter', 1,
