@@ -17,3 +17,9 @@ class PoweredByModule(tornado.web.UIModule):
 
     def render(self):
         return self.render_string("modules/powered_by.html")
+
+
+class GoogleAnalyticsModule(tornado.web.UIModule):
+
+    def render(self):
+        return self.render_string('modules/googleanalytics.html')
