@@ -72,15 +72,9 @@ def get_html_from_rst(rst):
 
 
 def get_html_and_plain(text, text_input_type):
-    if text_input_type == 'text':
-        html_content = text
-        plain_content = text
-    elif text_input_type == 'html':
-        html_content = text
-        plain_content = get_plain_from_html(html_content),
+    if text_input_type == 'html':
+        return text, get_plain_from_html(text)
     elif text_input_type == 'rst':
-        html_content = get_html_from_rst(text)
-        plain_content = get_plain_from_html(html_content)
-    else:
-        return text, text
-    return html_content, plain_content
+        html = get_html_from_rst(text)
+        return html, get_plain_from_html(html)
+    return text, text
