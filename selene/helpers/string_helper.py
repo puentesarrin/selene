@@ -19,7 +19,7 @@ def get_slug(input_text, delim=u"-"):
             result.append(word)
     return unicode(delim.join(result))
 
-whitespace = re.compile('\s+')
+_whitespace = re.compile('\s+')
 
 
 class HTMLStripTags(HTMLParser):
@@ -38,7 +38,7 @@ class HTMLStripTags(HTMLParser):
         return self.handle_entityref('#' + name)
 
     def value(self):
-        return whitespace.sub(' ', self.out).strip()
+        return _whitespace.sub(' ', self.out).strip()
 
 
 def get_plain_from_html(html):
