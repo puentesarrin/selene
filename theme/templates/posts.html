@@ -20,30 +20,40 @@
         </tr>
     </thead>
     </tbody>
-        {% for post in posts %}
-        <tr>
-            <td>
-                <a href="{{ '/post/%s' % post['slug'] }}">
-                    {{ post['title'] }}
-                </a>
-            </td>
-            <td>
-                {{ post['status'] }}
-            </td>
-            <td>
-                {{ post['date'].strftime('%b %d, %G %I:%M%p') }}
-            </td>
-            <td>
-                <a class="btn btn-primary" href="{{ '/post/%s/edit' % post['slug'] }}">
-                    <i class="icon-edit"></i>
-                    {{ _("Edit") }}
-                </a>
-                <a class="btn" href="{{ '/post/%s/delete' % post['slug'] }}">
-                    <i class="icon-remove"></i>
-                    {{ _("Delete") }}
-                </a>
-            </td>
-        </tr>
+        {% if posts.count() %}
+            {% for post in posts %}
+            <tr>
+                <td>
+                    <a href="{{ '/post/%s' % post['slug'] }}">
+                        {{ post['title'] }}
+                    </a>
+                </td>
+                <td>
+                    {{ post['status'] }}
+                </td>
+                <td>
+                    {{ post['date'].strftime('%b %d, %Y %I:%M%p') }}
+                </td>
+                <td>
+                    <a class="btn btn-primary" href="{{ '/post/%s/edit' % post['slug'] }}">
+                        <i class="icon-edit"></i>
+                        {{ _("Edit") }}
+                    </a>
+                    <a class="btn" href="{{ '/post/%s/delete' % post['slug'] }}">
+                        <i class="icon-remove"></i>
+                        {{ _("Delete") }}
+                    </a>
+                </td>
+            </tr>
+            {% end %}
+        {% else %}
+            <tr>
+                <td colspan="3">
+                    <div class="alert alert-info">
+                        {{ _("No one has post yet") }}
+                    </div>
+                </td>
+            </tr>
         {% end %}
     </thead>
 </table>
