@@ -2,23 +2,23 @@
 {% set form = forms.RegisterForm() %}
 <form class="form-horizontal" action="/register" method="post">
     <fieldset>
-        <legend>Register</legend>
+        <legend>{{ _("Register") }}</legend>
         <div class="control-group">
-            {% raw form.name.label(class_="control-label") %}
+            {% raw form.name.label(text=_("Full name"), class_="control-label") %}
             <div class="controls">
-                {% raw form.name(placeholder="Name") %}
+                {% raw form.name(placeholder=_("Full name")) %}
             </div>
         </div>
         <div class="control-group">
-            {% raw form.email.label(class_="control-label") %}
+            {% raw form.email.label(text=_("Email"), class_="control-label") %}
             <div class="controls">
-                {% raw form.email(placeholder="Email") %}
+                {% raw form.email(placeholder=_("Email")) %}
             </div>
         </div>
         <div class="control-group">
-            {% raw form.password.label(class_="control-label") %}
+            {% raw form.password.label(text=_("Password"), class_="control-label") %}
             <div class="controls">
-                {% raw form.password(placeholder="Password") %}
+                {% raw form.password(placeholder=_("Password")) %}
             </div>
         </div>
         {% raw xsrf_form_html() %}
@@ -26,7 +26,7 @@
             <div class="controls">
                 <button type="submit" class="btn">
                     <i class="icon-ok"></i>
-                    Register
+                    {{ _("Register") }}
                 </button>
             </div>
         </div>

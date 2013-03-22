@@ -2,9 +2,9 @@
 
 {% block title %}
 {% if new %}
- | Write a new post
+ | {{ _("Write a new post") }}
 {% else %}
- | Edit post: {{ post.get('title', '') }}
+ | {{ _("Edit post") }}: {{ post.get('title', '') }}
 {% end %}
 {% end %}
 

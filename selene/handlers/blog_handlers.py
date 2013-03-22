@@ -196,13 +196,23 @@ class SearchHandler(BaseHandler):
     def get(self):
         page = int(self.get_argument('page', 1))
         q = self.get_argument('q', '')
-        q_filter = re.compile('.*%s.*' % q, re.IGNORECASE)
-        posts = self.db.posts.find({'plain_content': q_filter, 'status':
-            'published'}).sort('date', -1).skip((page - 1) *
-            options.page_size_search_posts).limit(
-                options.page_size_search_posts)
-        total = self.db.posts.find({'plain_content': q_filter, 'status':
-            'published'}).count()
+        if q:
+            if not options.db_use_fts:
+                q_filter = re.compile('.*%s.*' % q, re.IGNORECASE)
+                posts = list(self.db.posts.find({'plain_content': q_filter,
+                    'status': 'published'}).sort('date', -1).skip((page - 1) *
+                    options.page_size_search_posts).limit(
+                        options.page_size_search_posts))
+                total = self.db.posts.find({'plain_content': q_filter,
+                    'status': 'published'}).count()
+            else:
+                text_output = self.db.command("text", "posts", search=q,
+                    filter={'status': 'published'})
+                posts = [result['obj'] for result in text_output['results']]
+                total = len(posts)
+        else:
+            posts = []
+            total = 0
         self.render('search.html', posts=posts, q=q, total=total, page=page,
             page_size=options.page_size_search_posts)
 

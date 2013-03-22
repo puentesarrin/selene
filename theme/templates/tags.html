@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
- | Tags
+ | {{ _("Tags") }}
 {% end %}
 
 {% block header %}
@@ -9,7 +9,7 @@
 
 {% block content %}
 <fieldset>
-    <legend><h2>Tags</h2></legend>
+    <legend><h2>{{ _("Tags") }}</h2></legend>
     {% if len(tags) %}
         <p>
             <ul class="unstyled inline">
@@ -21,7 +21,7 @@
             </ul>
         </p>
     {% else %}
-        <p>No one has tags yet</p>
+        <p>{{ _("No one has tags yet") }}</p>
     {% end %}
 </fieldset>
 {% end %}

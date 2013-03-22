@@ -2,17 +2,17 @@
 {% set form = forms.LoginForm() %}
 <form class="form-horizontal" action="/login" method="post">
     <fieldset>
-        <legend>Login</legend>
+        <legend>{{ _("Login") }}</legend>
         <div class="control-group">
-            {% raw form.email.label(class_="control-label") %}
+            {% raw form.email.label(text=_("Email"), class_="control-label") %}
             <div class="controls">
-                {% raw form.email(placeholder="Email") %}
+                {% raw form.email(placeholder=_("Email")) %}
             </div>
         </div>
         <div class="control-group">
-            {% raw form.password.label(class_="control-label") %}
+            {% raw form.password.label(text=_("Password"), class_="control-label") %}
             <div class="controls">
-                {% raw form.password(placeholder="Password") %}
+                {% raw form.password(placeholder=_("Password")) %}
             </div>
         </div>
         {% raw form.next_(value=_next or '') %}
@@ -21,7 +21,7 @@
             <div class="controls">
                 <button type="submit" class="btn">
                     <i class="icon-lock"></i>
-                    Login
+                    {{ _("Login") }}
                 </button>
             </div>
         </div>

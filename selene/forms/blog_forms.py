@@ -14,25 +14,25 @@ for text_type in _text_types:
 
 class NewPostForm(Form):
 
-    title = TextField(u'Title', [Required()])
-    slug = BooleanField(u'Custom slug', )
+    title = TextField(validators=[Required()])
+    slug = BooleanField()
     customslug = TextField()
-    tags = TextField(u'Tags', [Required()])
-    content = TextAreaField(u'Content', [Required()])
-    status = RadioField(u'Status', [Required()],
+    tags = TextField(validators=[Required()])
+    content = TextAreaField(validators=[Required()])
+    status = RadioField(validators=[Required()],
         choices=[('published', 'Published'), ('unpublished', 'Unpublished')])
 
-    text_type = SelectField(u'Text type', [Required()],
+    text_type = SelectField(validators=[Required()],
         choices=_selected_text_types)
 
 
 class NewCommentForm(Form):
 
-    name = TextField(u'Name', [Required()])
-    email = TextField(u"E-mail", [Required(), Email()])
-    content = TextAreaField(u'Content', [Required()])
+    name = TextField(validators=[Required()])
+    email = TextField(validators=[Required(), Email()])
+    content = TextAreaField(validators=[Required()])
 
 
 class SearchForm(Form):
 
-    q = TextField(u'Query', [Required()])
+    q = TextField(validators=[Required()])
