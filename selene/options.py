@@ -14,8 +14,8 @@ def setup_options(path):
     tornado.options.define("db_name", default="selene", type=str,
         help='MongoDB database name')
     tornado.options.define("db_use_fts", default=False, type=bool,
-        help='MongoDB full text search activated for searching posts, if is '
-        'not activated this feature on server, regex are used')
+        help='MongoDB full text search activated for searching posts, if this '
+        'feature is not activated on server, regex will be used')
 
     #SMTP
     tornado.options.define('smtp_host', default='smtp.gmail.com', type=str,
@@ -61,7 +61,7 @@ def setup_options(path):
         help='Static files prefix')
 
     #Locale
-    tornado.options.define('default_locale', default='en', type=str,
+    tornado.options.define('default_locale', default='en_US', type=str,
         help='Default locale setting')
 
     #Google Analytics

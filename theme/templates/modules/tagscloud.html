@@ -1,5 +1,5 @@
 <fieldset>
-    <legend>Tags cloud</legend>
+    <legend>{{ _("Tags cloud") }}</legend>
     {% if len(tags) > 0 %}
         <div class="row-fluid">
             {% for tag in tags %}
@@ -8,12 +8,12 @@
         </div>
         <div class="pull-right">
             <a href="/tags">
-                <small>View more tags</small>
+                <small>{{ _("View more tags") }}</small>
             </a>
         </div>
     {% else %}
         <div class="alert alert-info">
-            No one has tags yet
+            {{ _("No one has tags yet") }}
         </div>
     {% end %}
 </fieldset>

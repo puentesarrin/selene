@@ -3,7 +3,7 @@
     {% module DisqusModule() %}
 {% else %}
     <fieldset>
-        <legend>Comments ({{ len(comments) }})</legend>
+        <legend>{{ _("Comments") }} ({{ len(comments) }})</legend>
         {% if len(comments) > 0 %}
             <ul class="unstyled">
                 {% for comment in comments %}
@@ -14,7 +14,7 @@
             </ul>
         {% else %}
             <div class="alert alert-info">
-                No one has commented yet
+                {{ _("No one has comment yet") }}
             </div>
         {% end %}
     </fieldset>

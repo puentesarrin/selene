@@ -1,5 +1,5 @@
 <fieldset>
-    <legend>Recent posts</legend>
+    <legend>{{ _("Recent posts") }}</legend>
     {% if posts.count() > 0 %}
         <div class="row-fluid">
             <ul>
@@ -12,7 +12,7 @@
         </div>
     {% else %}
         <div class="alert alert-info">
-            No one has post yet
+            {{ _("No one has post yet") }}
         </div>
     {% end %}
 </fieldset>
