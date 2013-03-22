@@ -22,6 +22,7 @@ Core features
 * Posts sharing via Google+, Twitter and Facebook.
 * Optional comments management via Disqus.
 * Supported localization (en_US, and es_ES.)
+* Support for Google Analytics.
 * Customizable search for publications using regular expressions or full text
   search.
 
