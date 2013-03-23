@@ -13,7 +13,8 @@ class SMTP(EmailBackend):
         super(SMTP, self).__init__(host=opts.smtp_host, port=opts.smtp_port,
             username=opts.smtp_username, password=opts.smtp_password,
             use_tls=opts.smtp_use_tls,
-            template_loader=Loader(os.path.join(opts.theme_path, "messages")),
+            template_loader=Loader(os.path.join(opts.themes_directory,
+                opts.selected_theme, 'messages')),
             url=opts.base_url)
 
     def send(self, subject, template, to, params, callback=None):
