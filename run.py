@@ -1,6 +1,6 @@
 # -*- coding: utf-8 *-*
 import logging
-import pymongo
+import motor
 import tornado.web
 import tornado.httpserver
 
@@ -10,7 +10,7 @@ from selene import options, handlers, Selene
 
 if __name__ == '__main__':
     options.setup_options('selene.conf')
-    db = pymongo.MongoClient(opts.db_uri)[opts.db_name]
+    db = motor.MotorClient(opts.db_uri).open_sync()[opts.db_name]
     logging.info('Connected to MongoDB.')
     tornado.locale.load_translations("translations")
     tornado.locale.set_default_locale(opts.default_locale)

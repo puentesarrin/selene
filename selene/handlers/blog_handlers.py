@@ -2,6 +2,7 @@
 import datetime
 import re
 import tornado.web
+import tornado.gen
 
 from bson.objectid import ObjectId
 from selene import helpers
@@ -11,6 +12,7 @@ from tornado.options import options
 
 class HomeHandler(BaseHandler):
 
+    @tornado.gen.engine
     def get(self, page=1):
         def find_comments(post):
             post['comments'] = list(self.db.comments.find({'postid':
