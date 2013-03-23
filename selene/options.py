@@ -38,6 +38,9 @@ def setup_options(path):
         help='Default language')
     tornado.options.define('allowed_text_types', default='text,html,rst',
         type=str, help='Allowed text types on posts')
+    tornado.options.define('stop_words', default='a,an,are,as,at,be,by,for,'
+        'in,is,of,on,or,that,this,to,was', type=str,
+        help='Stop words, these will be removed from post slugs')
     tornado.options.define('page_size_posts', default=10, type=int,
         help='Page size for posts')
     tornado.options.define('page_size_tag_posts', default=10, type=int,

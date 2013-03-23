@@ -8,16 +8,18 @@ from unicodedata import normalize
 
 _punct_re = re.compile(r'[\t !"#$%&\'()*\:\;\-/<=>?@\[\\\]^_`{|},.]+')
 
+stop_words = []
+
 
 def get_slug(input_text, delim=u"-"):
     result = []
     for word in _punct_re.split(input_text.lower()):
         word = normalize('NFKD', word).encode('ascii', 'ignore')
-        if word:
+        if word and word not in stop_words:
             result.append(word)
     return unicode(delim.join(result))
 
-whitespace = re.compile('\s+')
+_whitespace = re.compile('\s+')
 
 
 class HTMLStripTags(HTMLParser):
@@ -36,7 +38,7 @@ class HTMLStripTags(HTMLParser):
         return self.handle_entityref('#' + name)
 
     def value(self):
-        return whitespace.sub(' ', self.out).strip()
+        return _whitespace.sub(' ', self.out).strip()
 
 
 def get_plain_from_html(html):
@@ -70,15 +72,9 @@ def get_html_from_rst(rst):
 
 
 def get_html_and_plain(text, text_input_type):
-    if text_input_type == 'text':
-        html_content = text
-        plain_content = text
-    elif text_input_type == 'html':
-        html_content = text
-        plain_content = get_plain_from_html(html_content),
+    if text_input_type == 'html':
+        return text, get_plain_from_html(text)
     elif text_input_type == 'rst':
-        html_content = get_html_from_rst(text)
-        plain_content = get_plain_from_html(html_content)
-    else:
-        return text, text
-    return html_content, plain_content
+        html = get_html_from_rst(text)
+        return html, get_plain_from_html(html)
+    return text, text
