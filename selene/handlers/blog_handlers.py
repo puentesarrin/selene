@@ -78,18 +78,26 @@ class NewPostHandler(BaseHandler):
 
 class PostHandler(BaseHandler):
 
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     def get(self, slug_post):
-        post = self.db.posts.find_and_modify({'slug': slug_post,
+        post = yield Op(self.db.posts.find_and_modify, {'slug': slug_post,
             'status': 'published'}, update={'$inc': {'views': 1}}, new=True)
         if not post:
             raise tornado.web.HTTPError(404)
-        comments = list(self.db.comments.find({'postid': post['_id']}))
-        older = self.db.posts.find({'_id': {'$lt': post['_id']},
+
+        comments = yield Op(self.db.comments.find({'postid':
+            post['_id']}).to_list)
+        older = None
+        newer = None
+        older_cursor = self.db.posts.find({'_id': {'$lt': post['_id']},
             'status': 'published'}).sort('date', -1).limit(1)
-        newer = self.db.posts.find({'_id': {'$gt': post['_id']},
+        newer_cursor = self.db.posts.find({'_id': {'$gt': post['_id']},
             'status': 'published'}).sort('date', 1).limit(1)
-        older = None if older.count() == 0 else older[0]
-        newer = None if newer.count() == 0 else newer[0]
+        while (yield older_cursor.fetch_next):
+            older = older_cursor.next_object()
+        while (yield newer_cursor.fetch_next):
+            newer = newer_cursor.next_object()
         self.render('post.html', post=post, comments=comments, older=older,
             newer=newer)
 
