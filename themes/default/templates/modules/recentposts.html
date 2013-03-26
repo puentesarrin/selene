@@ -1,6 +1,6 @@
 <fieldset>
     <legend>{{ _("Recent posts") }}</legend>
-    {% if posts.count() > 0 %}
+    {% if len(posts) > 0 %}
         <div class="row-fluid">
             <ul>
                 {% for post in posts %}

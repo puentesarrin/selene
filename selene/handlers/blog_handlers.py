@@ -1,10 +1,11 @@
 # -*- coding: utf-8 *-*
 import datetime
 import re
-import tornado.web
 import tornado.gen
+import tornado.web
 
 from bson.objectid import ObjectId
+from motor import Op
 from selene import helpers
 from selene.handlers import BaseHandler
 from tornado.options import options
@@ -12,19 +13,23 @@ from tornado.options import options
 
 class HomeHandler(BaseHandler):
 
+    @tornado.web.asynchronous
     @tornado.gen.engine
     def get(self, page=1):
-        def find_comments(post):
-            post['comments'] = list(self.db.comments.find({'postid':
-                post['_id']}))
-            return post
+        @tornado.gen.engine
+        def find_comments(post, callback):
+            post['comments'] = yield Op(self.db.comments.find({'postid':
+                post['_id']}).to_list)
+            callback(post)
 
         page = int(page)
-        posts = self.db.posts.find({'status': 'published'}).sort('date',
-            -1).skip((page - 1) * options.page_size_posts).limit(
-                options.page_size_posts)
-        posts = map(find_comments, posts)
-        total = self.db.posts.find({'status': 'published'}).count()
+        posts = yield Op(self.db.posts.find({'status': 'published'}).sort(
+            'date', -1).skip((page - 1) * options.page_size_posts).limit(
+                options.page_size_posts).to_list)
+        for post in posts:
+            find_comments(post, (yield tornado.gen.Callback(post['_id'])))
+        posts = yield tornado.gen.WaitAll([post['_id'] for post in posts])
+        total = yield Op(self.db.posts.find({'status': 'published'}).count)
         self.render("home.html", posts=posts, total=total, page=int(page),
             page_size=options.page_size_posts)
 

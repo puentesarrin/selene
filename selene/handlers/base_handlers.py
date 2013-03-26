@@ -1,6 +1,11 @@
 # -*- coding: utf-8 *-*
+import functools
+import tornado.escape
+import tornado.gen
 import tornado.web
+import urllib
 
+from motor import Op, WaitOp
 from tornado.options import options
 from selene import helpers
 
@@ -23,7 +28,23 @@ class BaseMultiDict(object):
         return self.handler.get_arguments(name, strip=False)
 
 
+def async_auth(f):
+    @functools.wraps(f)
+    @tornado.gen.engine
+    def wrapper(self, *args, **kwargs):
+        self._auto_finish = False
+        self.current_user = yield tornado.gen.Task(self.get_current_user_async)
+        if not self.current_user:
+            self.redirect(self.get_login_url() + '?' +
+                urllib.urlencode({'next': self.request.url()}))
+        else:
+            f(self, *args, **kwargs)
+    return wrapper
+
+
 class BaseHandler(tornado.web.RequestHandler):
+
+    current_user = None
 
     @property
     def db(self):
@@ -33,11 +54,13 @@ class BaseHandler(tornado.web.RequestHandler):
     def smtp(self):
         return self.application.smtp
 
-    def get_current_user(self):
+    def get_current_user_async(self, callback):
         email = self.get_secure_cookie("current_user") or False
         if not email:
-            return None
-        return self.db.users.find_one({"email": email})
+            callback(None)
+        self.db.users.find_one({"email": email},
+            callback=(yield tornado.gen.Callback('user')))
+        yield WaitOp('user')
 
     def get_dict_arguments(self):
         return BaseMultiDict(self)
@@ -50,30 +73,36 @@ class BaseHandler(tornado.web.RequestHandler):
             return None
         return tornado.locale.get(user["locale"])
 
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     def render(self, template_name, **kwargs):
-        def find_post(comment):
-            comment['post'] = self.db.posts.find_one({'_id':
+        @tornado.gen.engine
+        def find_post(comment, callback):
+            comment['post'] = yield Op(self.db.posts.find_one, {'_id':
                 comment['postid']})
-            return comment
+            callback(comment)
 
-        posts = self.db.posts.find({'status': 'published'}).sort('date',
-            -1).limit(options.recent_posts_limit)
-        comments = self.db.comments.find().sort('date',
-            -1).limit(options.recent_comments_limit)
-        comments = map(find_post, list(comments))
-        tags = self.db.posts.aggregate([
+        posts = yield Op(self.db.posts.find({'status': 'published'}).sort(
+            'date', -1).limit(options.recent_posts_limit).to_list)
+        comments = yield Op(self.db.comments.find().sort('date', -1).limit(
+            options.recent_comments_limit).to_list)
+        for comment in comments:
+            find_post(comment, (yield tornado.gen.Callback(comment['_id'])))
+        comments = yield tornado.gen.WaitAll([comment['_id'] for comment in
+            comments])
+        tags = yield Op(self.db.posts.aggregate, [
             {'$match': {'status': 'published'}},
             {'$unwind': '$tags'},
             {'$group': {'_id': '$tags', 'sum': {'$sum': 1}}},
             {'$limit': options.tag_cloud_limit}
-        ])['result']
+        ])
         kwargs.update({
             'url_path': helpers.Url(self.request.uri).path,
             'options': options,
             '_next': self.get_argument('next', ''),
             '_posts': posts,
             '_comments': comments,
-            '_tags': tags
+            '_tags': tags['result']
         })
         super(BaseHandler, self).render(template_name, **kwargs)
 
