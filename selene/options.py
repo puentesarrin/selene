@@ -38,8 +38,8 @@ def setup_options(path):
         help='Default language')
     tornado.options.define('allowed_text_types', default='text,html,rst',
         type=str, help='Allowed text types on posts')
-    tornado.options.define('stop_words', default='a,an,are,as,at,be,by,for,'
-        'in,is,of,on,or,that,this,to,was', type=str,
+    tornado.options.define('slug_stop_words', default='a,an,are,as,at,be,by,'
+        'for,in,is,of,on,or,that,this,to,was', type=str,
         help='Stop words, these will be removed from post slugs')
     tornado.options.define('page_size_posts', default=10, type=int,
         help='Page size for posts')
@@ -58,8 +58,10 @@ def setup_options(path):
     tornado.options.define('cookie_secret', default='', type=str)
     tornado.options.define("debug", default=True, type=bool, help=(
         'Turn on autoreload, log to stderr only'))
-    tornado.options.define('theme_path', default='theme', type=str,
-        help='Theme directory')
+    tornado.options.define('themes_directory', default='themes', type=str,
+        help='Themes directory name')
+    tornado.options.define('selected_theme', default='default', type=str,
+        help='Selected theme directory name')
     tornado.options.define('static_url_prefix', default=None, type=str,
         help='Static files prefix')
 

@@ -17,16 +17,17 @@ class Selene(tornado.web.Application):
     def __init__(self, db):
         self.db = db
         self.smtp = smtp.SMTP()
-        self.path = os.path.dirname(__file__)
+        self.theme_path = os.path.join(opts.themes_directory,
+            opts.selected_theme)
         settings = {
             'login_url': '/login',
-            'static_path': os.path.join(opts.theme_path, 'static'),
-            'template_path': os.path.join(opts.theme_path, 'templates'),
+            'static_path': os.path.join(self.theme_path, 'static'),
+            'template_path': os.path.join(self.theme_path, 'templates'),
             'xsrf_cookies': True,
             'cookie_secret': opts.cookie_secret,
             'ui_modules': ui_modules
         }
-        string_helper.stop_words = opts.stop_words.split(',')
+        string_helper.stop_words = opts.slug_stop_words.split(',')
         if opts.db_use_fts:
             commands = (yield Op(db.command, SON([('listCommands',
                 1)])))['commands']
