@@ -21,7 +21,8 @@ class Selene(tornado.web.Application):
             'template_path': os.path.join(self.theme_path, 'templates'),
             'xsrf_cookies': True,
             'cookie_secret': opts.cookie_secret,
-            'ui_modules': ui_modules
+            'ui_modules': ui_modules,
+            'debug': opts.debug
         }
         string_helper.stop_words = opts.slug_stop_words.split(',')
         if opts.db_use_fts:
