@@ -56,7 +56,7 @@ def setup_options(path):
 
     #Application settings
     tornado.options.define('cookie_secret', default='', type=str)
-    tornado.options.define("debug", default=True, type=bool, help=(
+    tornado.options.define("debug", default=False, type=bool, help=(
         'Turn on autoreload, log to stderr only'))
     tornado.options.define('themes_directory', default='themes', type=str,
         help='Themes directory name')
