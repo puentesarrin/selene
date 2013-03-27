@@ -5,9 +5,24 @@ import tornado.gen
 import tornado.web
 import urllib
 
-from motor import Op, WaitOp
+from motor import Op
 from tornado.options import options
 from selene import helpers
+
+
+def authenticated_async(f):
+
+    @functools.wraps(f)
+    @tornado.gen.engine
+    def wrapper(self, *args, **kwargs):
+        self._auto_finish = False
+        self.current_user = yield tornado.gen.Task(self.get_current_user_async)
+        if not self.current_user:
+            self.redirect(self.get_login_url() + '?' +
+                urllib.urlencode({'next': self.request.uri}))
+        else:
+            f(self, *args, **kwargs)
+    return wrapper
 
 
 class BaseMultiDict(object):
@@ -28,20 +43,6 @@ class BaseMultiDict(object):
         return self.handler.get_arguments(name, strip=False)
 
 
-def async_auth(f):
-    @functools.wraps(f)
-    @tornado.gen.engine
-    def wrapper(self, *args, **kwargs):
-        self._auto_finish = False
-        self.current_user = yield tornado.gen.Task(self.get_current_user_async)
-        if not self.current_user:
-            self.redirect(self.get_login_url() + '?' +
-                urllib.urlencode({'next': self.request.url()}))
-        else:
-            f(self, *args, **kwargs)
-    return wrapper
-
-
 class BaseHandler(tornado.web.RequestHandler):
 
     current_user = None
@@ -54,13 +55,15 @@ class BaseHandler(tornado.web.RequestHandler):
     def smtp(self):
         return self.application.smtp
 
+    @tornado.gen.engine
     def get_current_user_async(self, callback):
         email = self.get_secure_cookie("current_user") or False
+        import logging
+        logging.info(email)
         if not email:
             callback(None)
-        self.db.users.find_one({"email": email},
-            callback=(yield tornado.gen.Callback('user')))
-        yield WaitOp('user')
+        else:
+            callback((yield Op(self.db.users.find_one, {"email": email})))
 
     def get_dict_arguments(self):
         return BaseMultiDict(self)

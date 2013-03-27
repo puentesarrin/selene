@@ -4,6 +4,7 @@ import datetime
 import tornado.auth
 import tornado.web
 
+from motor import Op
 from selene import helpers
 from selene.handlers import BaseHandler
 from tornado.options import options
@@ -57,12 +58,14 @@ class LoginHandler(AuthBaseHandler):
     def get(self):
         self.render("login.html", message='')
 
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     def post(self):
         email = self.get_argument("email", False)
         password = self.get_argument("password", False)
         next_ = self.get_argument('next_', '/')
         if email and password:
-            user = self.db.users.find_one({"email": email})
+            user = yield Op(self.db.users.find_one, {"email": email})
             if user:
                 if user['enabled']:
                     pass_check = bcrypt.hashpw(password,

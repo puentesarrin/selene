@@ -7,7 +7,7 @@ import tornado.web
 from bson.objectid import ObjectId
 from motor import Op
 from selene import helpers
-from selene.handlers import BaseHandler
+from selene.handlers import BaseHandler, authenticated_async
 from tornado.options import options
 
 
@@ -36,11 +36,11 @@ class HomeHandler(BaseHandler):
 
 class NewPostHandler(BaseHandler):
 
-    @tornado.web.authenticated
+    @authenticated_async
     def get(self):
         self.render('newpost.html', message='', post={}, new=True)
 
-    @tornado.web.authenticated
+    @authenticated_async
     def post(self):
         slug_flag = self.get_argument('slug', False)
         if slug_flag:
@@ -104,14 +104,14 @@ class PostHandler(BaseHandler):
 
 class EditPostHandler(BaseHandler):
 
-    @tornado.web.authenticated
+    @authenticated_async
     def get(self, slug):
         post = self.db.posts.find_one({'slug': slug})
         if not post:
             raise tornado.web.HTTPError(404)
         self.render("newpost.html", message='', post=post, new=False)
 
-    @tornado.web.authenticated
+    @authenticated_async
     def post(self, slug):
         slug_flag = self.get_argument('slug', False)
         if slug_flag:
@@ -139,12 +139,12 @@ class EditPostHandler(BaseHandler):
 
 class DeletePostHandler(BaseHandler):
 
-    @tornado.web.authenticated
+    @authenticated_async
     def get(self, slug):
         post = self.db.posts.find_one({'slug': slug}, {'title': 1, 'slug': 1})
         self.render("deletepost.html", post=post)
 
-    @tornado.web.authenticated
+    @authenticated_async
     def post(self, slug):
         post = self.db.posts.find_one({'slug': slug})
         if not post:
@@ -166,7 +166,7 @@ class VotePostHandler(BaseHandler):
 
 class PostsHandlers(BaseHandler):
 
-    @tornado.web.authenticated
+    @authenticated_async
     def get(self):
         title = self.get_argument('title', '')
         title_filter = re.compile('.*%s.*' % title, re.IGNORECASE)
@@ -279,7 +279,7 @@ class LikeCommentHandler(BaseHandler):
 
 class EditCommentHandler(BaseHandler):
 
-    @tornado.web.authenticated
+    @authenticated_async
     def get(self, comment_id):
         comment = self.db.comments.find_one({'_id': ObjectId(comment_id)})
         if not comment:
@@ -287,7 +287,7 @@ class EditCommentHandler(BaseHandler):
         post = self.db.posts.find_one({'_id': comment['postid']})
         self.render('editcomment.html', post=post, comment=comment)
 
-    @tornado.web.authenticated
+    @authenticated_async
     def post(self, comment_id):
         comment = self.db.comments.find_one({'_id': ObjectId(comment_id)},
             {'postid': 1})
@@ -304,7 +304,7 @@ class EditCommentHandler(BaseHandler):
 
 class DeleteCommentHandler(BaseHandler):
 
-    @tornado.web.authenticated
+    @authenticated_async
     def get(self, comment_id):
         comment = self.db.comments.find_one({'_id': ObjectId(comment_id)})
         if not comment:
@@ -312,7 +312,7 @@ class DeleteCommentHandler(BaseHandler):
         post = self.db.posts.find_one({'_id': comment['postid']})
         self.render('deletecomment.html', post=post, comment=comment)
 
-    @tornado.web.authenticated
+    @authenticated_async
     def post(self, comment_id):
         comment = self.db.comments.find_one({'_id': ObjectId(comment_id)},
             {'postid': 1})
