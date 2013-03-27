@@ -18,6 +18,7 @@ Core features
 -------------
 
 * Responsive UI with Twitter-Bootstrap.
+* Customizable theming.
 * Text types for posting (Text, HTML, and reStructuredText.)
 * Posts sharing via Google+, Twitter and Facebook.
 * Optional comments management via Disqus.
@@ -29,6 +30,7 @@ Core features
 TODO list
 ---------
 
+* Motor!
 * Forms validation and escaping
 * Support for RSS with XML files and aggressive caching (No templates)
 * Support for multi-blogging
