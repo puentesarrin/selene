@@ -63,6 +63,10 @@ class BaseHandler(tornado.web.RequestHandler):
         else:
             callback((yield Op(self.db.users.find_one, {"email": email})))
 
+    @tornado.gen.engine
+    def prepare(self):
+        self.current_user = yield tornado.gen.Task(self.get_current_user_async)
+
     def get_dict_arguments(self):
         return BaseMultiDict(self)
 
@@ -74,8 +78,8 @@ class BaseHandler(tornado.web.RequestHandler):
             return None
         return tornado.locale.get(user["locale"])
 
-    @tornado.web.asynchronous
     @tornado.gen.engine
+    @tornado.web.asynchronous
     def render(self, template_name, **kwargs):
         @tornado.gen.engine
         def find_post(comment, callback):
