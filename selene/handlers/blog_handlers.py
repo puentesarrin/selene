@@ -176,10 +176,14 @@ class VotePostHandler(BaseHandler):
 class PostsHandlers(BaseHandler):
 
     @authenticated_async
+    @tornado.gen.engine
+    @tornado.web.asynchronous
     def get(self):
+        print "posts"
         title = self.get_argument('title', '')
         title_filter = re.compile('.*%s.*' % title, re.IGNORECASE)
-        posts = self.db.posts.find({'title': title_filter}).sort('date', -1)
+        posts = yield Op(self.db.posts.find({'title':
+            title_filter}).sort('date', -1).to_list)
         self.render("posts.html", title=title, posts=posts)
 
 
