@@ -41,6 +41,7 @@ class NewPostHandler(BaseHandler):
         self.render('newpost.html', message='', post={}, new=True)
 
     @authenticated_async
+    @tornado.gen.engine
     def post(self):
         slug_flag = self.get_argument('slug', False)
         if slug_flag:
@@ -64,12 +65,13 @@ class NewPostHandler(BaseHandler):
             'votes': 0,
             'views': 0
         }
-        existing_post = self.db.posts.find_one({'slug': slug}, {'_id': 1})
+        existing_post = yield Op(self.db.posts.find_one, {'slug': slug},
+            {'_id': 1})
         if existing_post:
             self.render('newpost.html', message=('There are already an '
                 'existing post with this title or slug.'), post={}, new=True)
             return
-        self.db.posts.insert(post)
+        yield Op(self.db.posts.insert, post)
         if post['status'] == 'published':
             self.redirect('/post/%s' % post['slug'])
         else:
@@ -105,13 +107,15 @@ class PostHandler(BaseHandler):
 class EditPostHandler(BaseHandler):
 
     @authenticated_async
+    @tornado.gen.engine
     def get(self, slug):
-        post = self.db.posts.find_one({'slug': slug})
+        post = yield Op(self.db.posts.find_one, {'slug': slug})
         if not post:
             raise tornado.web.HTTPError(404)
         self.render("newpost.html", message='', post=post, new=False)
 
     @authenticated_async
+    @tornado.gen.engine
     def post(self, slug):
         slug_flag = self.get_argument('slug', False)
         if slug_flag:
@@ -130,7 +134,7 @@ class EditPostHandler(BaseHandler):
             'status': self.get_argument('status'),
             'text_type': self.get_argument('text_type')
         }
-        self.db.posts.update({'slug': slug}, {'$set': new_post})
+        yield Op(self.db.posts.update, {'slug': slug}, {'$set': new_post})
         if new_post['status'] == 'published':
             self.redirect('/post/%s' % new_slug)
         else:
@@ -140,13 +144,16 @@ class EditPostHandler(BaseHandler):
 class DeletePostHandler(BaseHandler):
 
     @authenticated_async
+    @tornado.gen.engine
     def get(self, slug):
-        post = self.db.posts.find_one({'slug': slug}, {'title': 1, 'slug': 1})
+        post = yield Op(self.db.posts.find_one, {'slug': slug},
+            {'title': 1, 'slug': 1})
         self.render("deletepost.html", post=post)
 
     @authenticated_async
+    @tornado.gen.engine
     def post(self, slug):
-        post = self.db.posts.find_one({'slug': slug})
+        post = yield Op(self.db.posts.find_one, {'slug': slug})
         if not post:
             raise tornado.web.HTTPError(404)
         self.db.comments.remove({'postid': post['_id']})
@@ -156,11 +163,13 @@ class DeletePostHandler(BaseHandler):
 
 class VotePostHandler(BaseHandler):
 
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     def post(self, slug):
-        post = self.db.posts.find({'slug': slug})
+        post = yield Op(self.db.posts.find({'slug': slug}).count)
         if not post:
             raise tornado.web.HTTPError(404)
-        self.db.posts.update({'slug': slug}, {'$inc': {'votes': 1}})
+        yield Op(self.db.posts.update, {'slug': slug}, {'$inc': {'votes': 1}})
         self.redirect('/post/%s' % slug)
 
 
@@ -176,11 +185,14 @@ class PostsHandlers(BaseHandler):
 
 class TagHandler(BaseHandler):
 
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     def get(self, tag, page=1):
-        def find_comments(post):
-            post['comments'] = list(self.db.comments.find({'postid':
-                post['_id']}))
-            return post
+        @tornado.gen.engine
+        def find_comments(post, callback):
+            post['comments'] = yield Op(self.db.comments.find, {'postid':
+                post['_id']})
+            callback(post)
 
         page = int(page)
         posts = self.db.posts.find({'tags': tag, 'status': 'published'}).sort(
@@ -189,21 +201,24 @@ class TagHandler(BaseHandler):
         if not posts.count():
             raise tornado.web.HTTPError(404)
         posts = map(find_comments, posts)
-        total = self.db.posts.find({'tags': tag, 'status': 'published'}).count()
+        total = yield Op(self.db.posts.find({'tags': tag,
+            'status': 'published'}).count)
         self.render('tag.html', tag=tag, posts=posts, total=total, page=page,
             page_size=options.page_size_tag_posts)
 
 
 class TagsHandlers(BaseHandler):
 
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     def get(self):
-        tags = self.db.posts.aggregate([
+        tags = yield Op(self.db.posts.aggregate, [
             {'$match': {'status': 'published'}},
             {'$unwind': '$tags'},
             {'$group': {'_id': '$tags', 'sum': {'$sum': 1}}},
             {'$sort': {'_id': 1}}
-        ])['result']
-        self.render('tags.html', tags=tags)
+        ])
+        self.render('tags.html', tags=tags['result'])
 
 
 class SearchHandler(BaseHandler):
@@ -234,17 +249,21 @@ class SearchHandler(BaseHandler):
 
 class RssHandler(BaseHandler):
 
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     def get(self):
+        posts = yield Op(self.db.posts.find().sort("date",
+            -1).limit(10).to_list)
         self.set_header("Content-Type", "text/xml; charset=UTF-8")
-        self.render("rss.xml",
-            posts=self.db.posts.find().sort("date", -1).limit(10),
-            options=options)
+        self.render("rss.xml", posts=posts, options=options)
 
 
 class NewCommentHandler(BaseHandler):
 
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     def post(self, slug):
-        post = self.db.posts.find_one({'slug': slug}, {'_id': 1})
+        post = yield Op(self.db.posts.find_one, {'slug': slug}, {'_id': 1})
         if not post:
             raise tornado.web.HTTPError(500)
         if not self.current_user:
@@ -253,71 +272,83 @@ class NewCommentHandler(BaseHandler):
         else:
             name = self.current_user['name']
             email = self.current_user['email']
-        self.db.comments.insert({'postid': post['_id'],
-                                 'name': name,
-                                 'email': email,
-                                 'content': self.get_argument('content'),
-                                 'date': datetime.datetime.now(),
-                                 'likes': 0,
-                                 'dislikes': 0})
+        yield Op(self.db.comments.insert, {
+            'postid': post['_id'], 'name': name, 'email': email,
+            'content': self.get_argument('content'),
+            'date': datetime.datetime.now(), 'likes': 0, 'dislikes': 0})
         self.redirect('/post/%s' % slug)
 
 
 class LikeCommentHandler(BaseHandler):
 
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     def post(self, comment_id, action):
         if action not in ['like', 'dislike']:
             raise tornado.web.HTTPError(404)
         comment_id = ObjectId(comment_id)
-        comment = self.db.comments.find_and_modify({'_id': comment_id},
-            fields={'postid': 1}, update={'$inc': {action + 's': 1}}, new=True)
+        comment = yield Op(self.db.comments.find_and_modify,
+            {'_id': comment_id}, fields={'postid': 1},
+            update={'$inc': {action + 's': 1}}, new=True)
         if not comment:
             raise tornado.web.HTTPError(404)
-        post = self.db.posts.find_one({'_id': comment['postid']})
+        post = yield Op(self.db.posts.find_one, {'_id': comment['postid']})
         self.redirect('/post/%s' % post['slug'])
 
 
 class EditCommentHandler(BaseHandler):
 
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     @authenticated_async
     def get(self, comment_id):
-        comment = self.db.comments.find_one({'_id': ObjectId(comment_id)})
+        comment = yield Op(self.db.comments.find_one,
+            {'_id': ObjectId(comment_id)})
         if not comment:
             raise tornado.web.HTTPError(404)
-        post = self.db.posts.find_one({'_id': comment['postid']})
+        post = yield Op(self.db.posts.find_one, {'_id': comment['postid']})
         self.render('editcomment.html', post=post, comment=comment)
 
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     @authenticated_async
     def post(self, comment_id):
-        comment = self.db.comments.find_one({'_id': ObjectId(comment_id)},
-            {'postid': 1})
+        comment = yield Op(self.db.comments.find_one,
+            {'_id': ObjectId(comment_id)}, {'postid': 1})
         if not comment:
             raise tornado.web.HTTPError(404)
-        self.db.comments.update({'_id': ObjectId(comment_id)}, {'$set': {
-            'name': self.get_argument('name'),
-            'email': self.get_argument('email'),
-            'content': self.get_argument('content')
-        }})
-        post = self.db.posts.find_one({'_id': comment['postid']})
+        yield Op(self.db.comments.update, {'_id': ObjectId(comment_id)}, {
+            '$set': {
+                'name': self.get_argument('name'),
+                'email': self.get_argument('email'),
+                'content': self.get_argument('content')
+            }
+        })
+        post = yield Op(self.db.posts.find_one, {'_id': comment['postid']})
         self.redirect('/post/%s' % post['slug'])
 
 
 class DeleteCommentHandler(BaseHandler):
 
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     @authenticated_async
     def get(self, comment_id):
-        comment = self.db.comments.find_one({'_id': ObjectId(comment_id)})
+        comment = yield Op(self.db.comments.find_one,
+            {'_id': ObjectId(comment_id)})
         if not comment:
             raise tornado.web.HTTPError(404)
-        post = self.db.posts.find_one({'_id': comment['postid']})
+        post = yield Op(self.db.posts.find_one, {'_id': comment['postid']})
         self.render('deletecomment.html', post=post, comment=comment)
 
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     @authenticated_async
     def post(self, comment_id):
-        comment = self.db.comments.find_one({'_id': ObjectId(comment_id)},
-            {'postid': 1})
+        comment = yield Op(self.db.comments.find_one,
+            {'_id': ObjectId(comment_id)}, {'postid': 1})
         if not comment:
             raise tornado.web.HTTPError(404)
-        post = self.db.posts.find_one({'_id': comment['postid']})
-        self.db.comments.remove({'_id': ObjectId(comment_id)})
+        post = yield Op(self.db.posts.find_one, {'_id': comment['postid']})
+        yield Op(self.db.comments.remove, {'_id': ObjectId(comment_id)})
         self.redirect('/post/%s' % post['slug'])

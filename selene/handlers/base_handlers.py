@@ -58,8 +58,6 @@ class BaseHandler(tornado.web.RequestHandler):
     @tornado.gen.engine
     def get_current_user_async(self, callback):
         email = self.get_secure_cookie("current_user") or False
-        import logging
-        logging.info(email)
         if not email:
             callback(None)
         else:
