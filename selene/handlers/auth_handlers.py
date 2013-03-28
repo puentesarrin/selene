@@ -182,8 +182,11 @@ class ResetPasswordHandler(AuthBaseHandler):
 
 class LogoutHandler(BaseHandler):
 
+    @tornado.gen.engine
+    @tornado.web.asynchronous
     def post(self):
-        if not self.current_user:
+        current_user = yield tornado.gen.Task(self.get_current_user_async)
+        if not current_user:
             self.redirect('/')
             return
         self.clear_cookie("current_user")
