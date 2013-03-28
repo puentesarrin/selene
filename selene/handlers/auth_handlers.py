@@ -58,8 +58,8 @@ class LoginHandler(AuthBaseHandler):
     def get(self):
         self.render("login.html", message='')
 
-    @tornado.web.asynchronous
     @tornado.gen.engine
+    @tornado.web.asynchronous
     def post(self):
         email = self.get_argument("email", False)
         password = self.get_argument("password", False)

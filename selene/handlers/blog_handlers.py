@@ -13,8 +13,8 @@ from tornado.options import options
 
 class HomeHandler(BaseHandler):
 
-    @tornado.web.asynchronous
     @tornado.gen.engine
+    @tornado.web.asynchronous
     def get(self, page=1):
         @tornado.gen.engine
         def find_comments(post, callback):
@@ -80,8 +80,8 @@ class NewPostHandler(BaseHandler):
 
 class PostHandler(BaseHandler):
 
-    @tornado.web.asynchronous
     @tornado.gen.engine
+    @tornado.web.asynchronous
     def get(self, slug_post):
         post = yield Op(self.db.posts.find_and_modify, {'slug': slug_post,
             'status': 'published'}, update={'$inc': {'views': 1}}, new=True)
@@ -163,8 +163,8 @@ class DeletePostHandler(BaseHandler):
 
 class VotePostHandler(BaseHandler):
 
-    @tornado.web.asynchronous
     @tornado.gen.engine
+    @tornado.web.asynchronous
     def post(self, slug):
         post = yield Op(self.db.posts.find({'slug': slug}).count)
         if not post:
@@ -189,8 +189,8 @@ class PostsHandlers(BaseHandler):
 
 class TagHandler(BaseHandler):
 
-    @tornado.web.asynchronous
     @tornado.gen.engine
+    @tornado.web.asynchronous
     def get(self, tag, page=1):
         @tornado.gen.engine
         def find_comments(post, callback):
@@ -213,8 +213,8 @@ class TagHandler(BaseHandler):
 
 class TagsHandlers(BaseHandler):
 
-    @tornado.web.asynchronous
     @tornado.gen.engine
+    @tornado.web.asynchronous
     def get(self):
         tags = yield Op(self.db.posts.aggregate, [
             {'$match': {'status': 'published'}},
@@ -253,8 +253,8 @@ class SearchHandler(BaseHandler):
 
 class RssHandler(BaseHandler):
 
-    @tornado.web.asynchronous
     @tornado.gen.engine
+    @tornado.web.asynchronous
     def get(self):
         posts = yield Op(self.db.posts.find().sort("date",
             -1).limit(10).to_list)
@@ -264,8 +264,8 @@ class RssHandler(BaseHandler):
 
 class NewCommentHandler(BaseHandler):
 
-    @tornado.web.asynchronous
     @tornado.gen.engine
+    @tornado.web.asynchronous
     def post(self, slug):
         post = yield Op(self.db.posts.find_one, {'slug': slug}, {'_id': 1})
         if not post:
@@ -285,8 +285,8 @@ class NewCommentHandler(BaseHandler):
 
 class LikeCommentHandler(BaseHandler):
 
-    @tornado.web.asynchronous
     @tornado.gen.engine
+    @tornado.web.asynchronous
     def post(self, comment_id, action):
         if action not in ['like', 'dislike']:
             raise tornado.web.HTTPError(404)
@@ -302,9 +302,9 @@ class LikeCommentHandler(BaseHandler):
 
 class EditCommentHandler(BaseHandler):
 
-    @tornado.web.asynchronous
-    @tornado.gen.engine
     @authenticated_async
+    @tornado.gen.engine
+    @tornado.web.asynchronous
     def get(self, comment_id):
         comment = yield Op(self.db.comments.find_one,
             {'_id': ObjectId(comment_id)})
@@ -313,9 +313,9 @@ class EditCommentHandler(BaseHandler):
         post = yield Op(self.db.posts.find_one, {'_id': comment['postid']})
         self.render('editcomment.html', post=post, comment=comment)
 
-    @tornado.web.asynchronous
-    @tornado.gen.engine
     @authenticated_async
+    @tornado.gen.engine
+    @tornado.web.asynchronous
     def post(self, comment_id):
         comment = yield Op(self.db.comments.find_one,
             {'_id': ObjectId(comment_id)}, {'postid': 1})
@@ -334,9 +334,9 @@ class EditCommentHandler(BaseHandler):
 
 class DeleteCommentHandler(BaseHandler):
 
-    @tornado.web.asynchronous
-    @tornado.gen.engine
     @authenticated_async
+    @tornado.gen.engine
+    @tornado.web.asynchronous
     def get(self, comment_id):
         comment = yield Op(self.db.comments.find_one,
             {'_id': ObjectId(comment_id)})
@@ -345,9 +345,9 @@ class DeleteCommentHandler(BaseHandler):
         post = yield Op(self.db.posts.find_one, {'_id': comment['postid']})
         self.render('deletecomment.html', post=post, comment=comment)
 
-    @tornado.web.asynchronous
-    @tornado.gen.engine
     @authenticated_async
+    @tornado.gen.engine
+    @tornado.web.asynchronous
     def post(self, comment_id):
         comment = yield Op(self.db.comments.find_one,
             {'_id': ObjectId(comment_id)}, {'postid': 1})
