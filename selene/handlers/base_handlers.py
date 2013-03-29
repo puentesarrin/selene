@@ -25,6 +25,20 @@ def authenticated_async(f):
     return wrapper
 
 
+def redirect_authenticated_user(f):
+
+    @functools.wraps(f)
+    @tornado.gen.engine
+    def wrapper(self, *args, **kwargs):
+        self._auto_finish = False
+        self.current_user = yield tornado.gen.Task(self.get_current_user_async)
+        if self.current_user:
+            self.redirect('/')
+        else:
+            f(self, *args, **kwargs)
+    return wrapper
+
+
 class BaseMultiDict(object):
 
     def __init__(self, handler):

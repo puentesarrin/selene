@@ -6,22 +6,17 @@ import tornado.web
 
 from motor import Op
 from selene import helpers
-from selene.handlers import BaseHandler
+from selene.handlers import BaseHandler, redirect_authenticated_user
 from tornado.options import options
 
 
-class AuthBaseHandler(BaseHandler):
+class RegisterHandler(BaseHandler):
 
-    def prepare(self):
-        if self.current_user:
-            self.redirect("/")
-
-
-class RegisterHandler(AuthBaseHandler):
-
+    @redirect_authenticated_user
     def get(self):
         self.render("register.html", message='')
 
+    @redirect_authenticated_user
     def post(self):
         name = self.get_argument("name", "")
         email = self.get_argument("email", "")
@@ -45,19 +40,22 @@ class RegisterHandler(AuthBaseHandler):
         self.redirect("/login")
 
 
-class ConfirmAccountHandler(AuthBaseHandler):
+class ConfirmAccountHandler(BaseHandler):
 
+    @redirect_authenticated_user
     def get(self, join_hash=None):
         self.db.users.find_and_modify({'join_hash': join_hash},
             {'$unset': {'join_hash': 1}, '$set': {'enabled': True}})
         self.render('confirmaccount.html')
 
 
-class LoginHandler(AuthBaseHandler):
+class LoginHandler(BaseHandler):
 
+    @redirect_authenticated_user
     def get(self):
         self.render("login.html", message='')
 
+    @redirect_authenticated_user
     @tornado.gen.engine
     @tornado.web.asynchronous
     def post(self):
@@ -78,8 +76,9 @@ class LoginHandler(AuthBaseHandler):
             message="Incorrect user/password combination or invalid account")
 
 
-class LoginGoogleHandler(AuthBaseHandler, tornado.auth.GoogleMixin):
+class LoginGoogleHandler(BaseHandler, tornado.auth.GoogleMixin):
 
+    @redirect_authenticated_user
     @tornado.web.asynchronous
     def get(self):
         if self.get_argument("openid.mode", None):
@@ -106,8 +105,9 @@ class LoginGoogleHandler(AuthBaseHandler, tornado.auth.GoogleMixin):
         self.redirect(self.next_)
 
 
-class LoginTwitterHandler(AuthBaseHandler, tornado.auth.TwitterMixin):
+class LoginTwitterHandler(BaseHandler, tornado.auth.TwitterMixin):
 
+    @redirect_authenticated_user
     @tornado.web.asynchronous
     def get(self):
         if self.get_argument("oauth_token", None):
@@ -135,11 +135,13 @@ class LoginTwitterHandler(AuthBaseHandler, tornado.auth.TwitterMixin):
         self.redirect(self.next_)
 
 
-class RequestNewPasswordHandler(AuthBaseHandler):
+class RequestNewPasswordHandler(BaseHandler):
 
+    @redirect_authenticated_user
     def get(self):
         self.render('newpassword.html', message='')
 
+    @redirect_authenticated_user
     def post(self):
         email = self.get_argument('email', False)
         if not email:
@@ -159,11 +161,13 @@ class RequestNewPasswordHandler(AuthBaseHandler):
         self.render('newpassword.html', message='User does not exist')
 
 
-class ResetPasswordHandler(AuthBaseHandler):
+class ResetPasswordHandler(BaseHandler):
 
+    @redirect_authenticated_user
     def get(self, reset_hash=''):
         self.render('resetpassword.html', message='', reset_hash=reset_hash)
 
+    @redirect_authenticated_user
     def post(self, reset_hash=None):
         reset_hash = self.get_argument('hash', False)
         password = self.get_argument('password', False)
