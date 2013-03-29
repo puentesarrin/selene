@@ -229,23 +229,27 @@ class TagsHandlers(BaseHandler):
 
 class SearchHandler(BaseHandler):
 
+    @tornado.gen.engine
+    @tornado.web.asynchronous
     def get(self):
         page = int(self.get_argument('page', 1))
         q = self.get_argument('q', '')
         if q:
             if not options.db_use_fts:
                 q_filter = re.compile('.*%s.*' % q, re.IGNORECASE)
-                posts = list(self.db.posts.find({'plain_content': q_filter,
+                posts = yield Op(self.db.posts.find({'plain_content': q_filter,
                     'status': 'published'}).sort('date', -1).skip((page - 1) *
                     options.page_size_search_posts).limit(
-                        options.page_size_search_posts))
-                total = self.db.posts.find({'plain_content': q_filter,
-                    'status': 'published'}).count()
+                        options.page_size_search_posts).to_list)
+                total = yield Op(self.db.posts.find({'plain_content': q_filter,
+                    'status': 'published'}).count)
+                print "fts"
             else:
-                text_output = self.db.command("text", "posts", search=q,
-                    filter={'status': 'published'})
+                text_output = yield Op(self.db.command, "text", "posts",
+                    search=q, filter={'status': 'published'})
                 posts = [result['obj'] for result in text_output['results']]
                 total = len(posts)
+                print "no fts"
         else:
             posts = []
             total = 0
