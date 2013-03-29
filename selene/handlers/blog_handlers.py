@@ -243,13 +243,11 @@ class SearchHandler(BaseHandler):
                         options.page_size_search_posts).to_list)
                 total = yield Op(self.db.posts.find({'plain_content': q_filter,
                     'status': 'published'}).count)
-                print "fts"
             else:
                 text_output = yield Op(self.db.command, "text", "posts",
                     search=q, filter={'status': 'published'})
                 posts = [result['obj'] for result in text_output['results']]
                 total = len(posts)
-                print "no fts"
         else:
             posts = []
             total = 0
