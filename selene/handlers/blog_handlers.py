@@ -194,17 +194,20 @@ class TagHandler(BaseHandler):
     def get(self, tag, page=1):
         @tornado.gen.engine
         def find_comments(post, callback):
-            post['comments'] = yield Op(self.db.comments.find, {'postid':
-                post['_id']})
+            post['comments'] = yield Op(self.db.comments.find({'postid':
+                post['_id']}).to_list)
             callback(post)
 
         page = int(page)
-        posts = self.db.posts.find({'tags': tag, 'status': 'published'}).sort(
-            'date', -1).skip((page - 1) * options.page_size_posts).limit(
-                options.page_size_tag_posts)
-        if not posts.count():
+        posts = yield Op(self.db.posts.find({'tags': tag,
+            'status': 'published'}).sort('date', -1).skip(
+                (page - 1) * options.page_size_posts).limit(
+                    options.page_size_tag_posts).to_list)
+        if not len(posts):
             raise tornado.web.HTTPError(404)
-        posts = map(find_comments, posts)
+        for post in posts:
+            find_comments(post, (yield tornado.gen.Callback(post['_id'])))
+        posts = yield tornado.gen.WaitAll([post['_id'] for post in posts])
         total = yield Op(self.db.posts.find({'tags': tag,
             'status': 'published'}).count)
         self.render('tag.html', tag=tag, posts=posts, total=total, page=page,
