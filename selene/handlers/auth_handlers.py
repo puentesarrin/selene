@@ -6,7 +6,8 @@ import tornado.web
 
 from motor import Op
 from selene import helpers
-from selene.handlers import BaseHandler, redirect_authenticated_user
+from selene.handlers import (authenticated_async, BaseHandler,
+    redirect_authenticated_user)
 from tornado.options import options
 
 
@@ -186,12 +187,9 @@ class ResetPasswordHandler(BaseHandler):
 
 class LogoutHandler(BaseHandler):
 
+    @authenticated_async
     @tornado.gen.engine
     @tornado.web.asynchronous
     def post(self):
-        current_user = yield tornado.gen.Task(self.get_current_user_async)
-        if not current_user:
-            self.redirect('/')
-            return
         self.clear_cookie("current_user")
         self.redirect("/")
