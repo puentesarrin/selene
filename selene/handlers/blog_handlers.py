@@ -179,7 +179,6 @@ class PostsHandlers(BaseHandler):
     @tornado.gen.engine
     @tornado.web.asynchronous
     def get(self):
-        print "posts"
         title = self.get_argument('title', '')
         title_filter = re.compile('.*%s.*' % title, re.IGNORECASE)
         posts = yield Op(self.db.posts.find({'title':
