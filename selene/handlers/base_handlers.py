@@ -77,10 +77,6 @@ class BaseHandler(tornado.web.RequestHandler):
         else:
             callback((yield Op(self.db.users.find_one, {"email": email})))
 
-    @tornado.gen.engine
-    def prepare(self):
-        self.current_user = yield tornado.gen.Task(self.get_current_user_async)
-
     def get_dict_arguments(self):
         return BaseMultiDict(self)
 
@@ -116,6 +112,8 @@ class BaseHandler(tornado.web.RequestHandler):
             {'$limit': options.tag_cloud_limit}
         ])
         kwargs.update({
+            'current_user':
+                (yield tornado.gen.Task(self.get_current_user_async)),
             'url_path': helpers.Url(self.request.uri).path,
             'options': options,
             '_next': self.get_argument('next', ''),
