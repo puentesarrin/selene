@@ -5,7 +5,7 @@ import tornado.web
 
 from bson.objectid import ObjectId
 from selene import helpers
-from selene.handlers import BaseHandler
+from selene.web import BaseHandler
 from tornado.options import options
 
 
