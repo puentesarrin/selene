@@ -21,8 +21,8 @@ if __name__ == '__main__':
     tornado.web.ErrorHandler = web.ErrorHandler
     http_server.listen(opts.port)
     logging.info('Listening on %s port.' % opts.port)
-    loop = IOLoop.instance()
     if opts.use_pyuv:
         from tornado_pyuv import UVLoop
         IOLoop.configure(UVLoop)
+    loop = IOLoop.instance()
     loop.start()
