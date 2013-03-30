@@ -5,7 +5,7 @@ import tornado.web
 import tornado.httpserver
 
 from tornado.options import options as opts
-from selene import options, handlers, Selene
+from selene import options, Selene, web
 
 
 if __name__ == '__main__':
@@ -17,7 +17,7 @@ if __name__ == '__main__':
     logging.info('Loaded translations: %s.' %
         ', '.join(tornado.locale.get_supported_locales()))
     http_server = tornado.httpserver.HTTPServer(Selene(db))
-    tornado.web.ErrorHandler = handlers.ErrorHandler
+    tornado.web.ErrorHandler = web.ErrorHandler
     http_server.listen(opts.port)
     logging.info('Listening on %s port.' % opts.port)
     tornado.ioloop.IOLoop.instance().start()
