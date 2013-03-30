@@ -4,6 +4,7 @@ import pymongo
 import tornado.web
 import tornado.httpserver
 
+from tornado.ioloop import IOLoop
 from tornado.options import options as opts
 from selene import options, Selene, web
 
@@ -20,4 +21,8 @@ if __name__ == '__main__':
     tornado.web.ErrorHandler = web.ErrorHandler
     http_server.listen(opts.port)
     logging.info('Listening on %s port.' % opts.port)
-    tornado.ioloop.IOLoop.instance().start()
+    loop = IOLoop.instance()
+    if opts.use_pyuv:
+        from tornado_pyuv import UVLoop
+        IOLoop.configure(UVLoop)
+    loop.start()
