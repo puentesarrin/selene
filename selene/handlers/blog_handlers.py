@@ -7,7 +7,7 @@ import tornado.web
 from bson.objectid import ObjectId
 from motor import Op
 from selene import helpers
-from selene.handlers import BaseHandler, authenticated_async
+from selene.web import authenticated_async, BaseHandler
 from tornado.options import options
 
 

@@ -6,8 +6,8 @@ import tornado.web
 import urllib
 
 from motor import Op
-from tornado.options import options
 from selene import helpers
+from tornado.options import options
 
 
 def authenticated_async(f):
@@ -139,3 +139,10 @@ class ErrorHandler(BaseHandler):
 
     def prepare(self):
         raise tornado.web.HTTPError(self._status_code)
+
+
+class BaseUIModule(tornado.web.UIModule):
+
+    def render_string(self, path, **kwargs):
+        kwargs['options'] = options
+        return super(BaseUIModule, self).render_string(path, **kwargs)

@@ -6,8 +6,8 @@ import tornado.web
 
 from motor import Op
 from selene import helpers
-from selene.handlers import (authenticated_async, BaseHandler,
-    redirect_authenticated_user)
+from selene.web import (authenticated_async, BaseHandler,
+                        redirect_authenticated_user)
 from tornado.options import options
 
 

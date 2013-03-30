@@ -1,26 +1,26 @@
 # -*- coding: utf-8 *-*
-import tornado.web
+from selene.web import BaseUIModule
 
 
-class TwitterShareModule(tornado.web.UIModule):
+class TwitterShareModule(BaseUIModule):
 
     def render(self, post):
         return self.render_string('modules/twittershare.html', post=post)
 
 
-class FacebookShareModule(tornado.web.UIModule):
+class FacebookShareModule(BaseUIModule):
 
     def render(self, post):
         return self.render_string('modules/facebookshare.html', post=post)
 
 
-class GooglePlusShareModule(tornado.web.UIModule):
+class GooglePlusShareModule(BaseUIModule):
 
     def render(self, post):
         return self.render_string('modules/googleplusshare.html', post=post)
 
 
-class DisqusModule(tornado.web.UIModule):
+class DisqusModule(BaseUIModule):
 
     def render(self):
         return self.render_string('modules/disqus.html')

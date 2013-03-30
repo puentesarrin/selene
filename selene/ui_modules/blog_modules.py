@@ -1,131 +1,131 @@
 # -*- coding: utf-8 *-*
-import tornado.web
+from selene.web import BaseUIModule
 
 
-class NewPostModule(tornado.web.UIModule):
+class NewPostModule(BaseUIModule):
 
     def render(self, message, post, new):
         return self.render_string('modules/newpost.html', message=message,
             post=post, new=new)
 
 
-class PostModule(tornado.web.UIModule):
+class PostModule(BaseUIModule):
 
     def render(self, post, comments, linkable=False):
         return self.render_string("modules/post.html", post=post,
             comments=comments, linkable=linkable)
 
 
-class PostsPaginatorModule(tornado.web.UIModule):
+class PostsPaginatorModule(BaseUIModule):
 
     def render(self, total, page, page_size):
         return self.render_string('modules/postspaginator.html', total=total,
             page=page, page_size=page_size)
 
 
-class TagPostsPaginatorModule(tornado.web.UIModule):
+class TagPostsPaginatorModule(BaseUIModule):
 
     def render(self, tag, total, page, page_size):
         return self.render_string('modules/tagpostspaginator.html', tag=tag,
             total=total, page=page, page_size=page_size)
 
 
-class SearchPostsPaginatorModule(tornado.web.UIModule):
+class SearchPostsPaginatorModule(BaseUIModule):
 
     def render(self, q, total, page, page_size):
         return self.render_string('modules/searchpostspaginator.html', q=q,
             total=total, page=page, page_size=page_size)
 
 
-class OlderNewerPostsModule(tornado.web.UIModule):
+class OlderNewerPostsModule(BaseUIModule):
 
     def render(self, older, newer):
         return self.render_string('modules/oldernewerposts.html', older=older,
             newer=newer)
 
 
-class PostSummaryModule(tornado.web.UIModule):
+class PostSummaryModule(BaseUIModule):
 
     def render(self, post):
         return self.render_string('modules/postsummary.html', post=post)
 
 
-class RecentPostsModule(tornado.web.UIModule):
+class RecentPostsModule(BaseUIModule):
 
     def render(self, posts):
         return self.render_string("modules/recentposts.html", posts=posts)
 
 
-class SearchModule(tornado.web.UIModule):
+class SearchModule(BaseUIModule):
 
     def render(self, header=True, q=''):
         return self.render_string('modules/search.html', header=header, q=q)
 
 
-class SearchPostsModule(tornado.web.UIModule):
+class SearchPostsModule(BaseUIModule):
 
     def render(self, title):
         return self.render_string('modules/searchposts.html', title=title)
 
 
-class RecentCommentsModule(tornado.web.UIModule):
+class RecentCommentsModule(BaseUIModule):
 
     def render(self, comments):
         return self.render_string('modules/recentcomments.html',
             comments=comments)
 
 
-class TagsCloudModule(tornado.web.UIModule):
+class TagsCloudModule(BaseUIModule):
 
     def render(self, tags):
         return self.render_string('modules/tagscloud.html', tags=tags)
 
 
-class VoteModule(tornado.web.UIModule):
+class VoteModule(BaseUIModule):
 
     def render(self, post):
         return self.render_string("modules/vote.html", post=post)
 
 
-class NewCommentModule(tornado.web.UIModule):
+class NewCommentModule(BaseUIModule):
 
     def render(self, post):
         return self.render_string('modules/newcomment.html', post=post)
 
 
-class CommentsModule(tornado.web.UIModule):
+class CommentsModule(BaseUIModule):
 
     def render(self, post, comments):
         return self.render_string("modules/comments.html", post=post,
             comments=comments)
 
 
-class CommentModule(tornado.web.UIModule):
+class CommentModule(BaseUIModule):
 
     def render(self, comment):
         return self.render_string("modules/comment.html", comment=comment)
 
 
-class LikeCommentModule(tornado.web.UIModule):
+class LikeCommentModule(BaseUIModule):
 
     def render(self, comment):
         return self.render_string("modules/likecomment.html", comment=comment)
 
 
-class DislikeCommentModule(tornado.web.UIModule):
+class DislikeCommentModule(BaseUIModule):
 
     def render(self, comment):
         return self.render_string("modules/dislikecomment.html",
             comment=comment)
 
 
-class EditCommentModule(tornado.web.UIModule):
+class EditCommentModule(BaseUIModule):
 
     def render(self, comment):
         return self.render_string("modules/editcomment.html", comment=comment)
 
 
-class DeleteCommentModule(tornado.web.UIModule):
+class DeleteCommentModule(BaseUIModule):
 
     def render(self, comment):
         return self.render_string("modules/deletecomment.html",
