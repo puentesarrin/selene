@@ -1,39 +1,39 @@
 # -*- coding: utf-8 *-*
-import tornado.web
+from selene.web import BaseUIModule
 
 
-class LoginModule(tornado.web.UIModule):
+class LoginModule(BaseUIModule):
 
     def render(self, _next):
         return self.render_string('modules/login.html', _next=_next)
 
 
-class GoogleLoginModule(tornado.web.UIModule):
+class GoogleLoginModule(BaseUIModule):
 
     def render(self):
         return self.render_string('modules/googlelogin.html')
 
 
-class TwitterLoginModule(tornado.web.UIModule):
+class TwitterLoginModule(BaseUIModule):
 
     def render(self):
         return self.render_string('modules/twitterlogin.html')
 
 
-class RegisterModule(tornado.web.UIModule):
+class RegisterModule(BaseUIModule):
 
     def render(self):
         return self.render_string('modules/register.html')
 
 
-class ResetPasswordModule(tornado.web.UIModule):
+class ResetPasswordModule(BaseUIModule):
 
     def render(self, reset_hash):
         return self.render_string('modules/resetpassword.html',
             reset_hash=reset_hash)
 
 
-class NewPasswordModule(tornado.web.UIModule):
+class NewPasswordModule(BaseUIModule):
 
     def render(self):
         return self.render_string('modules/newpassword.html')

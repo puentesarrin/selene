@@ -1,4 +1,3 @@
-{% from tornado.options import options %}
 {% if options.googleanalytics_enabled %}
     {% if not(current_user and options.googleanalytics_enabled_for_logged_users == False) %}
         <script type="text/javascript">
