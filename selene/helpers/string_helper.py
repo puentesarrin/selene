@@ -1,4 +1,5 @@
 # -*- coding: utf-8 *-*
+import misaka
 import re
 
 from docutils import core
@@ -71,9 +72,16 @@ def get_html_from_rst(rst):
     return core.publish_string(rst, writer=_w)
 
 
+def get_html_from_md(md):
+    return misaka.html(md)
+
+
 def get_html_and_plain(text, text_input_type):
     if text_input_type == 'html':
         return text, get_plain_from_html(text)
+    elif text_input_type == 'md':
+        html = get_html_from_md(text)
+        return html, get_plain_from_html(html)
     elif text_input_type == 'rst':
         html = get_html_from_rst(text)
         return html, get_plain_from_html(html)
