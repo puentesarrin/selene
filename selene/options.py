@@ -40,7 +40,7 @@ def setup_options(path):
         ' with Tornado and MongoDB'), type=str, help='Blog slogan')
     tornado.options.define('default_language', default='en_US', type=str,
         help='Default language')
-    tornado.options.define('allowed_text_types', default='text,html,rst',
+    tornado.options.define('allowed_text_types', default='text,html,md,rst',
         type=str, help='Allowed text types on posts')
     tornado.options.define('slug_stop_words', default='a,an,are,as,at,be,by,'
         'for,in,is,of,on,or,that,this,to,was', type=str,
