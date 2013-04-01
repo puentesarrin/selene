@@ -21,7 +21,12 @@ Core features
 
 * Responsive UI with Twitter-Bootstrap.
 * Customizable theming.
-* Text types for posting (Text, HTML, and reStructuredText.)
+* Text types for posting:
+  * Text plain
+  * HTML
+  * Markdown
+  * reStructuredText
+  * BBCode
 * Posts sharing via Google+, Twitter and Facebook.
 * Optional comments management via Disqus.
 * Supported localization (en_US, and es_ES.)
@@ -33,6 +38,7 @@ TODO list
 ---------
 
 * Motor!
+* More text types: txt2tags, Textile, etc.
 * Forms validation and escaping
 * Support for RSS with XML files and aggressive caching (No templates)
 * Support for multi-blogging
