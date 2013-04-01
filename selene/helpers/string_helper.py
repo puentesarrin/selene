@@ -2,6 +2,7 @@
 import misaka
 import postmarkup
 import re
+import textile
 
 from docutils import core
 from docutils.writers.html4css1 import Writer, HTMLTranslator
@@ -84,6 +85,10 @@ def get_html_from_bbcode(bbcode):
     return _bbcode_markup(bbcode)
 
 
+def get_html_from_textile(text):
+    return textile.textile(text)
+
+
 def get_html_and_plain(text, text_input_type):
     if text_input_type == 'html':
         return text, get_plain_from_html(text)
@@ -96,4 +101,7 @@ def get_html_and_plain(text, text_input_type):
     elif text_input_type == 'bbcode':
         html = get_html_from_bbcode(text)
         return html, _bbcode_markup.cleanup_html(text).strip()
+    elif text_input_type == 'textile':
+        html = get_html_from_textile(text)
+        return html, get_plain_from_html(html)
     return text, text
