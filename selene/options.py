@@ -7,7 +7,8 @@ import tornado.options
 def setup_options(path):
     #Tornado
     tornado.options.define("use_pyuv", default=False, type=bool,
-        help='Configure IOLoop for using libuv, needs tornado_pyuv installed.')
+        help='Configure IOLoop for using libuv, needs tornado_pyuv installed; '
+        'useful on Windows environments.')
 
     #HTTP Server
     tornado.options.define("port", default=8081, type=int, help='Server port')
@@ -40,8 +41,8 @@ def setup_options(path):
         ' with Tornado and MongoDB'), type=str, help='Blog slogan')
     tornado.options.define('default_language', default='en_US', type=str,
         help='Default language')
-    tornado.options.define('allowed_text_types', default='text,html,rst',
-        type=str, help='Allowed text types on posts')
+    tornado.options.define('allowed_text_types', default='text,html,md,rst,'
+        'bbcode', type=str, help='Allowed text types on posts')
     tornado.options.define('slug_stop_words', default='a,an,are,as,at,be,by,'
         'for,in,is,of,on,or,that,this,to,was', type=str,
         help='Stop words, these will be removed from post slugs')

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 *-*
+import misaka
+import postmarkup
 import re
 
 from docutils import core
@@ -71,10 +73,27 @@ def get_html_from_rst(rst):
     return core.publish_string(rst, writer=_w)
 
 
+def get_html_from_md(md):
+    return misaka.html(md)
+
+
+_bbcode_markup = postmarkup.create()
+
+
+def get_html_from_bbcode(bbcode):
+    return _bbcode_markup(bbcode)
+
+
 def get_html_and_plain(text, text_input_type):
     if text_input_type == 'html':
         return text, get_plain_from_html(text)
+    elif text_input_type == 'md':
+        html = get_html_from_md(text)
+        return html, get_plain_from_html(html)
     elif text_input_type == 'rst':
         html = get_html_from_rst(text)
         return html, get_plain_from_html(html)
+    elif text_input_type == 'bbcode':
+        html = get_html_from_bbcode(text)
+        return html, _bbcode_markup.cleanup_html(text).strip()
     return text, text

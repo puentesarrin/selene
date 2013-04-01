@@ -12,6 +12,8 @@ Requirements
 * `py-bcrypt`_
 * `WTForms`_
 * `docutils`_
+* `Misaka`_
+* `Postmarkup`_
 * `TornadoMail`_
 
 Core features
@@ -19,7 +21,12 @@ Core features
 
 * Responsive UI with Twitter-Bootstrap.
 * Customizable theming.
-* Text types for posting (Text, HTML, and reStructuredText.)
+* Text types for posting:
+   * Text plain
+   * HTML
+   * Markdown
+   * reStructuredText
+   * BBCode
 * Posts sharing via Google+, Twitter and Facebook.
 * Optional comments management via Disqus.
 * Supported localization (en_US, and es_ES.)
@@ -31,6 +38,7 @@ TODO list
 ---------
 
 * Motor!
+* More text types: txt2tags, Textile, etc.
 * Forms validation and escaping
 * Support for RSS with XML files and aggressive caching (No templates)
 * Support for multi-blogging
@@ -45,5 +53,7 @@ pull-requests!
 .. _PyMongo: http://api.mongodb.org/python/current/
 .. _py-bcrypt: https://code.google.com/p/py-bcrypt/
 .. _docutils: http://sourceforge.net/projects/docutils/
+.. _Misaka: https://github.com/FSX/misaka
+.. _Postmarkup: https://code.google.com/p/postmarkup/
 .. _WTForms: http://wtforms.simplecodes.com/
 .. _TornadoMail: https://github.com/equeny/tornadomail

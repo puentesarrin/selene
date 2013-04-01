@@ -3,4 +3,6 @@ motor
 py-bcrypt
 WTForms
 docutils
+misaka
+postmarkup
 git+https://github.com/equeny/tornadomail.git
