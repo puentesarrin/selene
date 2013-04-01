@@ -14,6 +14,7 @@ Requirements
 * `docutils`_
 * `Misaka`_
 * `Postmarkup`_
+* `Textile`_
 * `TornadoMail`_
 
 Core features
@@ -27,6 +28,7 @@ Core features
    * Markdown
    * reStructuredText
    * BBCode
+   * Textile
 * Posts sharing via Google+, Twitter and Facebook.
 * Optional comments management via Disqus.
 * Supported localization (en_US, and es_ES.)
@@ -38,7 +40,7 @@ TODO list
 ---------
 
 * Motor!
-* More text types: txt2tags, Textile, etc.
+* More text types: txt2tags, etc.
 * Forms validation and escaping
 * Support for RSS with XML files and aggressive caching (No templates)
 * Support for multi-blogging
@@ -55,5 +57,6 @@ pull-requests!
 .. _docutils: http://sourceforge.net/projects/docutils/
 .. _Misaka: https://github.com/FSX/misaka
 .. _Postmarkup: https://code.google.com/p/postmarkup/
+.. _Textile: https://pypi.python.org/pypi/textile
 .. _WTForms: http://wtforms.simplecodes.com/
 .. _TornadoMail: https://github.com/equeny/tornadomail

@@ -42,7 +42,7 @@ def setup_options(path):
     tornado.options.define('default_language', default='en_US', type=str,
         help='Default language')
     tornado.options.define('allowed_text_types', default='text,html,md,rst,'
-        'bbcode', type=str, help='Allowed text types on posts')
+        'bbcode,textile', type=str, help='Allowed text types on posts')
     tornado.options.define('slug_stop_words', default='a,an,are,as,at,be,by,'
         'for,in,is,of,on,or,that,this,to,was', type=str,
         help='Stop words, these will be removed from post slugs')
