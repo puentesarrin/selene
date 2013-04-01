@@ -3,4 +3,5 @@ pymongo
 py-bcrypt
 WTForms
 docutils
+misaka
 git+https://github.com/equeny/tornadomail.git
