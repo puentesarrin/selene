@@ -5,4 +5,5 @@ WTForms
 docutils
 misaka
 postmarkup
+textile
 git+https://github.com/equeny/tornadomail.git
