@@ -7,7 +7,8 @@ import tornado.options
 def setup_options(path):
     #Tornado
     tornado.options.define("use_pyuv", default=False, type=bool,
-        help='Configure IOLoop for using libuv, needs tornado_pyuv installed.')
+        help='Configure IOLoop for using libuv, needs tornado_pyuv installed; '
+        'useful on Windows environments.')
 
     #HTTP Server
     tornado.options.define("port", default=8081, type=int, help='Server port')
