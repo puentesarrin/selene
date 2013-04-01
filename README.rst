@@ -22,11 +22,11 @@ Core features
 * Responsive UI with Twitter-Bootstrap.
 * Customizable theming.
 * Text types for posting:
-  * Text plain
-  * HTML
-  * Markdown
-  * reStructuredText
-  * BBCode
+   * Text plain
+   * HTML
+   * Markdown
+   * reStructuredText
+   * BBCode
 * Posts sharing via Google+, Twitter and Facebook.
 * Optional comments management via Disqus.
 * Supported localization (en_US, and es_ES.)
