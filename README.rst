@@ -8,7 +8,7 @@ Requirements
 ------------
 
 * `Tornado`_
-* `PyMongo`_
+* `Motor`_
 * `py-bcrypt`_
 * `WTForms`_
 * `docutils`_
@@ -50,7 +50,7 @@ I want to improve this project with your help... I will watch to all of your
 pull-requests!
 
 .. _Tornado: http://www.tornadoweb.org/
-.. _PyMongo: http://api.mongodb.org/python/current/
+.. _Motor: https://motor.readthedocs.org/
 .. _py-bcrypt: https://code.google.com/p/py-bcrypt/
 .. _docutils: http://sourceforge.net/projects/docutils/
 .. _Misaka: https://github.com/FSX/misaka
