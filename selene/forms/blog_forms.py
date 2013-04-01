@@ -5,7 +5,7 @@ from wtforms import (Form, TextField, BooleanField, TextAreaField, RadioField,
 from wtforms.validators import Required, Email
 
 _text_types = [('text', 'Text'), ('html', 'HTML'), ('md', 'Markdown'),
-    ('rst', 'reStructuredText')]
+    ('rst', 'reStructuredText'), ('bbcode', 'BBCode')]
 _selected_text_types = []
 _allowed_text_types = options.allowed_text_types.split(',')
 for text_type in _text_types:
