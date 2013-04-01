@@ -13,6 +13,7 @@ Requirements
 * `WTForms`_
 * `docutils`_
 * `Misaka`_
+* `Postmarkup`_
 * `TornadoMail`_
 
 Core features
@@ -47,5 +48,6 @@ pull-requests!
 .. _py-bcrypt: https://code.google.com/p/py-bcrypt/
 .. _docutils: http://sourceforge.net/projects/docutils/
 .. _Misaka: https://github.com/FSX/misaka
+.. _Postmarkup: https://code.google.com/p/postmarkup/
 .. _WTForms: http://wtforms.simplecodes.com/
 .. _TornadoMail: https://github.com/equeny/tornadomail
