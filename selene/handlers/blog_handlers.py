@@ -39,7 +39,8 @@ class NewPostHandler(BaseHandler):
         if slug_flag:
             slug = self.get_argument('customslug', '')
         else:
-            slug = helpers.get_slug(self.get_argument('title'))
+            slug = helpers.get_slug(self.get_argument('title'),
+                stop_words=options.slug_stop_words)
         html_content, plain_content = helpers.get_html_and_plain(
             self.get_argument('content'), self.get_argument('text_type'))
         post = {
@@ -102,7 +103,8 @@ class EditPostHandler(BaseHandler):
         if slug_flag:
             new_slug = self.get_argument('customslug', '')
         else:
-            new_slug = helpers.get_slug(self.get_argument('title'))
+            new_slug = helpers.get_slug(self.get_argument('title'),
+                stop_words=options.slug_stop_words)
         html_content, plain_content = helpers.get_html_and_plain(
             self.get_argument('content'), self.get_argument('text_type'))
         new_post = {

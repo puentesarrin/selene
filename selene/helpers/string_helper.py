@@ -10,10 +10,8 @@ from unicodedata import normalize
 
 _punct_re = re.compile(r'[\t !"#$%&\'()*\:\;\-/<=>?@\[\\\]^_`{|},.]+')
 
-stop_words = []
 
-
-def get_slug(input_text, delim=u"-"):
+def get_slug(input_text, delim=u"-", stop_words=[]):
     result = []
     for word in _punct_re.split(input_text.lower()):
         word = normalize('NFKD', word).encode('ascii', 'ignore')
