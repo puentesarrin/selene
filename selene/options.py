@@ -6,6 +6,7 @@ import tornado.options
 TEXT_TYPES = [('text', 'Text plain'), ('html', 'HTML'), ('md', 'Markdown'),
     ('rst', 'reStructuredText'), ('bbcode', 'BBCode')]
 STATUSES = [('published', 'Published'), ('unpublished', 'Unpublished')]
+STOP_WORDS = 'a,an,are,as,at,be,by,for,in,is,of,on,or,that,to,was'.split(',')
 
 
 def get_allowed_text_types():
@@ -58,9 +59,9 @@ def setup_options(path):
         default=','.join([tt[0] for tt in TEXT_TYPES]), type=str,
         help='Allowed text types on posts. Available choices %s' %
             ', '.join(['%s (%s)' % tt for tt in TEXT_TYPES]))
-    tornado.options.define('slug_stop_words', default='a,an,are,as,at,be,by,'
-        'for,in,is,of,on,or,that,this,to,was', type=str,
-        help='Stop words, these will be removed from post slugs')
+    tornado.options.define('slug_stop_words', default=','.join(STOP_WORDS),
+        type=str, help='Stop words, these will be removed/ignored from post '
+        'slugs')
     tornado.options.define('page_size_posts', default=10, type=int,
         help='Page size for posts')
     tornado.options.define('page_size_tag_posts', default=10, type=int,
