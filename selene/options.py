@@ -3,6 +3,19 @@ import base64
 import os
 import tornado.options
 
+TEXT_TYPES = [('text', 'Text'), ('html', 'HTML'), ('md', 'Markdown'),
+    ('rst', 'reStructuredText'), ('bbcode', 'BBCode')]
+STATUSES = [('published', 'Published'), ('unpublished', 'Unpublished')]
+
+
+def get_allowed_text_types():
+    result = []
+    allowed_text_types = tornado.options.options.allowed_text_types.split(',')
+    for code, name in TEXT_TYPES:
+        if code in allowed_text_types:
+            result.append((code, name))
+    return result
+
 
 def setup_options(path):
     #Tornado
