@@ -4,7 +4,7 @@ import os
 import tornado.options
 
 TEXT_TYPES = [('text', 'Text plain'), ('html', 'HTML'), ('md', 'Markdown'),
-    ('rst', 'reStructuredText'), ('bbcode', 'BBCode')]
+    ('rst', 'reStructuredText'), ('bbcode', 'BBCode'), ('textile', 'Textile')]
 STATUSES = [('published', 'Published'), ('unpublished', 'Unpublished')]
 STOP_WORDS = 'a,an,are,as,at,be,by,for,in,is,of,on,or,that,to,was'.split(',')
 
