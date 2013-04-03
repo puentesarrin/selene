@@ -3,7 +3,7 @@ import base64
 import os
 import tornado.options
 
-TEXT_TYPES = [('text', 'Text'), ('html', 'HTML'), ('md', 'Markdown'),
+TEXT_TYPES = [('text', 'Text plain'), ('html', 'HTML'), ('md', 'Markdown'),
     ('rst', 'reStructuredText'), ('bbcode', 'BBCode')]
 STATUSES = [('published', 'Published'), ('unpublished', 'Unpublished')]
 
@@ -54,8 +54,10 @@ def setup_options(path):
         ' with Tornado and MongoDB'), type=str, help='Blog slogan')
     tornado.options.define('default_language', default='en_US', type=str,
         help='Default language')
-    tornado.options.define('allowed_text_types', default='text,html,md,rst,'
-        'bbcode', type=str, help='Allowed text types on posts')
+    tornado.options.define('allowed_text_types',
+        default=','.join([tt[0] for tt in TEXT_TYPES]), type=str,
+        help='Allowed text types on posts. Available choices %s' %
+            ', '.join(['%s (%s)' % tt for tt in TEXT_TYPES]))
     tornado.options.define('slug_stop_words', default='a,an,are,as,at,be,by,'
         'for,in,is,of,on,or,that,this,to,was', type=str,
         help='Stop words, these will be removed from post slugs')
