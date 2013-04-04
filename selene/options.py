@@ -7,6 +7,7 @@ TEXT_TYPES = [('text', 'Text plain'), ('html', 'HTML'), ('md', 'Markdown'),
     ('rst', 'reStructuredText'), ('bbcode', 'BBCode'), ('textile', 'Textile')]
 STATUSES = [('published', 'Published'), ('unpublished', 'Unpublished')]
 STOP_WORDS = 'a,an,are,as,at,be,by,for,in,is,of,on,or,that,to,was'.split(',')
+TWITTER_COUNTER = ['none', 'horizontal', 'vertical']
 
 
 def get_allowed_text_types():
@@ -109,7 +110,8 @@ def setup_options(path):
     tornado.options.define('twitter_button_enabled', default=True, type=bool,
         help='Twitter share button enabled')
     tornado.options.define('twitter_button_counter', default='vertical',
-        type=str, help='Twitter share button counter')
+        type=str, help='Twitter share button counter style. Available '
+            'choices: %s' % ', '.join(TWITTER_COUNTER))
     tornado.options.define('twitter_button_via', type=str,
         help='Twitter share button data via')
     tornado.options.define('twitter_button_hashtags', type=str,
