@@ -7,15 +7,15 @@ and MongoDB.
 Requirements
 ------------
 
-* `Tornado`_
-* `PyMongo`_
-* `py-bcrypt`_
-* `WTForms`_
-* `docutils`_
-* `Misaka`_
-* `Postmarkup`_
-* `Textile`_
-* `TornadoMail`_
+* Tornado_
+* PyMongo_
+* py-bcrypt_
+* WTForms_
+* docutils_
+* Misaka_
+* Postmarkup_
+* Textile_
+* TornadoMail_
 
 Core features
 -------------
@@ -50,6 +50,11 @@ TODO list
 * Support for third-party and customizable authentication (Google, Facebook
   and Twitter)
 * "Installation wizard"
+
+Contributors
+------------
+
+* Lowstz Chen (`@lowstz <https://github.com/lowstz>`_)
 
 I want to improve this project with your help... I will watch to all of your
 pull-requests!
