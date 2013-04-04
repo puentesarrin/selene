@@ -21,7 +21,6 @@ class gravatar_memoized(object):
 
 
 @gravatar_memoized
-def get_avatar(email, size=48):
+def get_gravatar_url(email, size=48):
     md5email = hashlib.md5(email).hexdigest()
-    query = "%s?s=%s" % (md5email, size)
-    return 'http://gravatar.com/avatar/' + query
+    return 'http://gravatar.com/avatar/%s?s=%s' % (md5email, size)
