@@ -23,7 +23,7 @@ class BaseMultiDict(object):
         return self.handler.get_arguments(name, strip=False)
 
 
-class BaseHandler(tornado.web.RequestHandler):
+class BaseHandler(tornado.web.RequestHandler, helpers.Gravatar):
 
     @property
     def db(self):
