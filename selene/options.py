@@ -21,140 +21,159 @@ def get_allowed_text_types():
 
 def setup_options(path):
     #Tornado
+    group = 'Tornado'
     tornado.options.define("use_pyuv", default=False, type=bool,
         help='Configure IOLoop for using libuv, needs tornado_pyuv installed; '
-        'useful on Windows environments.')
+        'useful on Windows environments.', group=group)
 
     #HTTP Server
-    tornado.options.define("port", default=8081, type=int, help='Server port')
+    group = 'HTTP Server'
+    tornado.options.define("port", default=8081, type=int, help='Server port',
+        group=group)
 
     #Database
+    group = 'Database'
     tornado.options.define("db_uri", default="mongodb://localhost:27017",
-        type=str, help='MongoDB database URI')
+        type=str, help='MongoDB database URI', group=group)
     tornado.options.define("db_name", default="selene", type=str,
-        help='MongoDB database name')
+        help='MongoDB database name', group=group)
     tornado.options.define("db_use_fts", default=False, type=bool,
         help='MongoDB full text search activated for searching posts, if this '
-        'feature is not activated on server, regex will be used')
+        'feature is not activated on server, regex will be used',
+        group=group)
 
     #SMTP
+    group = 'SMTP'
     tornado.options.define('smtp_host', default='smtp.gmail.com', type=str,
-        help='SMTP server host')
+        help='SMTP server host', group=group)
     tornado.options.define('smtp_port', default=587, type=int,
-        help='SMTP server port')
-    tornado.options.define('smtp_username', type=str, help='SMTP user')
-    tornado.options.define('smtp_password', type=str, help='SMTP password')
+        help='SMTP server port', group=group)
+    tornado.options.define('smtp_username', type=str, help='SMTP user',
+        group=group)
+    tornado.options.define('smtp_password', type=str, help='SMTP password',
+        group=group)
     tornado.options.define('smtp_use_tls', default=True, type=bool,
-        help='SMTP use TLS flag')
+        help='SMTP use TLS flag', group=group)
 
     #Blog
+    group = 'Blog'
     tornado.options.define('base_url', default='http://localhost:8081',
-        type=str, help='Base URL')
+        type=str, help='Base URL', group=group)
     tornado.options.define('title', default='Selene', type=str,
-        help='Blog title')
+        help='Blog title', group=group)
     tornado.options.define('slogan', default=('A simple CMS for blogging built'
-        ' with Tornado and MongoDB'), type=str, help='Blog slogan')
+        ' with Tornado and MongoDB'), type=str, help='Blog slogan',
+        group=group)
     tornado.options.define('default_language', default='en_US', type=str,
-        help='Default language')
+        help='Default language', group=group)
     tornado.options.define('allowed_text_types',
         default=','.join([tt[0] for tt in TEXT_TYPES]), type=str,
         help='Allowed text types on posts. Available choices %s' %
-            ', '.join(['%s (%s)' % tt for tt in TEXT_TYPES]))
+            ', '.join(['%s (%s)' % tt for tt in TEXT_TYPES]), group=group)
     tornado.options.define('slug_stop_words', default=','.join(STOP_WORDS),
         type=str, help='Stop words, these will be removed/ignored from post '
-        'slugs')
+        'slugs', group=group)
     tornado.options.define('page_size_posts', default=10, type=int,
-        help='Page size for posts')
+        help='Page size for posts', group=group)
     tornado.options.define('page_size_tag_posts', default=10, type=int,
-        help='Page size for tag showing posts')
+        help='Page size for tag showing posts', group=group)
     tornado.options.define('page_size_search_posts', default=10, type=int,
-        help='Page size for searching posts')
+        help='Page size for searching posts', group=group)
     tornado.options.define('tag_cloud_limit', default=20, type=int,
-        help='Limit for items on tag cloud module')
+        help='Limit for items on tag cloud module', group=group)
     tornado.options.define('recent_posts_limit', default=10, type=int,
-        help='Limit for items on recent posts module')
+        help='Limit for items on recent posts module', group=group)
     tornado.options.define('recent_comments_limit', default=10, type=int,
-        help='Limit for items on recent comments module')
+        help='Limit for items on recent comments module', group=group)
 
-    #Application settings
-    tornado.options.define('cookie_secret', default='', type=str)
+    #Application
+    group = 'Application'
+    tornado.options.define('cookie_secret', default='', type=str, group=group)
     tornado.options.define("debug", default=False, type=bool, help=(
-        'Turn on autoreload, log to stderr only'))
+        'Turn on autoreload, log to stderr only'), group=group)
     tornado.options.define('themes_directory', default='themes', type=str,
-        help='Themes directory name')
+        help='Themes directory name', group=group)
     tornado.options.define('selected_theme', default='default', type=str,
-        help='Selected theme directory name')
+        help='Selected theme directory name', group=group)
     tornado.options.define('static_url_prefix', default=None, type=str,
-        help='Static files prefix')
+        help='Static files prefix', group=group)
 
     #Locale
+    group = 'Locale'
     tornado.options.define('default_locale', default='en_US', type=str,
-        help='Default locale setting')
+        help='Default locale setting', group=group)
 
     #Google Analytics
+    group = 'Google Analytics'
     tornado.options.define("googleanalytics_enabled", default=True, type=bool,
-        help="Enable Google Analytics module")
+        help="Enable Google Analytics module", group=group)
     tornado.options.define("googleanalytics_enabled_for_logged_users",
-        default=False, type=bool, help="Enable Google Analytics module")
+        default=False, type=bool, help="Enable Google Analytics module",
+        group=group)
     tornado.options.define("googleanalytics_trackercode",
-        default="UA-XXXXXXXX-X", type=str,
-        help="Set Google Analytics tracker code")
-
-    #Twitter share
-    tornado.options.define('twitter_consumer_key', default=None, type=str,
-        help='Twitter consumer key for authentication')
-    tornado.options.define('twitter_consumer_secret', default=None, type=str,
-        help='Twitter consumer secret for authentication')
+        default="UA-XXXXXXXX-X", type=str, help='Set Google Analytics tracker'
+        'code', group=group)
 
     #Twitter auth
+    group = 'Twitter auth'
+    tornado.options.define('twitter_consumer_key', default=None, type=str,
+        help='Twitter consumer key for authentication', group=group)
+    tornado.options.define('twitter_consumer_secret', default=None, type=str,
+        help='Twitter consumer secret for authentication', group=group)
+
+    #Twitter share button
+    group = 'Twitter share button'
     tornado.options.define('twitter_button_enabled', default=True, type=bool,
-        help='Twitter share button enabled')
+        help='Twitter share button enabled', group=group)
     tornado.options.define('twitter_button_counter', default='vertical',
         type=str, help='Twitter share button counter style. Available '
-            'choices: %s' % ', '.join(TWITTER_COUNTER))
+            'choices: %s' % ', '.join(TWITTER_COUNTER), group=group)
     tornado.options.define('twitter_button_via', type=str,
-        help='Twitter share button data via')
+        help='Twitter share button data via', group=group)
     tornado.options.define('twitter_button_hashtags', type=str,
-        help='Twitter share button data hashtags')
+        help='Twitter share button data hashtags', group=group)
     tornado.options.define('twitter_button_large', default=False, type=bool,
-        help='Twitter share button large size')
+        help='Twitter share button large size', group=group)
     tornado.options.define('twitter_button_title_post_only', default=True,
-        type=bool, help=('Twitter share button title post only, without blog '
-        'title'))
+        type=bool, help='Twitter share button title post only, without blog '
+        'title', group=group)
 
     #Facebook share
+    group = 'Facebook share button'
     tornado.options.define('facebook_button_enabled', default=True, type=bool,
-        help='Facebook share button enabled')
+        help='Facebook share button enabled', group=group)
     tornado.options.define('facebook_button_send', default=False, type=bool,
-        help='Facebook share button send option')
+        help='Facebook share button send option', group=group)
     tornado.options.define('facebook_button_style', default='box_count',
-        type=str, help='Facebook share button layout style')
+        type=str, help='Facebook share button layout style', group=group)
     tornado.options.define('facebook_button_width', default=450, type=int,
-        help='Facebook share button width')
+        help='Facebook share button width', group=group)
     tornado.options.define('facebook_button_faces', default=False, type=bool,
-        help='Facebook share button show faces flag')
+        help='Facebook share button show faces flag', group=group)
     tornado.options.define('facebook_button_font', type=str,
-        help='Facebook share button font')
+        help='Facebook share button font', group=group)
     tornado.options.define('facebook_button_color', default='light', type=str,
-        help='Facebook share button color scheme')
+        help='Facebook share button color scheme', group=group)
     tornado.options.define('facebook_button_verb', default='like', type=str,
-        help='Facebook share button verb to display')
+        help='Facebook share button verb to display', group=group)
 
     #Google+ share
-    tornado.options.define('googleplus_button_enabled', default=True, type=bool,
-        help='Google+ share button enabled')
+    group = 'Google+ share button'
+    tornado.options.define('googleplus_button_enabled', default=True,
+        type=bool, help='Google+ share button enabled', group=group)
     tornado.options.define('googleplus_button_size', default='tall', type=str,
-        help='Google+ share button size')
+        help='Google+ share button size', group=group)
     tornado.options.define('googleplus_button_annotation', default='bubble',
-        type=str, help='Google+ share button annotation')
+        type=str, help='Google+ share button annotation', group=group)
     tornado.options.define('googleplus_button_width', default=300,
-        type=int, help='Google+ share button width')
+        type=int, help='Google+ share button width', group=group)
 
     #Disqus
+    group = 'Disqus'
     tornado.options.define('disqus_enabled', default=False, type=bool,
-        help='Disqus widget enabled')
+        help='Disqus widget enabled', group=group)
     tornado.options.define('disqus_shortname', type=str,
-        help='Disqus short name')
+        help='Disqus short name', group=group)
 
     if os.path.exists(path):
         tornado.options.parse_config_file(path)
