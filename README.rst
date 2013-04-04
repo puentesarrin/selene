@@ -31,8 +31,11 @@ Core features
    * Textile
 * Posts sharing via Google+, Twitter and Facebook.
 * Optional comments management via Disqus.
-* Supported localization (en_US, and es_ES.)
-* Support for Google Analytics.
+* Supported localization:
+   * English (en_US)
+   * Spanish (es_ES)
+   * Chinese (zh_HK, zh_CN)
+* Support for Google Analytics and Gravatar.
 * Customizable search for publications using regular expressions or full text
   search.
 
