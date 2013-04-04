@@ -2,7 +2,7 @@
     <div class="span10">
         <div class="row-fluid">
             <p>
-                <img class="avatar" src="{{ helpers.get_avatar(comment['email']) }}" alt="{{ comment['name'] }}">
+                <img class="avatar" src="{{ helpers.get_gravatar_url(comment['email']) }}" alt="{{ comment['name'] }}">
                 <strong>{{ comment['name'] }}</strong> {{ _("says") }}
             </p>
             <blockquote class="avatar">
