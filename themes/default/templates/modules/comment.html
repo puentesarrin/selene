@@ -1,8 +1,10 @@
 <div class="row-fluid">
     <div class="span10">
         <div class="row-fluid">
-            <p><strong>{{ comment['name'] }}</strong> {{ _("says") }}:</p>
-            <blockquote>
+            <p><img class="avatar" src="{{ handler.get_avatar(comment['email']) }}" 
+					alt="{{ comment['name'] }}">
+			  <strong>{{ comment['name'] }}</strong> {{ _("says") }}</p>
+            <blockquote class="avatar">
                 {{ comment['content'] }}
                 <small class="pull-right">
                     {{ _("Posted") }} {{ comment['date'].strftime('%b %d, %Y') }}
