@@ -50,6 +50,14 @@ class BaseHandler(tornado.web.RequestHandler, helpers.Gravatar):
             return None
         return tornado.locale.get(user["locale"])
 
+    def get_template_namespace(self):
+        namespace = super(BaseHandler, self).get_template_namespace()
+        namespace.update({
+            'options': options,
+            'helpers': helpers
+        })
+        return namespace
+
     def render(self, template_name, **kwargs):
         def find_post(comment):
             comment['post'] = self.db.posts.find_one({'_id':
@@ -69,7 +77,6 @@ class BaseHandler(tornado.web.RequestHandler, helpers.Gravatar):
         ])['result']
         kwargs.update({
             'url_path': helpers.Url(self.request.uri).path,
-            'options': options,
             '_next': self.get_argument('next', ''),
             '_posts': posts,
             '_comments': comments,
@@ -96,7 +103,4 @@ class ErrorHandler(BaseHandler):
 
 
 class BaseUIModule(tornado.web.UIModule):
-
-    def render_string(self, path, **kwargs):
-        kwargs['options'] = options
-        return super(BaseUIModule, self).render_string(path, **kwargs)
+    pass
