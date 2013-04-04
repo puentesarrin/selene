@@ -20,7 +20,7 @@ if __name__ == '__main__':
     http_server = tornado.httpserver.HTTPServer(Selene(db))
     tornado.web.ErrorHandler = web.ErrorHandler
     http_server.listen(opts.port)
-    logging.info('Listening on %s port.' % opts.port)
+    logging.info('Web server listening on %s port.' % opts.port)
     if opts.use_pyuv:
         from tornado_pyuv import UVLoop
         IOLoop.configure(UVLoop)
