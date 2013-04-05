@@ -15,8 +15,12 @@ Edit, Editar
 Edit comment, Editar comentario
 Edit post, Editar publicación
 Email, Correo electrónico
+E-mail address already registered, El correo electrónico ya se encuentra registrado
+E-mail address is required, El correo electrónico es requerido
 Full name, Nombre completo
 Home, Inicio
+Incorrect user/password combination or invalid account, Usuario y/o contraseña no válidos
+Invalid arguments, Argumentos no válidos
 List posts, Publicaciones
 Login, Ingresar
 Logout, Salir
@@ -50,6 +54,7 @@ Tags cloud, Nube de etiquetas
 Third-party login, Ingresar a través de
 Text type, Tipo de texto
 Title, Título
+User does not exist, El usuario no existe
 View more tags, Ver más etiquetas
 Vote, Votar
 Write a new post, Redactar una nueva publicación
