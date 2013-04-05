@@ -110,6 +110,8 @@ def setup_options(path):
 
     #Gravatar
     group = 'Gravatar'
+    define('gravatar_for_posts', default=True, type=bool,
+           help='Enable Gravatar images on posts', group=group)
     define('gravatar_for_comments', default=True, type=bool,
            help='Enable Gravatar images on comments', group=group)
 

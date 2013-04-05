@@ -18,9 +18,11 @@
         <div class="span7">
             <div class="row-fluid">
                 <div class="span7">
-                    <div class="btn-group pull-right">
-                        <img src="{{ helpers.get_gravatar_url(post['email'], 70) }}" alt="{{ post['author']}}">
-                    </div>
+                    {% if options.gravatar_for_posts %}
+                        <div class="btn-group pull-right">
+                            <img src="{{ helpers.get_gravatar_url(post['email'], 70) }}" alt="{{ post['author']}}">
+                        </div>
+                    {% end %}
                 </div>
                 <div class="span5">
                     <p class="pull-right">
