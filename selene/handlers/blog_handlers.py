@@ -55,6 +55,7 @@ class NewPostHandler(BaseHandler):
             'status': self.get_argument('status'),
             'text_type': self.get_argument('text_type'),
             'author': self.current_user['name'],
+            'email': self.current_user['email'],
             'votes': 0,
             'views': 0
         }

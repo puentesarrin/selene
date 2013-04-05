@@ -1,9 +1,11 @@
-img.avatar { 
+.avatar img { 
     float: left; 
     margin: 4px 10px 0px 0px;
 }
 
-blockquote.avatar {
+.avatar blockquote {
     border-left: 5px;
     padding: 0px 0px 0px 60px;
 }
+
+
