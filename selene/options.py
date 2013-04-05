@@ -108,6 +108,11 @@ def setup_options(path):
     define("googleanalytics_trackercode", default="UA-XXXXXXXX-X", type=str,
            help='Set Google Analytics tracker code', group=group)
 
+    #Gravatar
+    group = 'Gravatar'
+    define('gravatar_for_comments', default=True, type=bool,
+           help='Enable Gravatar images on comments', group=group)
+
     #Twitter auth
     group = 'Twitter auth'
     define('twitter_consumer_key', default=None, type=str,
