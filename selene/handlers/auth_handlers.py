@@ -141,7 +141,7 @@ class RequestNewPasswordHandler(AuthBaseHandler):
         email = self.get_argument('email', False)
         if not email:
             self.render('newpassword.html',
-                message="E-mail address is required.")
+                message="E-mail address is required")
             return
         user = self.db.users.find_one({'email': email})
         if user:
