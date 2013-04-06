@@ -1,4 +1,3 @@
-{% from selene import forms %}
 {% set form = forms.NewPostForm() %}
 {% set f = form.content.process_data(post.get('content', '')) %}
 {% if 'status' in post %}

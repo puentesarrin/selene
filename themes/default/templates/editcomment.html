@@ -17,7 +17,6 @@
                 <p>
                     {{ _("Commented on post") }}: "<a href="{{ '/post/%s' % post['slug'] }}">{{ post['title'] }}</a>":
                 </p>
-                {% from selene import forms %}
                 {% set form = forms.NewCommentForm() %}
                 {% set f = form.content.process_data(comment.get('content', '')) %}
                 <div class="row-fluid">

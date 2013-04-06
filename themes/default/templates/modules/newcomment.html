@@ -1,4 +1,3 @@
-{% from selene import forms %}
 {% set form = forms.NewCommentForm() %}
 <form id="new-comment" class="form" action="{{ '/post/%s/comment/new' % post['slug'] }}" method="post">
     <fieldset>
