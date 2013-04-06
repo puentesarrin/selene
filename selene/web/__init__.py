@@ -1,7 +1,7 @@
 # -*- coding: utf-8 *-*
 import tornado.web
 
-from selene import helpers
+from selene import forms, helpers
 from tornado.options import options
 
 
@@ -53,8 +53,9 @@ class BaseHandler(tornado.web.RequestHandler):
     def get_template_namespace(self):
         namespace = super(BaseHandler, self).get_template_namespace()
         namespace.update({
+            'forms': forms,
+            'helpers': helpers,
             'options': options,
-            'helpers': helpers
         })
         return namespace
 
