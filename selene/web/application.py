@@ -15,6 +15,7 @@ class Selene(tornado.web.Application):
         self.smtp = smtp.SMTP()
         self.theme_path = os.path.join(opts.themes_directory,
             opts.selected_theme)
+        self.load_translations()
         settings = {
             'login_url': '/login',
             'static_path': os.path.join(self.theme_path, 'static'),
@@ -44,3 +45,15 @@ class Selene(tornado.web.Application):
         tornado.web.Application.__init__(self, routes.urls +
             [(r"/(favicon\.ico)", tornado.web.StaticFileHandler,
             {'path': settings['static_path']})], **settings)
+
+    def load_translations(self):
+        tornado.locale.LOCALE_NAMES['zh_HK'] = {
+            'name_en': 'Chinese (Hong Kong)',
+            'name': ''
+        }
+        tornado.locale.load_translations("translations")
+        tornado.locale.set_default_locale(opts.default_locale)
+        logging.info('Loaded translations: %s.' %
+            ', '.join([v['name_en'] for k, v in
+                tornado.locale.LOCALE_NAMES.iteritems() if k in
+                tornado.locale.get_supported_locales()]))
