@@ -15,11 +15,15 @@ Edit, 编辑
 Edit comment, 编辑评论
 Edit post, 编辑文字
 Email, 电子邮箱
+E-mail address already registered, 该电子邮箱地址已经被注册
+E-mail address is required, 电子邮箱地址为必填项
 Full name, 完整姓名
 Home, 主页
+Incorrect user/password combination or invalid account, 不正确的用户名/密码组合或无效的帐户
+Invalid arguments, 无效参数
 List posts, 文章列表
 Login, 登陆
-Logout, 登出
+Logout, 注销
 Name, 名字
 Next, 下一个
 Next post, 下一篇文章
@@ -29,7 +33,7 @@ No one has post yet, 暂时没有任何文章呢
 No one has tags yet, 暂时没有任何标签呢
 Page not found, 页面找不了╯﹏╰
 Password, 密码
-Posted, 已发表
+Posted, 发表于
 Prev, 上一页
 Previous post, 前一篇文章
 Recent comments, 最新评论
@@ -50,6 +54,7 @@ Tags cloud, 标签云
 Third-party login, 第三方登陆
 Text type, 文本类型
 Title, 标题
+User does not exist, 该用户不存在
 View more tags, 浏览更多标签
 Vote, 顶
 Write a new post, 发表新文章
