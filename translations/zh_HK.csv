@@ -15,8 +15,12 @@ Edit, 編輯
 Edit comment, 編輯評論
 Edit post, 編輯文章
 Email, 電子郵箱
+E-mail address already registered, 該電子郵箱地址已經被註冊
+E-mail address is required, 電子郵箱地址是必填項
 Full name, 完整姓名
 Home, 主頁
+Incorrect user/password combination or invalid account, 不正確的用戶名/密碼組合或者無效帳戶
+Invalid arguments, 無效的參數
 List posts, 文章列表
 Login, 登入
 Logout, 登出
@@ -29,7 +33,7 @@ No one has post yet, 暫時沒有任何文章
 No one has tags yet, 暫時沒有任何標籤
 Page not found, 頁面找不到了╯﹏╰
 Password, 密碼
-Posted, 已發表
+Posted, 發表於
 Prev, 上一個
 Previous post, 前一篇文章
 Recent comments, 最新評論
@@ -50,6 +54,7 @@ Tags cloud, 標籤雲
 Third-party login, 第三方登陸
 Text type, 文本類型
 Title, 標題
+User does not exist, 該用戶不存在
 View more tags, 瀏覽更多標籤
 Vote, 頂
 Write a new post, 發表新文章
