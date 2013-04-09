@@ -25,6 +25,7 @@ class BaseForm(Form):
 
 
 class TornadoArgumentsWrapper(dict):
+
     def __getattr__(self, key):
         try:
             return self[key]
