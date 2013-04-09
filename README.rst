@@ -55,6 +55,7 @@ Contributors
 ------------
 
 * Lowstz Chen (`@lowstz <https://github.com/lowstz>`_)
+* Juan Carlos Farah (`@juancarlosfarah <https://github.com/juancarlosfarah>`_)
 
 I want to improve this project with your help... I will watch to all of your
 pull-requests!
