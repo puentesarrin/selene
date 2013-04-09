@@ -5,7 +5,7 @@ import tornado.auth
 import tornado.web
 
 from motor import Op
-from selene import helpers
+from selene import forms, helpers
 from selene.web import (authenticated_async, BaseHandler,
                         redirect_authenticated_user)
 from tornado.options import options
@@ -23,7 +23,7 @@ class RegisterHandler(BaseHandler):
         email = self.get_argument("email", "")
         password = self.get_argument("password", "")
         if self.db.users.find_one({'email': email}):
-            self.render('register.html', message='E-mail address already '
+            self.render('register.html', message='Email address already '
                 'registered')
             return
         user = {
@@ -54,27 +54,33 @@ class LoginHandler(BaseHandler):
 
     @redirect_authenticated_user
     def get(self):
-        self.render("login.html", message='')
+        self.render("login.html", message=None)
 
     @redirect_authenticated_user
     @tornado.gen.engine
     @tornado.web.asynchronous
     def post(self):
-        email = self.get_argument("email", False)
-        password = self.get_argument("password", False)
-        next_ = self.get_argument('next_', '/')
-        if email and password:
-            user = yield Op(self.db.users.find_one, {"email": email})
-            if user:
-                if user['enabled']:
-                    pass_check = bcrypt.hashpw(password,
-                        user["password"]) == user["password"]
-                    if pass_check:
-                        self.set_secure_cookie("current_user", user["email"])
-                        self.redirect(next_)
-                        return
-        self.render('login.html',
-            message="Incorrect user/password combination or invalid account")
+        form = forms.LoginForm(self.request.arguments,
+            locale_code=self.locale.code)
+        if form.validate():
+            email = self.get_argument("email")
+            password = self.get_argument("password")
+            next_ = self.get_argument('next_', '/')
+            if email and password:
+                user = yield Op(self.db.users.find_one, {"email": email})
+                if user:
+                    if user['enabled']:
+                        pass_check = bcrypt.hashpw(password,
+                            user["password"]) == user["password"]
+                        if pass_check:
+                            self.set_secure_cookie("current_user",
+                                                   user["email"])
+                            self.redirect(next_)
+                            return
+            self.render('login.html', message="Incorrect user/password "
+                        "combination or invalid account")
+        else:
+            self.render('login.html', message=form.errors)
 
 
 class LoginGoogleHandler(BaseHandler, tornado.auth.GoogleMixin):
@@ -147,7 +153,7 @@ class RequestNewPasswordHandler(BaseHandler):
         email = self.get_argument('email', False)
         if not email:
             self.render('newpassword.html',
-                message="E-mail address is required.")
+                message="Email address is required")
             return
         user = self.db.users.find_one({'email': email})
         if user:

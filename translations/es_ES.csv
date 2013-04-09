@@ -4,7 +4,7 @@ Click to comment, Haz clic aquí para comentar
 Commented on post, Comentado en la publicación
 Comments, Comentarios
 Content, Contenido
-Custom slug, URL personalizado
+Custom Slug, URL personalizado
 Date, Fecha
 Delete, Eliminar
 Delete comment, Eliminar comentario
@@ -15,8 +15,13 @@ Edit, Editar
 Edit comment, Editar comentario
 Edit post, Editar publicación
 Email, Correo electrónico
-Full name, Nombre completo
+Email address already registered, El correo electrónico ya se encuentra registrado
+Email address is required, El correo electrónico es requerido
+Full Name, Nombre completo
 Home, Inicio
+Incorrect user/password combination or invalid account, Usuario y/o contraseña no válidos
+Invalid arguments, Argumentos no válidos
+Invalid email address, Correo electrónico no válido
 List posts, Publicaciones
 Login, Ingresar
 Logout, Salir
@@ -29,6 +34,7 @@ No one has post yet, Aún no hay publicaciones
 No one has tags yet, Aún no hay etiquetas
 Page not found, Página no encontrada
 Password, Contraseña
+Password is required, La contraseña es requerida
 Posted, Publicado
 Prev, Anterior
 Previous post, Anterior publicación
@@ -37,7 +43,7 @@ Recent posts, Publicaciones recientes
 Register, Registrarse
 Request a new password, Solicitar una nueva contraseña
 Reset password, Restablecer contraseña
-RSS Sindication, Sindicación RSS
+RSS Syndication, Sindicación RSS
 says, comentó
 Search, Buscar
 Search results for, Resultados de búsqueda para
@@ -48,8 +54,9 @@ Tag, Etiqueta
 Tags, Etiquetas
 Tags cloud, Nube de etiquetas
 Third-party login, Ingresar a través de
-Text type, Tipo de texto
+Text Type, Tipo de texto
 Title, Título
+User does not exist, El usuario no existe
 View more tags, Ver más etiquetas
 Vote, Votar
 Write a new post, Redactar una nueva publicación

@@ -17,21 +17,20 @@
                 <p>
                     {{ _("Commented on post") }}: "<a href="{{ '/post/%s' % post['slug'] }}">{{ post['title'] }}</a>":
                 </p>
-                {% from selene import forms %}
-                {% set form = forms.NewCommentForm() %}
+                {% set form = forms.NewCommentForm(locale_code=locale.code) %}
                 {% set f = form.content.process_data(comment.get('content', '')) %}
                 <div class="row-fluid">
                     <div class="span5">
                         <div class="control-group">
                             {% raw form.name.label(class_="control-label") %}
                             <div class="controls">
-                                {% raw form.name(placeholder=_("Name"), class_="input-block-level", value=comment['name']) %}
+                                {% raw form.name(placeholder=form.name.label.text, class_="input-block-level", value=comment['name']) %}
                             </div>
                         </div>
                         <div class="control-group">
                             {% raw form.email.label(class_="control-label") %}
                             <div class="controls">
-                                {% raw form.email(placeholder=_("Email"), class_="input-block-level", value=comment['email']) %}
+                                {% raw form.email(placeholder=form.email.label.text, class_="input-block-level", value=comment['email']) %}
                             </div>
                         </div>
                     </div>
@@ -39,7 +38,7 @@
                         <div class="control-group">
                             {% raw form.content.label(class_="control-label") %}
                             <div class="controls">
-                                {% raw form.content(placeholder=_("Content"), class_="input-block-level", rows="5") %}
+                                {% raw form.content(placeholder=form.content.label.text, class_="input-block-level", rows="5") %}
                             </div>
                         </div>
                         {% raw xsrf_form_html() %}

@@ -1,5 +1,4 @@
-{% from selene import forms %}
-{% set form = forms.SearchForm() %}
+{% set form = forms.SearchForm(locale_code=locale.code) %}
 <form action="/search">
     {% if header %}
         <fieldset>

@@ -1,39 +1,34 @@
 # -*- coding: utf-8 *-*
-from tornado.options import options
-from wtforms import (Form, TextField, BooleanField, TextAreaField, RadioField,
+from selene import options
+from selene.forms import BaseForm
+from wtforms import (TextField, BooleanField, TextAreaField, RadioField,
                      SelectField)
 from wtforms.validators import Required, Email
 
-_text_types = [('text', 'Text'), ('html', 'HTML'), ('md', 'Markdown'),
-    ('rst', 'reStructuredText'), ('bbcode', 'BBCode'), ('textile', 'Textile')]
-_selected_text_types = []
-_allowed_text_types = options.allowed_text_types.split(',')
-for text_type in _text_types:
-    if text_type[0] in _allowed_text_types:
-        _selected_text_types.append(text_type)
 
+class NewPostForm(BaseForm):
 
-class NewPostForm(Form):
+    def __init__(self, formdata=None, obj=None, prefix='', **kwargs):
+        super(NewPostForm, self).__init__(formdata, obj, prefix, **kwargs)
+        self.status.choices = options.STATUSES
+        self.text_type.choices = options.get_allowed_text_types()
 
     title = TextField(validators=[Required()])
     slug = BooleanField()
-    customslug = TextField()
+    custom_slug = TextField()
     tags = TextField(validators=[Required()])
     content = TextAreaField(validators=[Required()])
-    status = RadioField(validators=[Required()],
-        choices=[('published', 'Published'), ('unpublished', 'Unpublished')])
-
-    text_type = SelectField(validators=[Required()],
-        choices=_selected_text_types)
+    status = RadioField(validators=[Required()])
+    text_type = SelectField(validators=[Required()])
 
 
-class NewCommentForm(Form):
+class NewCommentForm(BaseForm):
 
     name = TextField(validators=[Required()])
     email = TextField(validators=[Required(), Email()])
     content = TextAreaField(validators=[Required()])
 
 
-class SearchForm(Form):
+class SearchForm(BaseForm):
 
     q = TextField(validators=[Required()])

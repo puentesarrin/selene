@@ -6,7 +6,7 @@ import tornado.web
 import urllib
 
 from motor import Op
-from selene import helpers
+from selene import forms, helpers
 from tornado.options import options
 
 
@@ -39,24 +39,6 @@ def redirect_authenticated_user(f):
     return wrapper
 
 
-class BaseMultiDict(object):
-
-    def __init__(self, handler):
-        self.handler = handler
-
-    def __iter__(self):
-        return iter(self.handler.request.arguments)
-
-    def __len__(self):
-        return len(self.handler.request.arguments)
-
-    def __contains__(self, name):
-        return (name in self.handler.request.arguments)
-
-    def getlist(self, name):
-        return self.handler.get_arguments(name, strip=False)
-
-
 class BaseHandler(tornado.web.RequestHandler):
 
     current_user = None
@@ -77,9 +59,6 @@ class BaseHandler(tornado.web.RequestHandler):
         else:
             callback((yield Op(self.db.users.find_one, {"email": email})))
 
-    def get_dict_arguments(self):
-        return BaseMultiDict(self)
-
     def get_user_locale(self):
         user = self.current_user
         if not user:
@@ -87,6 +66,16 @@ class BaseHandler(tornado.web.RequestHandler):
         if not user["locale"]:
             return None
         return tornado.locale.get(user["locale"])
+
+    def get_template_namespace(self):
+        namespace = super(BaseHandler, self).get_template_namespace()
+        namespace.update({
+            'arguments': self.request.arguments,
+            'forms': forms,
+            'helpers': helpers,
+            'options': options,
+        })
+        return namespace
 
     @tornado.gen.engine
     @tornado.web.asynchronous
@@ -115,7 +104,6 @@ class BaseHandler(tornado.web.RequestHandler):
             'current_user':
                 (yield tornado.gen.Task(self.get_current_user_async)),
             'url_path': helpers.Url(self.request.uri).path,
-            'options': options,
             '_next': self.get_argument('next', ''),
             '_posts': posts,
             '_comments': comments,
@@ -142,7 +130,4 @@ class ErrorHandler(BaseHandler):
 
 
 class BaseUIModule(tornado.web.UIModule):
-
-    def render_string(self, path, **kwargs):
-        kwargs['options'] = options
-        return super(BaseUIModule, self).render_string(path, **kwargs)
+    pass

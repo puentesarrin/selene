@@ -1,0 +1,11 @@
+.avatar img { 
+    float: left; 
+    margin: 4px 10px 0px 0px;
+}
+
+.avatar blockquote {
+    border-left: 5px;
+    padding: 0px 0px 0px 60px;
+}
+
+

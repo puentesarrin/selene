@@ -1,13 +1,28 @@
 <div class="row-fluid">
     <div class="span10">
         <div class="row-fluid">
-            <p><strong>{{ comment['name'] }}</strong> {{ _("says") }}:</p>
-            <blockquote>
-                {{ comment['content'] }}
-                <small class="pull-right">
-                    {{ _("Posted") }} {{ comment['date'].strftime('%b %d, %Y') }}
-                </small>
-            </blockquote>
+            {% if options.gravatar_for_comments %}
+                <p>
+                    <img class="avatar" src="{{ helpers.get_gravatar_url(comment['email']) }}" alt="{{ comment['name'] }}">
+                    <strong>{{ comment['name'] }}</strong> {{ _("says") }}
+                </p>
+                <blockquote class="avatar">
+                    {{ comment['content'] }}
+                    <small class="pull-right">
+                        {{ _("Posted") }} {{ comment['date'].strftime('%b %d, %Y') }}
+                    </small>
+                </blockquote>
+            {% else %}
+                <p>
+                    <strong>{{ comment['name'] }}</strong> {{ _("says") }}
+                </p>
+                <blockquote>
+                    {{ comment['content'] }}
+                    <small class="pull-right">
+                        {{ _("Posted") }} {{ comment['date'].strftime('%b %d, %Y') }}
+                    </small>
+                </blockquote>
+            {% end %}
         </div>
     </div>
     <div class="span2">

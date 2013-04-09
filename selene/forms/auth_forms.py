@@ -1,27 +1,29 @@
 # -*- coding: utf-8 *-*
-from wtforms import Form, HiddenField, TextField, PasswordField
+from selene.forms import BaseForm
+from wtforms import HiddenField, TextField, PasswordField
 from wtforms.validators import Required, Email
 
 
-class RegisterForm(Form):
+class RegisterForm(BaseForm):
 
-    name = TextField(validators=[Required()])
+    full_name = TextField(validators=[Required()])
     email = TextField(validators=[Required(), Email()])
     password = PasswordField(validators=[Required()])
 
 
-class LoginForm(Form):
+class LoginForm(BaseForm):
 
-    email = TextField(validators=[Required(), Email()])
-    password = PasswordField(validators=[Required()])
+    email = TextField(validators=[Required('Email address is required'),
+                                  Email('Invalid email address')])
+    password = PasswordField(validators=[Required('Password is required')])
     next_ = HiddenField()
 
 
-class RequestNewPasswordForm(Form):
+class RequestNewPasswordForm(BaseForm):
 
     email = TextField(validators=[Required(), Email()])
 
 
-class ResetPasswordForm(Form):
+class ResetPasswordForm(BaseForm):
 
     password = PasswordField(validators=[Required()])

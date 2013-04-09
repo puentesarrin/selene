@@ -13,14 +13,10 @@ if __name__ == '__main__':
     options.setup_options('selene.conf')
     db = motor.MotorClient(opts.db_uri).open_sync()[opts.db_name]
     logging.info('Connected to MongoDB.')
-    tornado.locale.load_translations("translations")
-    tornado.locale.set_default_locale(opts.default_locale)
-    logging.info('Loaded translations: %s.' %
-        ', '.join(tornado.locale.get_supported_locales()))
     http_server = tornado.httpserver.HTTPServer(Selene(db))
     tornado.web.ErrorHandler = web.ErrorHandler
     http_server.listen(opts.port)
-    logging.info('Listening on %s port.' % opts.port)
+    logging.info('Web server listening on %s port.' % opts.port)
     if opts.use_pyuv:
         from tornado_pyuv import UVLoop
         IOLoop.configure(UVLoop)
