@@ -13,7 +13,7 @@ class RegisterForm(BaseForm):
 
 class LoginForm(BaseForm):
 
-    email = TextField(validators=[Required('E-mail address is required'),
+    email = TextField(validators=[Required('Email address is required'),
                                   Email('Invalid email address')])
     password = PasswordField(validators=[Required('Password is required')])
     next_ = HiddenField()
