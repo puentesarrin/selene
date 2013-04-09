@@ -34,6 +34,7 @@ Core features
 * Supported localization:
    * English (en_US)
    * Spanish (es_ES)
+   * French (fr_FR)
    * Chinese (zh_HK, zh_CN)
 * Support for Google Analytics and Gravatar.
 * Customizable search for publications using regular expressions or full text
