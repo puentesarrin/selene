@@ -21,6 +21,7 @@ Full Name, Nombre completo
 Home, Inicio
 Incorrect user/password combination or invalid account, Usuario y/o contraseña no válidos
 Invalid arguments, Argumentos no válidos
+Invalid email address, Correo electrónico no válido
 List posts, Publicaciones
 Login, Ingresar
 Logout, Salir
@@ -30,9 +31,10 @@ Next post, Siguiente publicación
 New comment, Nuevo comentario
 No one has comment yet, Aún no hay comentarios
 No one has post yet, Aún no hay publicaciones
-No one has tags yet, Aún no hay etiquetas
+#No one has tags yet, Aún no hay etiquetas
 Page not found, Página no encontrada
 Password, Contraseña
+Password is required, La contraseña es requerida
 Posted, Publicado
 Prev, Anterior
 Previous post, Anterior publicación
