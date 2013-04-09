@@ -1,11 +1,12 @@
 # -*- coding: utf-8 *-*
 from selene import options
-from wtforms import (Form, TextField, BooleanField, TextAreaField, RadioField,
+from selene.forms import BaseForm
+from wtforms import (TextField, BooleanField, TextAreaField, RadioField,
                      SelectField)
 from wtforms.validators import Required, Email
 
 
-class NewPostForm(Form):
+class NewPostForm(BaseForm):
 
     def __init__(self, formdata=None, obj=None, prefix='', **kwargs):
         super(NewPostForm, self).__init__(formdata, obj, prefix, **kwargs)
@@ -21,13 +22,13 @@ class NewPostForm(Form):
     text_type = SelectField(validators=[Required()])
 
 
-class NewCommentForm(Form):
+class NewCommentForm(BaseForm):
 
     name = TextField(validators=[Required()])
     email = TextField(validators=[Required(), Email()])
     content = TextAreaField(validators=[Required()])
 
 
-class SearchForm(Form):
+class SearchForm(BaseForm):
 
     q = TextField(validators=[Required()])

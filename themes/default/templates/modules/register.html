@@ -1,23 +1,23 @@
-{% set form = forms.RegisterForm() %}
+{% set form = forms.RegisterForm(locale_code=locale.code) %}
 <form class="form-horizontal" action="/register" method="post">
     <fieldset>
         <legend>{{ _("Register") }}</legend>
         <div class="control-group">
-            {% raw form.name.label(text=_("Full name"), class_="control-label") %}
+            {% raw form.full_name.label(class_="control-label") %}
             <div class="controls">
-                {% raw form.name(placeholder=_("Full name")) %}
+                {% raw form.full_name(placeholder=form.full_name.label.text) %}
             </div>
         </div>
         <div class="control-group">
-            {% raw form.email.label(text=_("Email"), class_="control-label") %}
+            {% raw form.email.label(class_="control-label") %}
             <div class="controls">
-                {% raw form.email(placeholder=_("Email")) %}
+                {% raw form.email(placeholder=form.email.label.text) %}
             </div>
         </div>
         <div class="control-group">
-            {% raw form.password.label(text=_("Password"), class_="control-label") %}
+            {% raw form.password.label(class_="control-label") %}
             <div class="controls">
-                {% raw form.password(placeholder=_("Password")) %}
+                {% raw form.password(placeholder=form.password.label.text) %}
             </div>
         </div>
         {% raw xsrf_form_html() %}
