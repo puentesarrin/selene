@@ -1,4 +1,4 @@
-{% set form = forms.NewPostForm() %}
+{% set form = forms.NewPostForm(locale_code=locale.code) %}
 {% set f = form.content.process_data(post.get('content', '')) %}
 {% if 'status' in post %}
     {% set f = form.status.process_data(post['status']) %}

@@ -1,17 +1,17 @@
-{% set form = forms.LoginForm() %}
+{% set form = forms.LoginForm(locale_code=locale.code) %}
 <form class="form-horizontal" action="/login" method="post">
     <fieldset>
         <legend>{{ _("Login") }}</legend>
         <div class="control-group">
-            {% raw form.email.label(text=_("Email"), class_="control-label") %}
+            {% raw form.email.label(class_="control-label") %}
             <div class="controls">
-                {% raw form.email(placeholder=_("Email")) %}
+                {% raw form.email(placeholder=form.email.label.text) %}
             </div>
         </div>
         <div class="control-group">
-            {% raw form.password.label(text=_("Password"), class_="control-label") %}
+            {% raw form.password.label(class_="control-label") %}
             <div class="controls">
-                {% raw form.password(placeholder=_("Password")) %}
+                {% raw form.password(placeholder=form.password.label.text) %}
             </div>
         </div>
         {% raw form.next_(value=_next or '') %}
