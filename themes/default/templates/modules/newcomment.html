@@ -5,31 +5,31 @@
         <div class="row-fluid">
             <div class="span5">
                 <div class="control-group">
-                    {% raw form.name.label(text=_("Name"), class_="control-label") %}
+                    {% raw form.name.label(class_="control-label") %}
                     <div class="controls">
                         {% if current_user %}
-                            {% raw form.name(placeholder=_("Name"), class_="input-block-level", disabled="disabled", value=current_user['name']) %}
+                            {% raw form.name(placeholder=form.name.label.text, class_="input-block-level", disabled="disabled", value=current_user['name']) %}
                         {% else %}
-                            {% raw form.name(placeholder=_("Name"), class_="input-block-level") %}
+                            {% raw form.name(placeholder=form.name.label.text, class_="input-block-level") %}
                         {% end %}
                     </div>
                 </div>
                 <div class="control-group">
-                    {% raw form.email.label(text=_("Email"), class_="control-label") %}
+                    {% raw form.email.label(class_="control-label") %}
                     <div class="controls">
                         {% if current_user %}
-                            {% raw form.email(placeholder=_("Email"), class_="input-block-level", disabled="disabled", value=current_user['email']) %}
+                            {% raw form.email(placeholder=form.name.label.text, class_="input-block-level", disabled="disabled", value=current_user['email']) %}
                         {% else %}
-                            {% raw form.email(placeholder=_("Email"), class_="input-block-level") %}
+                            {% raw form.email(placeholder=form.name.label.text, class_="input-block-level") %}
                         {% end %}
                     </div>
                 </div>
             </div>
             <div class="span7">
                 <div class="control-group">
-                    {% raw form.content.label(text=_("Content"), class_="control-label") %}
+                    {% raw form.content.label(class_="control-label") %}
                     <div class="controls">
-                        {% raw form.content(placeholder=_("Content"), class_="input-block-level", rows="5") %}
+                        {% raw form.content(placeholder=form.content.label.text, class_="input-block-level", rows="5") %}
                     </div>
                 </div>
                 {% raw xsrf_form_html() %}
