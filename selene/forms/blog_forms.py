@@ -15,7 +15,7 @@ class NewPostForm(BaseForm):
 
     title = TextField(validators=[Required()])
     slug = BooleanField()
-    customslug = TextField()
+    custom_slug = TextField()
     tags = TextField(validators=[Required()])
     content = TextAreaField(validators=[Required()])
     status = RadioField(validators=[Required()])
