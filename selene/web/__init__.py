@@ -32,6 +32,7 @@ class BaseHandler(tornado.web.RequestHandler):
     def get_template_namespace(self):
         namespace = super(BaseHandler, self).get_template_namespace()
         namespace.update({
+            'arguments': self.request.arguments,
             'forms': forms,
             'helpers': helpers,
             'options': options,

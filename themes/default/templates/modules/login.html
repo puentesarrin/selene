@@ -5,7 +5,7 @@
         <div class="control-group">
             {% raw form.email.label(class_="control-label") %}
             <div class="controls">
-                {% raw form.email(placeholder=form.email.label.text) %}
+                {% raw form.email(placeholder=form.email.label.text, value=arguments.get('email', [''])[0]) %}
             </div>
         </div>
         <div class="control-group">
