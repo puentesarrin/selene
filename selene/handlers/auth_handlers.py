@@ -26,7 +26,7 @@ class RegisterHandler(AuthBaseHandler):
         email = self.get_argument("email", "")
         password = self.get_argument("password", "")
         if self.db.users.find_one({'email': email}):
-            self.render('register.html', message='E-mail address already '
+            self.render('register.html', message='Email address already '
                 'registered')
             return
         user = {
@@ -147,7 +147,7 @@ class RequestNewPasswordHandler(AuthBaseHandler):
         email = self.get_argument('email', False)
         if not email:
             self.render('newpassword.html',
-                message="E-mail address is required")
+                message="Email address is required")
             return
         user = self.db.users.find_one({'email': email})
         if user:
