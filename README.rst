@@ -8,7 +8,7 @@ and MongoDB.
 .. important::
 
    For this project we have considered to move all MongoDB operations from
-   PyMongo_ to Motor_, asynchronous Python driver for Tornado_, Any changes
+   PyMongo_ to Motor_, the asynchronous Python driver for Tornado_, any changes
    regarding this can be found in a branch named
    `"motor" <https://github.com/puentesarrin/selene/tree/motor>`_.
 
