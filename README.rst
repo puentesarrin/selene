@@ -36,6 +36,7 @@ Core features
    * English (en_US)
    * Spanish (es_ES)
    * French (fr_FR)
+   * Japanese (ja_JP)
    * Chinese (zh_HK, zh_CN)
 * Support for Google Analytics and Gravatar.
 * Customizable search for publications using regular expressions or full text
@@ -58,6 +59,7 @@ Contributors
 
 * Lowstz Chen (`@lowstz <https://github.com/lowstz>`_)
 * Juan Carlos Farah (`@juancarlosfarah <https://github.com/juancarlosfarah>`_)
+* Luigi Van (`@fdb713 <https://github.com/fdb713>`_)
 
 I want to improve this project with your help... I will watch to all of your
 pull-requests!
