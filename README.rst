@@ -1,8 +1,16 @@
+======
 Selene
 ======
 
 A simple CMS for blogging inspired by my beautiful wife and built with Tornado
 and MongoDB.
+
+.. important::
+
+   For this project we have considered to move all MongoDB operations from
+   PyMongo_ to Motor_, asynchronous Python driver for Tornado_, Any changes
+   regarding this can be found in a branch named
+   `"motor" <https://github.com/puentesarrin/selene/tree/motor>`_.
 
 Requirements
 ------------
@@ -35,6 +43,7 @@ Core features
    * English (en_US)
    * Spanish (es_ES)
    * French (fr_FR)
+   * Japanese (ja_JP)
    * Chinese (zh_HK, zh_CN)
 * Support for Google Analytics and Gravatar.
 * Customizable search for publications using regular expressions or full text
@@ -57,12 +66,14 @@ Contributors
 
 * Lowstz Chen (`@lowstz <https://github.com/lowstz>`_)
 * Juan Carlos Farah (`@juancarlosfarah <https://github.com/juancarlosfarah>`_)
+* Luigi Van (`@fdb713 <https://github.com/fdb713>`_)
 
 I want to improve this project with your help... I will watch to all of your
 pull-requests!
 
 .. _Tornado: http://www.tornadoweb.org/
-.. _Motor: https://motor.readthedocs.org/
+.. _PyMongo: http://api.mongodb.org/python/current/
+.. _Motor: https://motor.readthedocs.org/en/latest/
 .. _py-bcrypt: https://code.google.com/p/py-bcrypt/
 .. _docutils: http://sourceforge.net/projects/docutils/
 .. _Misaka: https://github.com/FSX/misaka

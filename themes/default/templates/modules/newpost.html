@@ -54,7 +54,7 @@
                     <div class="controls">
                         {% for subfield in form.status %}
                             {% raw subfield() %}
-                            {% raw subfield.label() %}
+                            {% raw subfield.label(_(subfield.label.text)) %}
                         {% end %}
                     </div>
                 </div>
