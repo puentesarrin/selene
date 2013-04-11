@@ -78,7 +78,7 @@ class RecentCommentsModule(BaseUIModule):
 class TagsCloudModule(BaseUIModule):
 
     def render(self, tags):
-        return self.render_string('modules/tagscloud.html', tags=tags)
+        return self.render_string('modules/tagcloud.html', tags=tags)
 
 
 class VoteModule(BaseUIModule):
