@@ -39,34 +39,35 @@ class NewPostHandler(BaseHandler):
         form = forms.PostForm(self.request.arguments,
             locale_code=self.locale.code)
         if form.validate():
-            if form.data['slug']:
-                slug = self.get_argument('customslug', '')
+            if form.data['custom_slug']:
+                slug = form.data['slug']
             else:
-                slug = helpers.get_slug(self.get_argument('title'),
+                slug = helpers.get_slug(form.data['title'],
                     stop_words=options.slug_stop_words)
-            if self.db.posts.find_one({'slug': slug}, {'_id': 1}):
+            if self.db.posts.find_one({'slug': slug}, {'_id': 1}) or \
+                slug.strip() == '':
                 self.render('newpost.html',
                     message=constants.POST_IS_ALREADY_REGISTERED, form=form)
-                return
-            html_content, plain_content = helpers.get_html_and_plain(
-                form.data['content'], form.data['text_type'])
-            post = form.data
-            post.update({
-                'slug': slug,
-                'date': datetime.datetime.now(),
-                'tags': helpers.remove_duplicates(form.data['tags']),
-                'html_content': html_content,
-                'plain_content': plain_content,
-                'author': self.current_user['name'],
-                'email': self.current_user['email'],
-                'votes': 0,
-                'views': 0
-            })
-            self.db.posts.insert(post)
-            if post['status'] == 'published':
-                self.redirect('/post/%s' % post['slug'])
             else:
-                self.redirect('/')
+                html_content, plain_content = helpers.get_html_and_plain(
+                    form.data['content'], form.data['text_type'])
+                post = form.data
+                post.update({
+                    'slug': slug,
+                    'date': datetime.datetime.now(),
+                    'tags': helpers.remove_duplicates(form.data['tags']),
+                    'html_content': html_content,
+                    'plain_content': plain_content,
+                    'author': self.current_user['name'],
+                    'email': self.current_user['email'],
+                    'votes': 0,
+                    'views': 0
+                })
+                self.db.posts.insert(post)
+                if post['status'] == 'published':
+                    self.redirect('/post/%s' % post['slug'])
+                else:
+                    self.redirect('/')
         else:
             self.render('newpost.html', message=form.errors, form=form)
 
@@ -93,36 +94,43 @@ class EditPostHandler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self, slug):
-        post = self.db.posts.find_one({'slug': slug})
+        post = self.db.posts.find_one({'slug': slug}, {'_id': 0})
         if not post:
             raise tornado.web.HTTPError(404)
-        self.render("newpost.html", post=post, new=False)
+        post['tags'] = ','.join(post['tags'])
+        form = forms.PostForm(locale_code=self.locale.code, **post)
+        self.render("editpost.html", form=form)
 
     @tornado.web.authenticated
     def post(self, slug):
-        slug_flag = self.get_argument('slug', False)
-        if slug_flag:
-            new_slug = self.get_argument('customslug', '')
+        form = forms.PostForm(self.request.arguments,
+            locale_code=self.locale.code)
+        if form.validate():
+            slug_flag = self.get_argument('slug', False)
+            if slug_flag:
+                new_slug = self.get_argument('customslug', '')
+            else:
+                new_slug = helpers.get_slug(self.get_argument('title'),
+                    stop_words=options.slug_stop_words)
+            html_content, plain_content = helpers.get_html_and_plain(
+                self.get_argument('content'), self.get_argument('text_type'))
+            new_post = {
+                'title': self.get_argument('title'),
+                'slug': new_slug,
+                'tags': helpers.remove_duplicates(self.get_argument('tags')),
+                'content': self.get_argument('content'),
+                'html_content': html_content,
+                'plain_content': plain_content,
+                'status': self.get_argument('status'),
+                'text_type': self.get_argument('text_type')
+            }
+            self.db.posts.update({'slug': slug}, {'$set': new_post})
+            if new_post['status'] == 'published':
+                self.redirect('/post/%s' % new_slug)
+            else:
+                self.redirect('/')
         else:
-            new_slug = helpers.get_slug(self.get_argument('title'),
-                stop_words=options.slug_stop_words)
-        html_content, plain_content = helpers.get_html_and_plain(
-            self.get_argument('content'), self.get_argument('text_type'))
-        new_post = {
-            'title': self.get_argument('title'),
-            'slug': new_slug,
-            'tags': helpers.remove_duplicates(self.get_argument('tags')),
-            'content': self.get_argument('content'),
-            'html_content': html_content,
-            'plain_content': plain_content,
-            'status': self.get_argument('status'),
-            'text_type': self.get_argument('text_type')
-        }
-        self.db.posts.update({'slug': slug}, {'$set': new_post})
-        if new_post['status'] == 'published':
-            self.redirect('/post/%s' % new_slug)
-        else:
-            self.redirect('/')
+            self.render('editpost.html', message=form.errors, form=form)
 
 
 class DeletePostHandler(BaseHandler):

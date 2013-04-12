@@ -8,6 +8,12 @@ class NewPostModule(BaseUIModule):
         return self.render_string('modules/newpost.html', form=form)
 
 
+class EditPostModule(BaseUIModule):
+
+    def render(self, form):
+        return self.render_string('modules/editpost.html', form=form)
+
+
 class PostModule(BaseUIModule):
 
     def render(self, post, comments, linkable=False):
