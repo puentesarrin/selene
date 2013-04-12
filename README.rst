@@ -44,7 +44,8 @@ Core features
    * Spanish (es_ES)
    * French (fr_FR)
    * Japanese (ja_JP)
-   * Chinese (zh_HK, zh_CN)
+   * Chinese Simplified (zh_CN)
+   * Chinese Traditional (zh_HK, zh_TW)
 * Support for Google Analytics and Gravatar.
 * Customizable search for publications using regular expressions or full text
   search.

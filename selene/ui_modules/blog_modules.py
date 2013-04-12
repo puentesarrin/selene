@@ -4,9 +4,8 @@ from selene.web import BaseUIModule
 
 class NewPostModule(BaseUIModule):
 
-    def render(self, message, post, new):
-        return self.render_string('modules/newpost.html', message=message,
-            post=post, new=new)
+    def render(self, post, new):
+        return self.render_string('modules/newpost.html', post=post, new=new)
 
 
 class PostModule(BaseUIModule):
@@ -78,7 +77,7 @@ class RecentCommentsModule(BaseUIModule):
 class TagsCloudModule(BaseUIModule):
 
     def render(self, tags):
-        return self.render_string('modules/tagscloud.html', tags=tags)
+        return self.render_string('modules/tagcloud.html', tags=tags)
 
 
 class VoteModule(BaseUIModule):
