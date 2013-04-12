@@ -28,9 +28,8 @@ class RegisterModule(BaseUIModule):
 
 class ResetPasswordModule(BaseUIModule):
 
-    def render(self, reset_hash):
-        return self.render_string('modules/resetpassword.html',
-            reset_hash=reset_hash)
+    def render(self, form):
+        return self.render_string('modules/resetpassword.html', form=form)
 
 
 class NewPasswordModule(BaseUIModule):
