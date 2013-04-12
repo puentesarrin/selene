@@ -106,27 +106,23 @@ class EditPostHandler(BaseHandler):
         form = forms.PostForm(self.request.arguments,
             locale_code=self.locale.code)
         if form.validate():
-            slug_flag = self.get_argument('slug', False)
-            if slug_flag:
-                new_slug = self.get_argument('customslug', '')
+            if form.data['custom_slug']:
+                slug = form.data['slug']
             else:
-                new_slug = helpers.get_slug(self.get_argument('title'),
+                slug = helpers.get_slug(form.data['title'],
                     stop_words=options.slug_stop_words)
             html_content, plain_content = helpers.get_html_and_plain(
                 self.get_argument('content'), self.get_argument('text_type'))
-            new_post = {
-                'title': self.get_argument('title'),
-                'slug': new_slug,
+            post = form.data
+            post.update({
+                'slug': slug,
                 'tags': helpers.remove_duplicates(self.get_argument('tags')),
-                'content': self.get_argument('content'),
                 'html_content': html_content,
                 'plain_content': plain_content,
-                'status': self.get_argument('status'),
-                'text_type': self.get_argument('text_type')
-            }
-            self.db.posts.update({'slug': slug}, {'$set': new_post})
-            if new_post['status'] == 'published':
-                self.redirect('/post/%s' % new_slug)
+            })
+            self.db.posts.update({'slug': slug}, {'$set': post})
+            if post['status'] == 'published':
+                self.redirect('/post/%s' % slug)
             else:
                 self.redirect('/')
         else:
