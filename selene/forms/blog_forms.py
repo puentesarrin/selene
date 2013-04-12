@@ -16,8 +16,8 @@ class PostForm(BaseForm):
         self.text_type.choices = options.get_allowed_text_types()
 
     title = TextField(validators=[Required(constants.TITLE_IS_REQUIRED)])
-    slug = BooleanField()
-    custom_slug = TextField()
+    custom_slug = BooleanField()
+    slug = TextField()
     tags = TextField(validators=[Required(constants.TAGS_ARE_REQUIRED)])
     content = TextAreaField(validators=[
         Required(constants.CONTENT_IS_REQUIRED)])

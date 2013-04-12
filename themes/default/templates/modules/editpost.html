@@ -1,6 +1,6 @@
- <form class="form" action="/post/new" method="post">
+<form class="form" action="{{ '/post/%s/edit' % form.data['slug'] }}" method="post">
     <fieldset>
-        <legend><h2>{{ _("Write a new post") }}</h2></legend>
+        <legend><h2>{{ _("Edit post") }}: {{ form.data['title'] }}</h2></legend>
         <div class="row-fluid">
             <div class="span5">
                 <div class="control-group">
@@ -51,8 +51,8 @@
     </fieldset>
     <div class="form-actions">
         <button type="submit" class="btn btn-primary">
-            <i class="icon-ok"></i>{{ _("Save") }}
+            <i class="icon-ok"></i>{{ _("Edit") }}
         </button>
-        <a href="/posts" class="btn">{{ _("Cancel") }}</a>
+        <a href="{{ '/post/%s' % form.data['slug'] }}" class="btn">{{ _("Cancel") }}</a>
     </div>
 </form>
