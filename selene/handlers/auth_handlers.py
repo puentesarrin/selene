@@ -59,7 +59,8 @@ class LoginHandler(AuthBaseHandler):
 
     def get(self):
         self.render("login.html",
-            form=forms.LoginForm(locale_code=self.locale.code))
+            form=forms.LoginForm(locale_code=self.locale.code,
+                next_=self.get_argument('next', '/')))
 
     def post(self):
         form = forms.LoginForm(self.request.arguments,
