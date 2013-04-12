@@ -1,11 +1,10 @@
-{% set form = forms.LoginForm(locale_code=locale.code) %}
 <form class="form-horizontal" action="/login" method="post">
     <fieldset>
         <legend>{{ _("Login") }}</legend>
         <div class="control-group">
             {% raw form.email.label(class_="control-label") %}
             <div class="controls">
-                {% raw form.email(placeholder=form.email.label.text, value=arguments.get('email', [''])[0]) %}
+                {% raw form.email(placeholder=form.email.label.text) %}
             </div>
         </div>
         <div class="control-group">
@@ -14,7 +13,7 @@
                 {% raw form.password(placeholder=form.password.label.text) %}
             </div>
         </div>
-        {% raw form.next_(value=_next or '') %}
+        {% raw form.next_() %}
         {% raw xsrf_form_html() %}
         <div class="control-group">
             <div class="controls">

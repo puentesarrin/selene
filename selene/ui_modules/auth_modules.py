@@ -4,8 +4,8 @@ from selene.web import BaseUIModule
 
 class LoginModule(BaseUIModule):
 
-    def render(self, _next):
-        return self.render_string('modules/login.html', _next=_next)
+    def render(self, form):
+        return self.render_string('modules/login.html', form=form)
 
 
 class GoogleLoginModule(BaseUIModule):
@@ -22,18 +22,17 @@ class TwitterLoginModule(BaseUIModule):
 
 class RegisterModule(BaseUIModule):
 
-    def render(self):
-        return self.render_string('modules/register.html')
+    def render(self, form):
+        return self.render_string('modules/register.html', form=form)
 
 
 class ResetPasswordModule(BaseUIModule):
 
-    def render(self, reset_hash):
-        return self.render_string('modules/resetpassword.html',
-            reset_hash=reset_hash)
+    def render(self, form):
+        return self.render_string('modules/resetpassword.html', form=form)
 
 
 class NewPasswordModule(BaseUIModule):
 
-    def render(self):
-        return self.render_string('modules/newpassword.html')
+    def render(self, form):
+        return self.render_string('modules/newpassword.html', form=form)

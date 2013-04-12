@@ -28,6 +28,31 @@
                     {% block sidebar %}{% end %}
                 </div>
                 <div class="span7">
+                    {% try %}
+                        {% if isinstance(message, str) %}
+                            <div class="alert alert-error">
+                                <ul><li>{{ _(message) }}</li></ul>
+                            </div>
+                        {% elif isinstance(message, dict) %}
+                            <div class="alert alert-error">
+                                <ul>
+                                {% for k, v in message.iteritems() %}
+                                    <li>{{ _(v[0]) }}</li>
+                                {% end %}
+                                </ul>
+                            </div>
+                        {% elif isinstance(message, list) %}
+                            <div class="alert alert-error">
+                                <ul>
+                                {% for m in message %}
+                                    <li>{{ _(m) }}</li>
+                                {% end %}
+                                </ul>
+                            </div>
+                        {% end %}
+                    {% except %}
+                        {# Catching exception when message is not present #}
+                    {% end %}
                     {% block content %}{% end %}
                 </div>
                 <div class="span3">

@@ -1,5 +1,5 @@
 <fieldset>
-    <legend>{{ _("Tags cloud") }}</legend>
+    <legend>{{ _("Tag cloud") }}</legend>
     {% if len(tags) > 0 %}
         <div class="row-fluid">
             {% for tag in tags %}
@@ -13,7 +13,7 @@
         </div>
     {% else %}
         <div class="alert alert-info">
-            {{ _("No one has tags yet") }}
+            {{ _("No one has added any tags yet") }}
         </div>
     {% end %}
 </fieldset>
