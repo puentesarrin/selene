@@ -35,5 +35,5 @@ class ResetPasswordModule(BaseUIModule):
 
 class NewPasswordModule(BaseUIModule):
 
-    def render(self):
-        return self.render_string('modules/newpassword.html')
+    def render(self, form):
+        return self.render_string('modules/newpassword.html', form=form)

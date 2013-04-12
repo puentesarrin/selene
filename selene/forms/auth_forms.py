@@ -26,7 +26,8 @@ class LoginForm(BaseForm):
 
 class RequestNewPasswordForm(BaseForm):
 
-    email = TextField(validators=[Required(), Email()])
+    email = TextField(validators=[Required(constants.EMAIL_IS_REQUIRED),
+                                  Email(constants.EMAIL_IS_INVALID)])
 
 
 class ResetPasswordForm(BaseForm):
