@@ -4,7 +4,7 @@ import datetime
 import tornado.auth
 import tornado.web
 
-from selene import forms, helpers
+from selene import constants, forms, helpers
 from selene.web import BaseHandler
 from tornado.options import options
 
@@ -19,29 +19,32 @@ class AuthBaseHandler(BaseHandler):
 class RegisterHandler(AuthBaseHandler):
 
     def get(self):
-        self.render("register.html", message='')
+        self.render("register.html",
+            form=forms.RegisterForm(locale_code=self.locale.code))
 
     def post(self):
-        name = self.get_argument("name", "")
-        email = self.get_argument("email", "")
-        password = self.get_argument("password", "")
-        if self.db.users.find_one({'email': email}):
-            self.render('register.html', message='Email address already '
-                'registered')
-            return
-        user = {
-            "name": name,
-            "email": email,
-            "password": bcrypt.hashpw(password, bcrypt.gensalt()),
-            'enabled': False,
-            'join': datetime.datetime.now(),
-            'join_hash': helpers.generate_md5(),
-            "locale": options.default_language
-            }
-        self.db.users.insert(user)
-        self.smtp.send('Confirm your account', 'newuser.html', user['email'],
-            {'user': user})
-        self.redirect("/login")
+        form = forms.RegisterForm(self.request.arguments,
+            locale_code=self.locale.code)
+        if form.validate():
+            if self.db.users.find_one({'email': form.data['email']}):
+                self.render('register.html',
+                    message=constants.EMAIL_IS_ALREADY_REGISTERED, form=form)
+            else:
+                user = form.data
+                user.update({
+                    "password": bcrypt.hashpw(form.data['password'],
+                        bcrypt.gensalt()),
+                    'enabled': False,
+                    'join': datetime.datetime.now(),
+                    'join_hash': helpers.generate_md5(),
+                    "locale": options.default_language
+                })
+                self.db.users.insert(user)
+                self.smtp.send(constants.CONFIRM_YOUR_ACCOUNT, 'newuser.html',
+                    user['email'], {'user': user})
+                self.redirect("/login")
+        else:
+            self.render('register.html', message=form.errors, form=form)
 
 
 class ConfirmAccountHandler(AuthBaseHandler):
@@ -55,30 +58,27 @@ class ConfirmAccountHandler(AuthBaseHandler):
 class LoginHandler(AuthBaseHandler):
 
     def get(self):
-        self.render("login.html", message=None)
+        self.render("login.html",
+            form=forms.LoginForm(locale_code=self.locale.code))
 
     def post(self):
         form = forms.LoginForm(self.request.arguments,
             locale_code=self.locale.code)
         if form.validate():
-            email = self.get_argument("email")
-            password = self.get_argument("password")
-            next_ = self.get_argument('next_', '/')
-            if email and password:
-                user = self.db.users.find_one({"email": email})
-                if user:
-                    if user['enabled']:
-                        pass_check = bcrypt.hashpw(password,
-                            user["password"]) == user["password"]
-                        if pass_check:
-                            self.set_secure_cookie("current_user",
-                                                   user["email"])
-                            self.redirect(next_)
-                            return
-            self.render('login.html', message="Incorrect user/password "
-                        "combination or invalid account")
+            user = self.db.users.find_one({"email": form.data['email']})
+            if user:
+                if user['enabled']:
+                    pass_check = bcrypt.hashpw(form.data['password'],
+                        user["password"]) == user["password"]
+                    if pass_check:
+                        self.set_secure_cookie("current_user",
+                                               user["email"])
+                        self.redirect(form.data['next_'])
+                        return
+            self.render('login.html',
+                message=constants.INCORRECT_USER_PASSWORD, form=form)
         else:
-            self.render('login.html', message=form.errors)
+            self.render('login.html', message=form.errors, form=form)
 
 
 class LoginGoogleHandler(AuthBaseHandler, tornado.auth.GoogleMixin):
