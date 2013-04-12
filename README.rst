@@ -49,18 +49,6 @@ Core features
 * Customizable search for publications using regular expressions or full text
   search.
 
-TODO list
----------
-
-* Motor!
-* More text types: txt2tags, etc.
-* Forms validation and escaping
-* Support for RSS with XML files and aggressive caching (No templates)
-* Support for multi-blogging
-* Support for third-party and customizable authentication (Google, Facebook
-  and Twitter)
-* "Installation wizard"
-
 Contributors
 ------------
 
