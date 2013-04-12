@@ -141,7 +141,7 @@ class LoginTwitterHandler(AuthBaseHandler, tornado.auth.TwitterMixin):
 class RequestNewPasswordHandler(AuthBaseHandler):
 
     def get(self):
-        self.render('newpassword.html', message='')
+        self.render('newpassword.html')
 
     def post(self):
         email = self.get_argument('email', False)
@@ -165,7 +165,7 @@ class RequestNewPasswordHandler(AuthBaseHandler):
 class ResetPasswordHandler(AuthBaseHandler):
 
     def get(self, reset_hash=''):
-        self.render('resetpassword.html', message='', reset_hash=reset_hash)
+        self.render('resetpassword.html', reset_hash=reset_hash)
 
     def post(self, reset_hash=None):
         reset_hash = self.get_argument('hash', False)
