@@ -74,7 +74,7 @@ class LoginHandler(AuthBaseHandler):
                     if pass_check:
                         self.set_secure_cookie("current_user",
                                                user["email"])
-                        self.redirect(form.data['next_'])
+                        self.redirect(form.data['next_'] or "/")
                         return
             self.render('login.html',
                 message=constants.INCORRECT_USER_PASSWORD, form=form)
