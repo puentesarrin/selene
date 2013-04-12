@@ -141,25 +141,28 @@ class LoginTwitterHandler(AuthBaseHandler, tornado.auth.TwitterMixin):
 class RequestNewPasswordHandler(AuthBaseHandler):
 
     def get(self):
-        self.render('newpassword.html')
+        self.render('newpassword.html',
+            form=forms.RequestNewPasswordForm(locale_code=self.locale.code))
 
     def post(self):
-        email = self.get_argument('email', False)
-        if not email:
+        form = forms.RequestNewPasswordForm(self.request.arguments,
+            locale_code=self.locale.code)
+        if form.validate():
+            user = self.db.users.find_one({'email': form.data['email']})
+            if user:
+                reset_hash = helpers.generate_md5()
+                user = self.db.users.find_and_modify(
+                    {'email': form.data['email']},
+                    {'$set': {'reset_hash': reset_hash, 'enabled': True},
+                    '$unset': {'join_hash': 1}}, new=True)
+                self.smtp.send(constants.RESET_PASSWORD, 'newpassword.html',
+                    user["email"], {'user': user})
+                self.redirect('/')
+                return
             self.render('newpassword.html',
-                message="Email address is required")
-            return
-        user = self.db.users.find_one({'email': email})
-        if user:
-            reset_hash = helpers.generate_md5()
-            user = self.db.users.find_and_modify({'email': email},
-                {'$set': {'reset_hash': reset_hash, 'enabled': True},
-                '$unset': {'join_hash': 1}}, new=True)
-            self.smtp.send('Reset password', 'newpassword.html',
-                user["email"], {'user': user})
-            self.redirect('/')
-            return
-        self.render('newpassword.html', message='User does not exist')
+                message=constants.USER_IS_NOT_EXIST)
+        else:
+            self.render('newpassword.html', message=form.errors, form=form)
 
 
 class ResetPasswordHandler(AuthBaseHandler):
