@@ -4,9 +4,8 @@ from selene.web import BaseUIModule
 
 class NewPostModule(BaseUIModule):
 
-    def render(self, message, post, new):
-        return self.render_string('modules/newpost.html', message=message,
-            post=post, new=new)
+    def render(self, post, new):
+        return self.render_string('modules/newpost.html', post=post, new=new)
 
 
 class PostModule(BaseUIModule):

@@ -6,11 +6,6 @@
 {% if 'text_type' in post %}
     {% set f = form.text_type.process_data(post['text_type']) %}
 {% end %}
-{% if message %}
-    <div class="alert alert-error">
-        {{ _(message) }}
-    </div>
-{% end %}
 {% if new %}
     <form class="form" action="/post/new" method="post">
 {% else %}

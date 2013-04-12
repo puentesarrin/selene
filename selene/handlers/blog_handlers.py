@@ -31,7 +31,7 @@ class NewPostHandler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self):
-        self.render('newpost.html', message='', post={}, new=True)
+        self.render('newpost.html', post={}, new=True)
 
     @tornado.web.authenticated
     def post(self):
@@ -96,7 +96,7 @@ class EditPostHandler(BaseHandler):
         post = self.db.posts.find_one({'slug': slug})
         if not post:
             raise tornado.web.HTTPError(404)
-        self.render("newpost.html", message='', post=post, new=False)
+        self.render("newpost.html", post=post, new=False)
 
     @tornado.web.authenticated
     def post(self, slug):
