@@ -161,7 +161,7 @@ class RequestNewPasswordHandler(AuthBaseHandler):
                 self.redirect('/')
                 return
             self.render('newpassword.html',
-                message=constants.USER_IS_NOT_EXIST)
+                message=constants.USER_IS_NOT_EXIST, form=form)
         else:
             self.render('newpassword.html', message=form.errors, form=form)
 

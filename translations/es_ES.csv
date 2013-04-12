@@ -3,6 +3,7 @@ Cancel, Cancelar
 Click to comment, Haz clic aquí para comentar
 Commented on post, Comentado en la publicación
 Comments, Comentarios
+Confirm your account, Confirma tu cuenta
 Content, Contenido
 Custom Slug, URL personalizado
 Date, Fecha
@@ -16,8 +17,10 @@ Edit comment, Editar comentario
 Edit post, Editar publicación
 Email, Correo electrónico
 Email address already registered, El correo electrónico ya se encuentra registrado
+Email address is invalid, El correo electrónico no tiene un formato válido
 Email address is required, El correo electrónico es requerido
 Full Name, Nombre completo
+Full Name is required, El nombre completo es requerido
 Home, Inicio
 Incorrect user/password combination or invalid account, Usuario y/o contraseña no válidos
 Invalid arguments, Argumentos no válidos
