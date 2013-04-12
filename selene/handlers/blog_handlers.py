@@ -4,7 +4,7 @@ import re
 import tornado.web
 
 from bson.objectid import ObjectId
-from selene import helpers
+from selene import constants, forms, helpers
 from selene.web import BaseHandler
 from tornado.options import options
 
@@ -31,44 +31,44 @@ class NewPostHandler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self):
-        self.render('newpost.html', post={}, new=True)
+        self.render('newpost.html',
+            form=forms.PostForm(locale_code=self.locale.code))
 
     @tornado.web.authenticated
     def post(self):
-        slug_flag = self.get_argument('slug', False)
-        if slug_flag:
-            slug = self.get_argument('customslug', '')
+        form = forms.PostForm(self.request.arguments,
+            locale_code=self.locale.code)
+        if form.validate():
+            if form.data['slug']:
+                slug = self.get_argument('customslug', '')
+            else:
+                slug = helpers.get_slug(self.get_argument('title'),
+                    stop_words=options.slug_stop_words)
+            if self.db.posts.find_one({'slug': slug}, {'_id': 1}):
+                self.render('newpost.html',
+                    message=constants.POST_IS_ALREADY_REGISTERED, form=form)
+                return
+            html_content, plain_content = helpers.get_html_and_plain(
+                form.data['content'], form.data['text_type'])
+            post = form.data
+            post.update({
+                'slug': slug,
+                'date': datetime.datetime.now(),
+                'tags': helpers.remove_duplicates(form.data['tags']),
+                'html_content': html_content,
+                'plain_content': plain_content,
+                'author': self.current_user['name'],
+                'email': self.current_user['email'],
+                'votes': 0,
+                'views': 0
+            })
+            self.db.posts.insert(post)
+            if post['status'] == 'published':
+                self.redirect('/post/%s' % post['slug'])
+            else:
+                self.redirect('/')
         else:
-            slug = helpers.get_slug(self.get_argument('title'),
-                stop_words=options.slug_stop_words)
-        html_content, plain_content = helpers.get_html_and_plain(
-            self.get_argument('content'), self.get_argument('text_type'))
-        post = {
-            'title': self.get_argument('title'),
-            'slug': slug,
-            'date': datetime.datetime.now(),
-            'tags': helpers.remove_duplicates(self.get_argument('tags')),
-            'text_type': self.get_argument('text_type'),
-            'content': self.get_argument('content'),
-            'html_content': html_content,
-            'plain_content': plain_content,
-            'status': self.get_argument('status'),
-            'text_type': self.get_argument('text_type'),
-            'author': self.current_user['name'],
-            'email': self.current_user['email'],
-            'votes': 0,
-            'views': 0
-        }
-        existing_post = self.db.posts.find_one({'slug': slug}, {'_id': 1})
-        if existing_post:
-            self.render('newpost.html', message=('There are already an '
-                'existing post with this title or slug.'), post={}, new=True)
-            return
-        self.db.posts.insert(post)
-        if post['status'] == 'published':
-            self.redirect('/post/%s' % post['slug'])
-        else:
-            self.redirect('/')
+            self.render('newpost.html', message=form.errors, form=form)
 
 
 class PostHandler(BaseHandler):

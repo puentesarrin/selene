@@ -1,41 +1,25 @@
-{% set form = forms.NewPostForm(locale_code=locale.code) %}
-{% set f = form.content.process_data(post.get('content', '')) %}
-{% if 'status' in post %}
-    {% set f = form.status.process_data(post['status']) %}
-{% end %}
-{% if 'text_type' in post %}
-    {% set f = form.text_type.process_data(post['text_type']) %}
-{% end %}
-{% if new %}
-    <form class="form" action="/post/new" method="post">
-{% else %}
-    <form class="form" action="{{ '/post/%s/edit' % post['slug'] }}" method="post">
-{% end %}
+ <form class="form" action="/post/new" method="post">
     <fieldset>
-        {% if new %}
-            <legend><h2>{{ _("Write a new post") }}</h2></legend>
-        {% else %}
-            <legend><h2>{{ _("Edit post") }}: {{ post.get('title', '') }}</h2></legend>
-        {% end %}
+        <legend><h2>{{ _("Write a new post") }}</h2></legend>
         <div class="row-fluid">
             <div class="span5">
                 <div class="control-group">
                     {% raw form.title.label(class_="control-label") %}
                     <div class="controls">
-                        {% raw form.title(value=post.get('title', ''), placeholder=form.title.label.text, class_="input-block-level") %}
+                        {% raw form.title(placeholder=form.title.label.text, class_="input-block-level") %}
                     </div>
                 </div>
                 <div class="control-group">
                     {% raw form.tags.label(class_="control-label") %}
                     <div class="controls">
-                        {% raw form.tags(value=','.join(post.get('tags', [])), placeholder=form.tags.label.text, class_="input-block-level") %}
+                        {% raw form.tags(placeholder=form.tags.label.text, class_="input-block-level") %}
                     </div>
                 </div>
                 <div class="control-group">
                     {% raw form.slug.label(class_="control-label") %}
                     <div class="controls">
                         {% raw form.slug() %}
-                        {% raw form.custom_slug(value=post.get('slug', ''), placeholder=form.custom_slug.label.text, class_="input-block-level") %}
+                        {% raw form.custom_slug(placeholder=form.custom_slug.label.text, class_="input-block-level") %}
                     </div>
                 </div>
                 <div class="control-group">
@@ -66,16 +50,9 @@
         </div>
     </fieldset>
     <div class="form-actions">
-        {% if new %}
-            <button type="submit" class="btn btn-primary">
-                <i class="icon-ok"></i>Save it
-            </button>
-            <a href="/posts" class="btn">{{ _("Cancel") }}</a>
-        {% else %}
-            <button type="submit" class="btn btn-primary">
-                <i class="icon-edit"></i>{{ _("Edit") }}
-            </button>
-            <a href="{{ '/post/%s' % post['slug'] }}" class="btn">{{ _("Cancel") }}</a>
-        {% end %}
+        <button type="submit" class="btn btn-primary">
+            <i class="icon-ok"></i>{{ _("Save") }}
+        </button>
+        <a href="/posts" class="btn">{{ _("Cancel") }}</a>
     </div>
 </form>

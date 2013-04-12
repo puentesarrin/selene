@@ -5,6 +5,7 @@ Commented on post, Comentado en la publicación
 Comments, Comentarios
 Confirm your account, Confirma tu cuenta
 Content, Contenido
+Content is required, El contenido es requerido
 Custom Slug, URL personalizado
 Date, Fecha
 Delete, Eliminar
@@ -29,6 +30,7 @@ List posts, Publicaciones
 Login, Ingresar
 Logout, Salir
 Name, Nombre
+Name is required, El nombre es requerido
 Next, Siguiente
 Next post, Siguiente publicación
 New comment, Nuevo comentario
@@ -48,18 +50,24 @@ Register, Registrarse
 Request a new password, Solicitar una nueva contraseña
 Reset password, Restablecer contraseña
 RSS Syndication, Sindicación RSS
+Save, Guardar
 says, comentó
 Search, Buscar
 Search results for, Resultados de búsqueda para
 Slug, URL
 Status, Estado
+Status is required, El estado es requerido
 Submit comment, Comentar
 Tag, Etiqueta
 Tags, Etiquetas
 Tag cloud, Nube de etiquetas
+Tags are required, Las etiquetas son requeridas
+There are already an existing post with this title or slug, Ya existe una publicación registrada con el mismo título o URL
 Third-party login, Ingresar a través de
 Text Type, Tipo de texto
+Text type is required
 Title, Título
+Title is required, El título es requerido
 Unpublished, No publicado
 User does not exist, El usuario no existe
 View more tags, Ver más etiquetas
