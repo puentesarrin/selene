@@ -32,4 +32,6 @@ class RequestNewPasswordForm(BaseForm):
 
 class ResetPasswordForm(BaseForm):
 
-    password = PasswordField(validators=[Required()])
+    password = PasswordField(validators=[
+        Required(constants.PASSWORD_IS_REQUIRED)])
+    reset_hash = HiddenField()

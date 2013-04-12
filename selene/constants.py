@@ -8,4 +8,5 @@ INCORRECT_USER_PASSWORD = ('Incorrect user/password combination or invalid '
                            'account')
 PASSWORD_IS_REQUIRED = 'Password is required'
 RESET_PASSWORD = 'Reset password'
+UPDATED_PASSWORD = 'Updated password'
 USER_IS_NOT_EXIST = 'User does not exist'
