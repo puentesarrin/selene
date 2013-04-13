@@ -112,11 +112,11 @@ class EditPostHandler(BaseHandler):
                 slug = helpers.get_slug(form.data['title'],
                     stop_words=options.slug_stop_words)
             html_content, plain_content = helpers.get_html_and_plain(
-                self.get_argument('content'), self.get_argument('text_type'))
+                form.data['content'], form.data['text_type'])
             post = form.data
             post.update({
                 'slug': slug,
-                'tags': helpers.remove_duplicates(self.get_argument('tags')),
+                'tags': helpers.remove_duplicates(form.data['tags']),
                 'html_content': html_content,
                 'plain_content': plain_content,
             })
