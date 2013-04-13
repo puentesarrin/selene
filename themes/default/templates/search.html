@@ -15,7 +15,7 @@
     </div>
     {% if len(posts) == 0 %}
         <div class="alert alert-info">
-            No found results for "{{ q }}"
+            {{ _("No found results for") }} "{{ q }}"
         </div>
     {% else %}
         <div class="row-fluid">
