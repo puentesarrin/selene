@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
- | {{ _("Search results for") }} "{{ q }}"
+ | {{ _("Search results for") }} "{{ form.data['q'] }}"
 {% end %}
 
 {% block header %}
@@ -9,13 +9,13 @@
 
 {% block content %}
 <fieldset>
-    <legend>{{ _("Search results for") }} "{{ q }}"</legend>
+    <legend>{{ _("Search results for") }} "{{ form.data['q'] }}"</legend>
     <div class="row-fluid">
-        {% module SearchModule(header=False, q=q) %}
+        {% module SearchModule(header=False, form=form) %}
     </div>
     {% if len(posts) == 0 %}
         <div class="alert alert-info">
-            {{ _("No found results for") }} "{{ q }}"
+            {{ _("No found results for") }} "{{ form.data['q'] }}"
         </div>
     {% else %}
         <div class="row-fluid">
@@ -29,7 +29,7 @@
         </div>
     {% end %}
     <div class="row-fluid">
-        {% module SearchPostsPaginatorModule(q=q, total=total, page=page, page_size=page_size) %}
+        {% module SearchPostsPaginatorModule(q=form.data["q"], total=total, page=page, page_size=page_size) %}
     </div>
 </fieldset>
 {% end %}

@@ -202,10 +202,11 @@ class SearchHandler(BaseHandler):
 
     def get(self):
         page = int(self.get_argument('page', 1))
-        q = self.get_argument('q', '')
-        if q:
+        form = forms.SearchForm(locale_code=self.locale.code,
+            q=self.get_argument('q', ''))
+        if form.data['q']:
             if not options.db_use_fts:
-                q_filter = re.compile('.*%s.*' % q, re.IGNORECASE)
+                q_filter = re.compile('.*%s.*' % form.data['q'], re.IGNORECASE)
                 posts = list(self.db.posts.find({'plain_content': q_filter,
                     'status': 'published'}).sort('date', -1).skip((page - 1) *
                     options.page_size_search_posts).limit(
@@ -213,15 +214,15 @@ class SearchHandler(BaseHandler):
                 total = self.db.posts.find({'plain_content': q_filter,
                     'status': 'published'}).count()
             else:
-                text_output = self.db.command("text", "posts", search=q,
-                    filter={'status': 'published'})
+                text_output = self.db.command("text", "posts",
+                    search=form.data['q'], filter={'status': 'published'})
                 posts = [result['obj'] for result in text_output['results']]
                 total = len(posts)
         else:
             posts = []
             total = 0
-        self.render('search.html', posts=posts, q=q, total=total, page=page,
-            page_size=options.page_size_search_posts)
+        self.render('search.html', posts=posts, form=form, total=total,
+            page=page, page_size=options.page_size_search_posts)
 
 
 class RssHandler(BaseHandler):

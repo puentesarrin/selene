@@ -63,8 +63,9 @@ class RecentPostsModule(BaseUIModule):
 
 class SearchModule(BaseUIModule):
 
-    def render(self, header=True, q=''):
-        return self.render_string('modules/search.html', header=header, q=q)
+    def render(self, form, header=True):
+        return self.render_string('modules/search.html', header=header,
+            form=form)
 
 
 class SearchPostsModule(BaseUIModule):
