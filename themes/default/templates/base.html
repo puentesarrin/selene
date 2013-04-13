@@ -7,7 +7,7 @@
         <link href="{{ static_url('css/bootstrap-responsive.min.css')}}" rel="stylesheet" media="screen">
         <link href="{{ static_url('css/custom.css') }}" rel="stylesheet" media="screen">
     </head>
-    <body>
+    <body{% if locale.code == "ar_AR" %} dir="rtl" {% end %}>
         <script src="http://code.jquery.com/jquery.js"></script>
         <script src="{{ static_url('js/bootstrap.min.js') }}"></script>
         <header class="jumbotron subhead" id="overview">
