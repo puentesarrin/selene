@@ -1,17 +1,16 @@
 {% extends "base.html" %}
 
 {% block title %}
- | Account confirmation
+ | {{ _("Account confirmation") }}
 {% end %}
 
 {% block header %}
 {% end %}
 
 {% block content %}
-    <p>
-        Your account has been activated sucessfully. You can
-        <a href="/login">login</a> now.
-    </p>
+    <h4>
+        {% raw _("Your account has been activated sucessfully. You can %s now") % ('<a href="/login">%s</a>') % _("login") %}.
+    </h4>
 {% end %}
 
 {% block footer %}
