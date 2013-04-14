@@ -1,8 +1,8 @@
 # -*- coding: utf-8 *-*
+from selene.base import BaseUIModule
 from selene.ui_modules.auth_modules import *
 from selene.ui_modules.blog_modules import *
 from selene.ui_modules.social_modules import *
-from selene.web import BaseUIModule
 
 
 class MenuModule(BaseUIModule):
