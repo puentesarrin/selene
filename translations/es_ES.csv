@@ -1,3 +1,4 @@
+Account confirmation, Confirmación de cuenta
 By, Por
 Cancel, Cancelar
 Click to comment, Haz clic aquí para comentar
@@ -28,6 +29,7 @@ Invalid arguments, Argumentos no válidos
 Invalid email address, Correo electrónico no válido
 List posts, Publicaciones
 Login, Ingresar
+login, ingresar
 Logout, Salir
 Name, Nombre
 Name is required, El nombre es requerido
@@ -74,3 +76,4 @@ User does not exist, El usuario no existe
 View more tags, Ver más etiquetas
 Vote, Votar
 Write a new post, Redactar una nueva publicación
+Your account has been activated sucessfully. You can %s now, Tu cuenta ha sido activada satisfactoriamente. Puedes %s ahora
