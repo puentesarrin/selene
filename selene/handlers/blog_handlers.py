@@ -5,6 +5,7 @@ import tornado.web
 
 from bson.objectid import ObjectId
 from selene import constants, forms, helpers
+from selene import options as opts
 from selene.web import BaseHandler
 from tornado.options import options
 
@@ -106,13 +107,16 @@ class EditPostHandler(BaseHandler):
         if not post:
             raise tornado.web.HTTPError(404)
         post['tags'] = ','.join(post['tags'])
-        form = forms.PostForm(locale_code=self.locale.code, **post)
+        form = forms.PostForm(locale_code=self.locale.code,
+            status_choices=opts.STATUSES,
+            text_type_choices=opts.get_allowed_text_types(), **post)
         self.render("editpost.html", form=form)
 
     @tornado.web.authenticated
     def post(self, slug):
         form = forms.PostForm(self.request.arguments,
-            locale_code=self.locale.code)
+            locale_code=self.locale.code, status_choices=opts.STATUSES,
+            text_type_choices=opts.get_allowed_text_types())
         if form.validate():
             if form.data['custom_slug']:
                 slug = form.data['slug']
