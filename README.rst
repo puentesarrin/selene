@@ -45,6 +45,7 @@ Core features
    * Spanish (es_ES)
    * French (fr_FR)
    * Japanese (ja_JP)
+   * Macedonian (mk_MK)
    * Chinese Simplified (zh_CN)
    * Chinese Traditional (zh_HK, zh_TW)
 * Support for Google Analytics and Gravatar.
@@ -54,6 +55,7 @@ Core features
 Contributors
 ------------
 
+* Elena Petrevska (`@el3na77 <https://twitter.com/el3na77>`_ in Twitter)
 * Lowstz Chen (`@lowstz <https://github.com/lowstz>`_)
 * Juan Carlos Farah (`@juancarlosfarah <https://github.com/juancarlosfarah>`_)
 * Luigi Van (`@fdb713 <https://github.com/fdb713>`_)
