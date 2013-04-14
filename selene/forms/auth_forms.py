@@ -1,6 +1,6 @@
 # -*- coding: utf-8 *-*
 from selene import constants
-from selene.forms import BaseForm
+from selene.base import BaseForm
 from wtforms import HiddenField, TextField, PasswordField
 from wtforms.validators import Required, Email
 

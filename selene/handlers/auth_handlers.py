@@ -5,7 +5,7 @@ import tornado.auth
 import tornado.web
 
 from selene import constants, forms, helpers
-from selene.web import BaseHandler
+from selene.base import BaseHandler
 from tornado.options import options
 
 

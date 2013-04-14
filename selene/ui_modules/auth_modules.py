@@ -1,5 +1,5 @@
 # -*- coding: utf-8 *-*
-from selene.web import BaseUIModule
+from selene.base import BaseUIModule
 
 
 class LoginModule(BaseUIModule):

@@ -4,9 +4,8 @@ import re
 import tornado.web
 
 from bson.objectid import ObjectId
-from selene import constants, forms, helpers
-from selene import options as opts
-from selene.web import BaseHandler
+from selene import constants, forms, helpers, options as opts
+from selene.base import BaseHandler
 from tornado.options import options
 
 
@@ -33,12 +32,15 @@ class NewPostHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         self.render('newpost.html',
-            form=forms.PostForm(locale_code=self.locale.code))
+            form=forms.PostForm(locale_code=self.locale.code,
+                status_choices=opts.STATUSES,
+                text_type_choices=opts.get_allowed_text_types()))
 
     @tornado.web.authenticated
     def post(self):
         form = forms.PostForm(self.request.arguments,
-            locale_code=self.locale.code)
+            locale_code=self.locale.code, status_choices=opts.STATUSES,
+            text_type_choices=opts.get_allowed_text_types())
         if form.validate():
             if form.data['custom_slug']:
                 slug = form.data['slug']
