@@ -79,7 +79,8 @@ class PostHandler(BaseHandler):
             'status': 'published'}, update={'$inc': {'views': 1}}, new=True)
         if not post:
             raise tornado.web.HTTPError(404)
-        comments = list(self.db.comments.find({'postid': post['_id']}))
+        comments = list(self.db.comments.find({'postid':
+            post['_id']}).sort('date', 1))
         older = self.db.posts.find({'_id': {'$lt': post['_id']},
             'status': 'published'}).sort('date', -1).limit(1)
         newer = self.db.posts.find({'_id': {'$gt': post['_id']},
@@ -272,7 +273,8 @@ class NewCommentHandler(BaseHandler):
             post = self.db.posts.find_one({'slug': slug, 'status': 'published'})
             if not post:
                 raise tornado.web.HTTPError(404)
-            comments = list(self.db.comments.find({'postid': post['_id']}))
+            comments = list(self.db.comments.find({'postid':
+                post['_id']}).sort('date', 1))
             older = self.db.posts.find({'_id': {'$lt': post['_id']},
                 'status': 'published'}).sort('date', -1).limit(1)
             newer = self.db.posts.find({'_id': {'$gt': post['_id']},
@@ -305,7 +307,8 @@ class EditCommentHandler(BaseHandler):
         if not comment:
             raise tornado.web.HTTPError(404)
         post = self.db.posts.find_one({'_id': comment['postid']})
-        self.render('editcomment.html', post=post, comment=comment)
+        self.render('editcomment.html', post=post,
+            form=forms.CommentForm(locale_code=self.locale.code, **comment))
 
     @tornado.web.authenticated
     def post(self, comment_id):
@@ -313,13 +316,17 @@ class EditCommentHandler(BaseHandler):
             {'postid': 1})
         if not comment:
             raise tornado.web.HTTPError(404)
-        self.db.comments.update({'_id': ObjectId(comment_id)}, {'$set': {
-            'name': self.get_argument('name'),
-            'email': self.get_argument('email'),
-            'content': self.get_argument('content')
-        }})
-        post = self.db.posts.find_one({'_id': comment['postid']})
-        self.redirect('/post/%s' % post['slug'])
+        form = forms.CommentForm(self.request.arguments,
+            locale_code=self.locale.code)
+        if form.validate():
+            self.db.comments.update({'_id': ObjectId(comment_id)},
+                {'$set': form.data})
+            post = self.db.posts.find_one({'_id': comment['postid']})
+            self.redirect('/post/%s' % post['slug'])
+        else:
+            post = self.db.posts.find_one({'_id': comment['postid']})
+            self.render('editcomment.html', post=post,
+                message=form.errors, form=form)
 
 
 class DeleteCommentHandler(BaseHandler):
