@@ -61,7 +61,7 @@ class NewPostHandler(BaseHandler):
                     'tags': helpers.remove_duplicates(form.data['tags']),
                     'html_content': html_content,
                     'plain_content': plain_content,
-                    'author': self.current_user['name'],
+                    'author': self.current_user['full_name'],
                     'email': self.current_user['email'],
                     'votes': 0,
                     'views': 0
@@ -93,7 +93,7 @@ class PostHandler(BaseHandler):
         data = {}
         if self.current_user:
             data.update({
-                'name': self.current_user['name'],
+                'name': self.current_user['full_name'],
                 'email': self.current_user['email']
             })
         comment_form = forms.CommentForm(locale_code=self.locale.code, **data)
@@ -261,7 +261,7 @@ class NewCommentHandler(BaseHandler):
             })
         else:
             data.update({
-                'name': self.current_user['name'],
+                'name': self.current_user['full_name'],
                 'email': self.current_user['email']
             })
         form = forms.CommentForm(locale_code=self.locale.code, **data)
