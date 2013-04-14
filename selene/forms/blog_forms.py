@@ -1,5 +1,5 @@
 # -*- coding: utf-8 *-*
-from selene import constants, options
+from selene import constants
 from selene.forms import BaseForm
 from wtforms import (TextField, BooleanField, TextAreaField, RadioField,
                      SelectField)
@@ -12,8 +12,8 @@ class PostForm(BaseForm):
         status_choices=[], text_type_choices=[], **kwargs):
         super(PostForm, self).__init__(formdata, obj, prefix,
             locale_code=locale_code, **kwargs)
-        self.status.choices = options.STATUSES
-        self.text_type.choices = options.get_allowed_text_types()
+        self.status.choices = status_choices
+        self.text_type.choices = text_type_choices
 
     title = TextField(validators=[Required(constants.TITLE_IS_REQUIRED)])
     custom_slug = BooleanField()
