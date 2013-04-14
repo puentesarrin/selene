@@ -12,6 +12,12 @@ class MenuModule(BaseUIModule):
             current_user=current_user)
 
 
+class MessageModule(BaseUIModule):
+
+    def render(self, message):
+        return self.render_string('modules/message.html', message=message)
+
+
 class PoweredByModule(BaseUIModule):
 
     def render(self):
