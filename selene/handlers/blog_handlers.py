@@ -86,8 +86,15 @@ class PostHandler(BaseHandler):
             'status': 'published'}).sort('date', 1).limit(1)
         older = None if older.count() == 0 else older[0]
         newer = None if newer.count() == 0 else newer[0]
+        data = {}
+        if self.current_user:
+            data.update({
+                'name': self.current_user['name'],
+                'email': self.current_user['email']
+            })
+        comment_form = forms.CommentForm(locale_code=self.locale.code, **data)
         self.render('post.html', post=post, comments=comments, older=older,
-            newer=newer)
+            newer=newer, form_message=None, comment_form=comment_form)
 
 
 class EditPostHandler(BaseHandler):
@@ -239,20 +246,41 @@ class NewCommentHandler(BaseHandler):
         post = self.db.posts.find_one({'slug': slug}, {'_id': 1})
         if not post:
             raise tornado.web.HTTPError(500)
+        data = {'content': self.get_argument('content', '')}
         if not self.current_user:
-            name = self.get_argument('name')
-            email = self.get_argument('email')
+            data.update({
+                'name': self.get_argument('name', ''),
+                'email': self.get_argument('email', '')
+            })
         else:
-            name = self.current_user['name']
-            email = self.current_user['email']
-        self.db.comments.insert({'postid': post['_id'],
-                                 'name': name,
-                                 'email': email,
-                                 'content': self.get_argument('content'),
-                                 'date': datetime.datetime.now(),
-                                 'likes': 0,
-                                 'dislikes': 0})
-        self.redirect('/post/%s' % slug)
+            data.update({
+                'name': self.current_user['name'],
+                'email': self.current_user['email']
+            })
+        form = forms.CommentForm(locale_code=self.locale.code, **data)
+        if form.validate():
+            comment = form.data
+            comment.update({
+                'postid': post['_id'],
+                'date': datetime.datetime.now(),
+                'likes': 0,
+                'dislikes': 0
+            })
+            self.db.comments.insert(comment)
+            self.redirect('/post/%s' % slug)
+        else:
+            post = self.db.posts.find_one({'slug': slug, 'status': 'published'})
+            if not post:
+                raise tornado.web.HTTPError(404)
+            comments = list(self.db.comments.find({'postid': post['_id']}))
+            older = self.db.posts.find({'_id': {'$lt': post['_id']},
+                'status': 'published'}).sort('date', -1).limit(1)
+            newer = self.db.posts.find({'_id': {'$gt': post['_id']},
+                'status': 'published'}).sort('date', 1).limit(1)
+            older = None if older.count() == 0 else older[0]
+            newer = None if newer.count() == 0 else newer[0]
+            self.render('post.html', post=post, comments=comments, older=older,
+                newer=newer, form_message=form.errors, comment_form=form)
 
 
 class LikeCommentHandler(BaseHandler):

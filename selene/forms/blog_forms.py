@@ -27,7 +27,7 @@ class PostForm(BaseForm):
         Required(constants.TEXT_TYPE_IS_REQUIRED)])
 
 
-class NewCommentForm(BaseForm):
+class CommentForm(BaseForm):
 
     name = TextField(validators=[Required(constants.NAME_IS_REQUIRED)])
     email = TextField(validators=[Required(constants.EMAIL_IS_REQUIRED),

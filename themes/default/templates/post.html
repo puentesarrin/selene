@@ -28,7 +28,7 @@
         {% module OlderNewerPostsModule(older=older, newer=newer)%}
     </div>
     <div class="row-fluid">
-        {% module CommentsModule(post=post, comments=comments)%}
+        {% module CommentsModule(post=post, comments=comments, message=form_message, form=comment_form)%}
     </div>
 {% end %}
 
