@@ -17,20 +17,18 @@
                 <p>
                     {{ _("Commented on post") }}: "<a href="{{ '/post/%s' % post['slug'] }}">{{ post['title'] }}</a>":
                 </p>
-                {% set form = forms.NewCommentForm(locale_code=locale.code) %}
-                {% set f = form.content.process_data(comment.get('content', '')) %}
                 <div class="row-fluid">
                     <div class="span5">
                         <div class="control-group">
                             {% raw form.name.label(class_="control-label") %}
                             <div class="controls">
-                                {% raw form.name(placeholder=form.name.label.text, class_="input-block-level", value=comment['name']) %}
+                                {% raw form.name(placeholder=form.name.label.text, class_="input-block-level") %}
                             </div>
                         </div>
                         <div class="control-group">
                             {% raw form.email.label(class_="control-label") %}
                             <div class="controls">
-                                {% raw form.email(placeholder=form.email.label.text, class_="input-block-level", value=comment['email']) %}
+                                {% raw form.email(placeholder=form.email.label.text, class_="input-block-level") %}
                             </div>
                         </div>
                     </div>
