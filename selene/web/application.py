@@ -53,7 +53,7 @@ class Selene(tornado.web.Application):
     def setup_translations(self):
         tornado.locale.LOCALE_NAMES['zh_HK'] = {
             'name_en': 'Chinese (Hong Kong)',
-            'name': u('\u6e2f\u6fb3\u7e41\u9ad4')
+            'name': u('\u4e2d\u6587(\u7e41\u9ad4)')
         }
         tornado.locale.load_translations("translations")
         tornado.locale.set_default_locale(opts.default_locale)
