@@ -1,5 +1,5 @@
 # -*- coding: utf-8 *-*
-from selene import handlers
+from selene.web import handlers
 
 
 urls = [
