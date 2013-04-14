@@ -3,8 +3,8 @@ import logging
 import os
 import tornado.web
 
-from selene import ui_modules, smtp
-from selene.web import routes
+from selene import smtp
+from selene.web import routes, ui_modules
 from tornado.options import options as opts
 
 
