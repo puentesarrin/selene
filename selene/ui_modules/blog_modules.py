@@ -95,15 +95,16 @@ class VoteModule(BaseUIModule):
 
 class NewCommentModule(BaseUIModule):
 
-    def render(self, post):
-        return self.render_string('modules/newcomment.html', post=post)
+    def render(self, post, form):
+        return self.render_string('modules/newcomment.html', post=post,
+            form=form)
 
 
 class CommentsModule(BaseUIModule):
 
-    def render(self, post, comments):
+    def render(self, post, comments, message, form):
         return self.render_string("modules/comments.html", post=post,
-            comments=comments)
+            comments=comments, message=message, form=form)
 
 
 class CommentModule(BaseUIModule):

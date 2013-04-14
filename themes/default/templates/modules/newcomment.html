@@ -1,5 +1,4 @@
-{% set form = forms.NewCommentForm(locale_code=locale.code) %}
-<form id="new-comment" class="form" action="{{ '/post/%s/comment/new' % post['slug'] }}" method="post">
+<form id="new-comment" class="form" action="{{ '/post/%s/comment/new#new-comment' % post['slug'] }}" method="post">
     <fieldset>
         <legend>{{ _("New comment") }}</legend>
         <div class="row-fluid">
@@ -8,7 +7,7 @@
                     {% raw form.name.label(class_="control-label") %}
                     <div class="controls">
                         {% if current_user %}
-                            {% raw form.name(placeholder=form.name.label.text, class_="input-block-level", disabled="disabled", value=current_user['name']) %}
+                            {% raw form.name(placeholder=form.name.label.text, class_="input-block-level", disabled="disabled") %}
                         {% else %}
                             {% raw form.name(placeholder=form.name.label.text, class_="input-block-level") %}
                         {% end %}
@@ -18,7 +17,7 @@
                     {% raw form.email.label(class_="control-label") %}
                     <div class="controls">
                         {% if current_user %}
-                            {% raw form.email(placeholder=form.name.label.text, class_="input-block-level", disabled="disabled", value=current_user['email']) %}
+                            {% raw form.email(placeholder=form.name.label.text, class_="input-block-level", disabled="disabled") %}
                         {% else %}
                             {% raw form.email(placeholder=form.name.label.text, class_="input-block-level") %}
                         {% end %}
