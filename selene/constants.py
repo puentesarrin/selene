@@ -7,6 +7,7 @@ EMAIL_IS_REQUIRED = 'Email address is required'
 FULL_NAME_IS_REQUIRED = 'Full Name is required'
 INCORRECT_USER_PASSWORD = ('Incorrect user/password combination or invalid '
                            'account')
+LANGUAGE_IS_REQUIRED = 'Language is required'
 NAME_IS_REQUIRED = 'Name is required'
 PASSWORD_IS_REQUIRED = 'Password is required'
 POST_IS_ALREADY_REGISTERED = ('There are already an existing post with this '
