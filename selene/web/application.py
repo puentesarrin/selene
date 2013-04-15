@@ -6,7 +6,6 @@ import tornado.web
 from selene import smtp
 from selene.web import routes, ui_modules
 from tornado.options import options as opts
-from tornado.util import u
 
 
 class Selene(tornado.web.Application):
@@ -53,7 +52,7 @@ class Selene(tornado.web.Application):
     def setup_translations(self):
         tornado.locale.LOCALE_NAMES['zh_HK'] = {
             'name_en': 'Chinese (Hong Kong)',
-            'name': u('\u4e2d\u6587(\u7e41\u9ad4)')
+            'name': '\u4e2d\u6587(\u7e41\u9ad4)'
         }
         tornado.locale.load_translations("translations")
         tornado.locale.set_default_locale(opts.default_locale)
