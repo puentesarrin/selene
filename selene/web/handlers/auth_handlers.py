@@ -4,7 +4,7 @@ import datetime
 import tornado.auth
 import tornado.web
 
-from selene import constants, forms, helpers
+from selene import constants, forms, helpers, options as opts
 from selene.base import BaseHandler
 from tornado.options import options
 
@@ -137,6 +137,33 @@ class LoginTwitterHandler(AuthBaseHandler, tornado.auth.TwitterMixin):
             data, upsert=True)
         self.set_secure_cookie("current_user", user["username"])
         self.redirect(self.next_)
+
+
+class AccountHandler(BaseHandler):
+
+    def get(self):
+        form = forms.AccountForm(locale_code=self.locale.code,
+            language_choices=opts.get_allowed_languages(),
+            language=self.get_user_locale().code,
+            **self.current_user)
+        self.render('account.html', form=form)
+
+    def post(self):
+        form = forms.AccountForm(self.request.arguments,
+            locale_code=self.locale.code,
+            language_choices=opts.get_allowed_languages())
+        form.email.process_data(self.current_user['email'])
+        if form.validate():
+            update = {'$set': {
+                'full_name': form.data['full_name'],
+                'locale': form.data['language']}}
+            if form.data['password']:
+                update['$set'].update({'password':
+                    bcrypt.hashpw(form.data['password'], bcrypt.gensalt())})
+            self.db.users.update({'email': self.current_user['email']}, update)
+            self.render('account.html', form=form)
+        else:
+            self.render('account.html', message=form.errors, form=form)
 
 
 class RequestNewPasswordHandler(AuthBaseHandler):

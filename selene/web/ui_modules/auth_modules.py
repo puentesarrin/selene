@@ -26,6 +26,12 @@ class RegisterModule(BaseUIModule):
         return self.render_string('modules/register.html', form=form)
 
 
+class AccountModule(BaseUIModule):
+
+    def render(self, form):
+        return self.render_string('modules/account.html', form=form)
+
+
 class ResetPasswordModule(BaseUIModule):
 
     def render(self, form):
