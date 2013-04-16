@@ -1,6 +1,7 @@
 # -*- coding: utf-8 *-*
 import base64
 import os
+import tornado.locale
 
 from tornado.options import (define, options, parse_command_line,
                              parse_config_file)
@@ -18,6 +19,12 @@ def get_allowed_text_types():
         if code in options.allowed_text_types:
             result.append((code, name))
     return result
+
+
+def get_allowed_languages():
+    return sorted([(k, v['name_en']) for k, v in
+        tornado.locale.LOCALE_NAMES.iteritems() if k in
+        tornado.locale.get_supported_locales()])
 
 
 def setup_options(path):
