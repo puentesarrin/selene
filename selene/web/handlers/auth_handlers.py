@@ -161,7 +161,7 @@ class AccountHandler(BaseHandler):
                 update['$set'].update({'password':
                     bcrypt.hashpw(form.data['password'], bcrypt.gensalt())})
             self.db.users.update({'email': self.current_user['email']}, update)
-            self.render('account.html', form=form)
+            self.redirect('/')
         else:
             self.render('account.html', message=form.errors, form=form)
 
