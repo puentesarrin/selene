@@ -61,6 +61,12 @@ class RecentPostsModule(BaseUIModule):
         return self.render_string("modules/recentposts.html", posts=posts)
 
 
+class LanguageModule(BaseUIModule):
+
+    def render(self, form):
+        return self.render_string("modules/language.html", form=form)
+
+
 class SearchModule(BaseUIModule):
 
     def render(self, form, header=True):
