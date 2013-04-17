@@ -1,15 +1,15 @@
-Account confirmation,تأكيد الحساب 
+Account confirmation,تأكيد الحساب
 By,من قبل
 Cancel,إلغاء
-Change language,تغيير اللغة  
+Change language,تغيير اللغة
 Click to comment,انقر للتعليق
 Commented on post,التعليق على المشاركة
 Comments,تعليقات
-Confirm your account,أكد حسابك  
-Content,المحتوى 
+Confirm your account,أكد حسابك
+Content,المحتوى
 Content is required,المحتوى مطلوب
 Custom Slug,عنوان مخصص
-Date,التاريخ  
+Date,التاريخ
 Delete,حذف
 Delete comment,حذف التعليق
 Delete post,حذف المشاركة
@@ -25,35 +25,34 @@ Email address is invalid,عنوان البريد الإلكتروني غير ص�
 Email address is required,مطلوب عنوان البريد الإلكتروني
 Full Name,الاسم الكامل
 Full Name is required,مطلوب ادخال الاسم الكامل
-Home,الصفحة الرئسية 
+Home,الصفحة الرئسية
 Incorrect user/password combination or invalid account,المستخدم / كلمة المرور غير صحيحة أو مزيج حساب غير صالح
 Invalid arguments,بيانات خاطئة
 Invalid email address,عنوان بريد إلكتروني غير صالح
-Language,اللغة 
-Language is required,مطلوب إختيار اللغة  
+Language,اللغة
+Language is required,مطلوب إختيار اللغة
 List posts,قائمة المشاركات
 login,دخول
 Login,دخول
 Logout,خروج
 My account,حسابي
 Name,الإسم
-Name is required,مطلوب إدخال الإسم 
+Name is required,مطلوب إدخال الإسم
 Next,التالي
 Next post,المشاركة  التالية
 New comment,تعليق جديد
 No found results for,لايوجد نتائج لل
-No one has commented yet,لم يتم التعليق بعد 
-No one has posted yet,"لم يقم احد بالمشاركة بعد
-"
-No one has added any tags yet,لم يقم أحد بالتعليم بعد 
+No one has commented yet,لم يتم التعليق بعد
+No one has posted yet,"لم يقم احد بالمشاركة بعد"
+No one has added any tags yet,لم يقم أحد بالتعليم بعد
 Page not found,الصفحة غير موجودة
 Password,كلمة المرور
 Password is required,مطلوب إدخال كلمة المرو
 Posted,شارك
-Previous,السابق 
-Previous post,المشاركة السابقة 
-Published,نشر 
-Recent comments,التعليقات الأخيرة 
+Previous,السابق
+Previous post,المشاركة السابقة
+Published,نشر
+Recent comments,التعليقات الأخيرة
 Recent posts,المشاركات الأخيرة
 Register,تسجيل
 Reload translations,اعادة تحميل الترجمة
@@ -66,23 +65,23 @@ Search,البحث
 Search results for,نتائج البحث عن
 Slug,العنوان المختصر
 Status,ستاتوس
-Status is required,مطلوب الستاتوس  
+Status is required,مطلوب الستاتوس
 Submit comment,إرسال تعليق
 Tag,علامة
-Tags,علامات 
+Tags,علامات
 Tag cloud,غيمة وسوم
-Tags are required,غيمة الوسوم مطلوبة 
+Tags are required,غيمة الوسوم مطلوبة
 There are already an existing post with this title or slug,"توجد هناك مشاركة بنفس العنوان
 او تحمل نفس العنوان"
 Third-party login,دخول طرف ثالث
 Text Type,نوع النص
-Text type is required,مطلوب نوع النص  
+Text type is required,مطلوب نوع النص
 Title,عنوان
-Title is required,العنوان مطلوب 
-Translations have been reloaded,لقد تم إعادة تحميل الترجمة 
+Title is required,العنوان مطلوب
+Translations have been reloaded,لقد تم إعادة تحميل الترجمة
 Unpublished,غير منشورة
-User does not exist,المستخدم غير موجود 
+User does not exist,المستخدم غير موجود
 View more tags,عرض المزيد من العلامات
-Vote,التصويت  
+Vote,التصويت
 Write a new post,كتابة مشاركة جديدة
-Your account has been activated sucessfully. You can %s now,تم تفعيل حسابك بنجاح. يمكنك٪ S الآن
+Your account has been activated sucessfully. You can %s now,تم تفعيل حسابك بنجاح. يمكنك٪s الآن
