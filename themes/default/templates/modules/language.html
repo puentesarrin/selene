@@ -1,0 +1,15 @@
+ <form class="form-horizontal" method="post">
+    <fieldset>
+        <legend>{{ _("Change language") }}</legend>
+        <div class="input-append">
+            {% raw form.language(class_="input-block-level") %}
+            <button class="btn" type="submit">
+                <i class="icon-ok"></i>
+            </button>
+        </div>
+        {% raw xsrf_form_html() %}
+    </fieldset>
+
+
+
+</form>
