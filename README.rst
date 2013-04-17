@@ -40,6 +40,7 @@ Core features
 * Posts sharing via Google+, Twitter and Facebook.
 * Optional comments management via Disqus.
 * Supported localization:
+   * Arabic (ar_AR)
    * German (de_DE)
    * English (en_US)
    * Spanish (es_ES)
@@ -56,6 +57,7 @@ Contributors
 ------------
 
 * Elena Petrevska (`@el3na77 <https://twitter.com/el3na77>`_ in Twitter)
+* Samar Hazboun (`@Samar_Hazboun <https://twitter.com/Samar_Hazboun>`_ in Twitter)
 * Lowstz Chen (`@lowstz <https://github.com/lowstz>`_)
 * Juan Carlos Farah (`@juancarlosfarah <https://github.com/juancarlosfarah>`_)
 * Luigi Van (`@fdb713 <https://github.com/fdb713>`_)
