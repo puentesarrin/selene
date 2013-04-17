@@ -4,6 +4,9 @@
             <a href="/">{{ _("Home") }}</a>
         </li>
         {% if current_user %}
+            <li {% if url_path == '/my-account' %}class="active"{% end %}>
+                <a href="/my-account">{{ _("My account") }}</a>
+            </li>
             <li {% if url_path == '/posts' %}class="active"{% end %}>
                 <a href="/posts">{{ _("List posts") }}</a>
             </li>

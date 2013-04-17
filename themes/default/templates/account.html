@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+ | {{ _("My account") }}
+{% end %}
+
+{% block header %}
+{% end %}
+
+{% block content %}
+    <div class="row-fluid">
+        {% module AccountModule(form=form) %}
+    </div>
+{% end %}
+
+{% block footer %}
+{% end %}

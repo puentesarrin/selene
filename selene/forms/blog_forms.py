@@ -36,6 +36,18 @@ class CommentForm(BaseForm):
         validators=[Required(constants.CONTENT_IS_REQUIRED)])
 
 
+class LanguageForm(BaseForm):
+
+    def __init__(self, formdata=None, obj=None, prefix='', locale_code='en_US',
+        language_choices=[], **kwargs):
+        super(LanguageForm, self).__init__(formdata, obj, prefix,
+            locale_code=locale_code, **kwargs)
+        self.language.choices = language_choices
+
+    language = SelectField(validators=[
+        Required(constants.LANGUAGE_IS_REQUIRED)])
+
+
 class SearchForm(BaseForm):
 
     q = TextField(validators=[Required()])

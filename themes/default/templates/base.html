@@ -36,6 +36,8 @@
                     {% block content %}{% end %}
                 </div>
                 <div class="span3">
+                    {% module LanguageModule(form=forms.LanguageForm(locale_code=locale.code,
+                        language_choices=language_choices, language=locale.code)) %}
                     {% module SearchModule(form=forms.SearchForm(locale_code=locale.code)) %}
                     {% module TagsCloudModule(tags=_tags) %}
                     {% module RecentPostsModule(posts=_posts) %}

@@ -13,6 +13,7 @@ urls = [
     (r'/new-password', handlers.RequestNewPasswordHandler),
     (r'/reset-password/(.*)', handlers.ResetPasswordHandler),
     (r"/logout/?", handlers.LogoutHandler),
+    (r'/my-account/?', handlers.AccountHandler),
     (r"/post/new/?", handlers.NewPostHandler),
     (r"/post/([a-zA-Z0-9-]+)/?", handlers.PostHandler),
     (r"/post/([a-zA-Z0-9-]+)/edit/?", handlers.EditPostHandler),

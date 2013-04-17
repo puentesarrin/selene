@@ -3,7 +3,7 @@ import re
 import tornado.locale
 import tornado.web
 
-from selene import helpers
+from selene import helpers, options as opts
 from tornado.escape import to_unicode
 from tornado.options import options
 from wtforms import Form
@@ -101,6 +101,7 @@ class BaseHandler(tornado.web.RequestHandler):
             'forms': forms,
             'helpers': helpers,
             'options': options,
+            'language_choices': opts.get_allowed_languages()
         })
         return namespace
 

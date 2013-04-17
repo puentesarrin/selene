@@ -1,6 +1,7 @@
 Account confirmation, Confirmación de cuenta
 By, Por
 Cancel, Cancelar
+Change language, Cambiar idioma
 Click to comment, Haz clic aquí para comentar
 Commented on post, Comentado en la publicación
 Comments, Comentarios
@@ -27,10 +28,13 @@ Home, Inicio
 Incorrect user/password combination or invalid account, Usuario y/o contraseña no válidos
 Invalid arguments, Argumentos no válidos
 Invalid email address, Correo electrónico no válido
+Language, Idioma
+Language is required, El idioma es requerido
 List posts, Publicaciones
 Login, Ingresar
 login, ingresar
 Logout, Salir
+My account, Mi cuenta
 Name, Nombre
 Name is required, El nombre es requerido
 Next, Siguiente
