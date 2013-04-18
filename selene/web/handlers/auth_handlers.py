@@ -166,6 +166,14 @@ class AccountHandler(BaseHandler):
             self.render('account.html', message=form.errors, form=form)
 
 
+class ChangeLanguageHandler(AuthBaseHandler):
+
+    def post(self):
+        form = forms.LanguageForm(self.request.arguments)
+        self.set_cookie('locale', form.data['language'])
+        self.redirect('/')
+
+
 class RequestNewPasswordHandler(AuthBaseHandler):
 
     def get(self):
