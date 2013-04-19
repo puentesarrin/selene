@@ -1,36 +1,23 @@
 # -*- coding: utf-8 *-*
 import bcrypt
-import functools
 import datetime
 import tornado.auth
 import tornado.web
+import selene.web
 
 from selene import constants, forms, helpers, options as opts
 from selene.base import BaseHandler
 from tornado.options import options
 
 
-def redirect_authenticated_user(f):
-
-    @functools.wraps(f)
-    @tornado.gen.engine
-    def wrapper(self, *args, **kwargs):
-        self._auto_finish = False
-        if self.current_user:
-            self.redirect('/')
-        else:
-            f(self, *args, **kwargs)
-    return wrapper
-
-
 class RegisterHandler(BaseHandler):
 
-    @redirect_authenticated_user
+    @selene.web.redirect_authenticated_user
     def get(self):
         self.render("register.html",
             form=forms.RegisterForm(locale_code=self.locale.code))
 
-    @redirect_authenticated_user
+    @selene.web.redirect_authenticated_user
     def post(self):
         form = forms.RegisterForm(self.request.arguments,
             locale_code=self.locale.code)
@@ -58,7 +45,7 @@ class RegisterHandler(BaseHandler):
 
 class ConfirmAccountHandler(BaseHandler):
 
-    @redirect_authenticated_user
+    @selene.web.redirect_authenticated_user
     def get(self, join_hash=None):
         self.db.users.find_and_modify({'join_hash': join_hash},
             {'$unset': {'join_hash': 1}, '$set': {'enabled': True}})
@@ -67,13 +54,13 @@ class ConfirmAccountHandler(BaseHandler):
 
 class LoginHandler(BaseHandler):
 
-    @redirect_authenticated_user
+    @selene.web.redirect_authenticated_user
     def get(self):
         self.render("login.html",
             form=forms.LoginForm(locale_code=self.locale.code,
                 next_=self.get_argument('next', '/')))
 
-    @redirect_authenticated_user
+    @selene.web.redirect_authenticated_user
     def post(self):
         form = forms.LoginForm(self.request.arguments,
             locale_code=self.locale.code)
@@ -96,7 +83,7 @@ class LoginHandler(BaseHandler):
 
 class LoginGoogleHandler(BaseHandler, tornado.auth.GoogleMixin):
 
-    @redirect_authenticated_user
+    @selene.web.redirect_authenticated_user
     @tornado.web.asynchronous
     def get(self):
         if self.get_argument("openid.mode", None):
@@ -125,7 +112,7 @@ class LoginGoogleHandler(BaseHandler, tornado.auth.GoogleMixin):
 
 class LoginTwitterHandler(BaseHandler, tornado.auth.TwitterMixin):
 
-    @redirect_authenticated_user
+    @selene.web.redirect_authenticated_user
     @tornado.web.asynchronous
     def get(self):
         if self.get_argument("oauth_token", None):
@@ -182,7 +169,7 @@ class AccountHandler(BaseHandler):
 
 class ChangeLanguageHandler(BaseHandler):
 
-    @redirect_authenticated_user
+    @selene.web.redirect_authenticated_user
     def post(self):
         form = forms.LanguageForm(self.request.arguments)
         self.set_cookie('locale', form.data['language'])
@@ -191,12 +178,12 @@ class ChangeLanguageHandler(BaseHandler):
 
 class RequestNewPasswordHandler(BaseHandler):
 
-    @redirect_authenticated_user
+    @selene.web.redirect_authenticated_user
     def get(self):
         self.render('newpassword.html',
             form=forms.RequestNewPasswordForm(locale_code=self.locale.code))
 
-    @redirect_authenticated_user
+    @selene.web.redirect_authenticated_user
     def post(self):
         form = forms.RequestNewPasswordForm(self.request.arguments,
             locale_code=self.locale.code)
@@ -220,12 +207,12 @@ class RequestNewPasswordHandler(BaseHandler):
 
 class ResetPasswordHandler(BaseHandler):
 
-    @redirect_authenticated_user
+    @selene.web.redirect_authenticated_user
     def get(self, reset_hash=''):
         self.render('resetpassword.html',
             form=forms.ResetPasswordForm(reset_hash=reset_hash))
 
-    @redirect_authenticated_user
+    @selene.web.redirect_authenticated_user
     def post(self, reset_hash=None):
         form = forms.ResetPasswordForm(self.request.arguments,
             locale_code=self.locale.code, reset_hash=reset_hash)
@@ -243,7 +230,7 @@ class ResetPasswordHandler(BaseHandler):
 
 class LogoutHandler(BaseHandler):
 
-    @redirect_authenticated_user
+    @selene.web.redirect_authenticated_user
     def post(self):
         if not self.current_user:
             self.redirect('/')
