@@ -1,5 +1,6 @@
 # -*- coding: utf-8 *-*
 import bcrypt
+import functools
 import datetime
 import tornado.auth
 import tornado.web
@@ -9,19 +10,27 @@ from selene.base import BaseHandler
 from tornado.options import options
 
 
-class AuthBaseHandler(BaseHandler):
+def redirect_authenticated_user(f):
 
-    def prepare(self):
+    @functools.wraps(f)
+    @tornado.gen.engine
+    def wrapper(self, *args, **kwargs):
+        self._auto_finish = False
         if self.current_user:
-            self.redirect("/")
+            self.redirect('/')
+        else:
+            f(self, *args, **kwargs)
+    return wrapper
 
 
-class RegisterHandler(AuthBaseHandler):
+class RegisterHandler(BaseHandler):
 
+    @redirect_authenticated_user
     def get(self):
         self.render("register.html",
             form=forms.RegisterForm(locale_code=self.locale.code))
 
+    @redirect_authenticated_user
     def post(self):
         form = forms.RegisterForm(self.request.arguments,
             locale_code=self.locale.code)
@@ -47,21 +56,24 @@ class RegisterHandler(AuthBaseHandler):
             self.render('register.html', message=form.errors, form=form)
 
 
-class ConfirmAccountHandler(AuthBaseHandler):
+class ConfirmAccountHandler(BaseHandler):
 
+    @redirect_authenticated_user
     def get(self, join_hash=None):
         self.db.users.find_and_modify({'join_hash': join_hash},
             {'$unset': {'join_hash': 1}, '$set': {'enabled': True}})
         self.render('confirmaccount.html')
 
 
-class LoginHandler(AuthBaseHandler):
+class LoginHandler(BaseHandler):
 
+    @redirect_authenticated_user
     def get(self):
         self.render("login.html",
             form=forms.LoginForm(locale_code=self.locale.code,
                 next_=self.get_argument('next', '/')))
 
+    @redirect_authenticated_user
     def post(self):
         form = forms.LoginForm(self.request.arguments,
             locale_code=self.locale.code)
@@ -82,8 +94,9 @@ class LoginHandler(AuthBaseHandler):
             self.render('login.html', message=form.errors, form=form)
 
 
-class LoginGoogleHandler(AuthBaseHandler, tornado.auth.GoogleMixin):
+class LoginGoogleHandler(BaseHandler, tornado.auth.GoogleMixin):
 
+    @redirect_authenticated_user
     @tornado.web.asynchronous
     def get(self):
         if self.get_argument("openid.mode", None):
@@ -110,8 +123,9 @@ class LoginGoogleHandler(AuthBaseHandler, tornado.auth.GoogleMixin):
         self.redirect(self.next_)
 
 
-class LoginTwitterHandler(AuthBaseHandler, tornado.auth.TwitterMixin):
+class LoginTwitterHandler(BaseHandler, tornado.auth.TwitterMixin):
 
+    @redirect_authenticated_user
     @tornado.web.asynchronous
     def get(self):
         if self.get_argument("oauth_token", None):
@@ -166,20 +180,23 @@ class AccountHandler(BaseHandler):
             self.render('account.html', message=form.errors, form=form)
 
 
-class ChangeLanguageHandler(AuthBaseHandler):
+class ChangeLanguageHandler(BaseHandler):
 
+    @redirect_authenticated_user
     def post(self):
         form = forms.LanguageForm(self.request.arguments)
         self.set_cookie('locale', form.data['language'])
         self.redirect('/')
 
 
-class RequestNewPasswordHandler(AuthBaseHandler):
+class RequestNewPasswordHandler(BaseHandler):
 
+    @redirect_authenticated_user
     def get(self):
         self.render('newpassword.html',
             form=forms.RequestNewPasswordForm(locale_code=self.locale.code))
 
+    @redirect_authenticated_user
     def post(self):
         form = forms.RequestNewPasswordForm(self.request.arguments,
             locale_code=self.locale.code)
@@ -201,12 +218,14 @@ class RequestNewPasswordHandler(AuthBaseHandler):
             self.render('newpassword.html', message=form.errors, form=form)
 
 
-class ResetPasswordHandler(AuthBaseHandler):
+class ResetPasswordHandler(BaseHandler):
 
+    @redirect_authenticated_user
     def get(self, reset_hash=''):
         self.render('resetpassword.html',
             form=forms.ResetPasswordForm(reset_hash=reset_hash))
 
+    @redirect_authenticated_user
     def post(self, reset_hash=None):
         form = forms.ResetPasswordForm(self.request.arguments,
             locale_code=self.locale.code, reset_hash=reset_hash)
@@ -224,6 +243,7 @@ class ResetPasswordHandler(AuthBaseHandler):
 
 class LogoutHandler(BaseHandler):
 
+    @redirect_authenticated_user
     def post(self):
         if not self.current_user:
             self.redirect('/')
