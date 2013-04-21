@@ -230,10 +230,7 @@ class ResetPasswordHandler(BaseHandler):
 
 class LogoutHandler(BaseHandler):
 
-    @selene.web.redirect_authenticated_user
+    @tornado.web.authenticated
     def post(self):
-        if not self.current_user:
-            self.redirect('/')
-            return
         self.clear_cookie("current_user")
         self.redirect("/")
