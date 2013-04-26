@@ -3,4 +3,5 @@
 *.pyc
 *.so
 *~
-build 
+build
+venv
