@@ -3,7 +3,7 @@ Selene
 ======
 
 A simple CMS for blogging inspired by my beautiful wife and built with Tornado
-and MongoDB.
+and MongoDB. Here is a `Selene demo site <http://selene.lowstz.org>`_.
 
 .. important::
 
