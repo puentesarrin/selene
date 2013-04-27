@@ -1,5 +1,6 @@
 # -*- coding: utf-8 *-*
 import base64
+import logging
 import os
 import tornado.locale
 
@@ -191,4 +192,6 @@ def setup_options(path):
 
     if not options.cookie_secret:
         options.cookie_secret = base64.b64encode(os.urandom(32))
+        logging.warning('Selene will use a random cookie_secret: %s' %
+                        options.cookie_secret)
     return options
