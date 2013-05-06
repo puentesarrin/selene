@@ -21,7 +21,9 @@
             </ul>
         </p>
     {% else %}
-        <p>{{ _("No one has added any tags yet") }}</p>
+        <div class="alert alert-info">
+            {{ _("No one has added any tags yet") }}
+        </div>
     {% end %}
 </fieldset>
 {% end %}
