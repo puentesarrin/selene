@@ -104,6 +104,7 @@ class BaseHandler(tornado.web.RequestHandler):
             'forms': forms,
             'helpers': helpers,
             'options': options,
+            'opts': opts,
             'language_choices': opts.get_allowed_languages()
         })
         return namespace

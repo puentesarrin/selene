@@ -28,6 +28,10 @@ def get_allowed_languages():
         tornado.locale.get_supported_locales()])
 
 
+def get_rtl_languages():
+    return ['ar_AR']
+
+
 def setup_options(path):
     #Tornado
     group = 'Tornado'
