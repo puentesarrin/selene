@@ -127,7 +127,7 @@ class BaseHandler(tornado.web.RequestHandler):
             {'$limit': options.tag_cloud_limit}
         ])['result']
         kwargs.update({
-            'url_path': helpers.Url(self.request.uri).path,
+            'url_path': self.request.uri,
             '_next': self.get_argument('next', ''),
             '_posts': posts,
             '_comments': comments,
