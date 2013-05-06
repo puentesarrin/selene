@@ -57,6 +57,6 @@ class Selene(tornado.web.Application):
         tornado.locale.load_translations("translations")
         tornado.locale.set_default_locale(opts.default_locale)
         logging.info('Loaded translations: %s.' %
-            ', '.join([v['name_en'] for k, v in
+            ', '.join(sorted([v['name_en'] for k, v in
                 tornado.locale.LOCALE_NAMES.iteritems() if k in
-                tornado.locale.get_supported_locales()]))
+                tornado.locale.get_supported_locales()])))
