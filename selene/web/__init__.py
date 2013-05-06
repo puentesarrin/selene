@@ -1,7 +1,21 @@
 # -*- coding: utf-8 *-*
+import functools
 import tornado.web
 
 from selene.base import BaseHandler
+
+
+def redirect_authenticated_user(f):
+
+    @functools.wraps(f)
+    @tornado.gen.engine
+    def wrapper(self, *args, **kwargs):
+        self._auto_finish = False
+        if self.current_user:
+            self.redirect('/')
+        else:
+            f(self, *args, **kwargs)
+    return wrapper
 
 
 class ErrorHandler(BaseHandler):

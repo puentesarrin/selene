@@ -88,6 +88,9 @@ class BaseHandler(tornado.web.RequestHandler):
     def get_user_locale(self):
         user = self.current_user
         if not user:
+            locale_cookie = self.get_cookie('locale')
+            if locale_cookie in [l[0] for l in opts.get_allowed_languages()]:
+                return tornado.locale.get(locale_cookie)
             return None
         if not user["locale"]:
             return None
@@ -101,6 +104,7 @@ class BaseHandler(tornado.web.RequestHandler):
             'forms': forms,
             'helpers': helpers,
             'options': options,
+            'opts': opts,
             'language_choices': opts.get_allowed_languages()
         })
         return namespace
