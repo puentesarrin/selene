@@ -140,18 +140,3 @@ _formatter_map = {'text': TextPlainFormatter,
 
 def get_html_and_plain(input_text, input_text_type):
     return TextConverter(_formatter_map[input_text_type])(input_text)
-    #if text_input_type == 'html':
-        #return text, get_plain_from_html(text)
-    #elif text_input_type == 'md':
-        #html = get_html_from_md(text)
-        #return html, get_plain_from_html(html)
-    #elif text_input_type == 'rst':
-        #html = get_html_from_rst(text)
-        #return html, get_plain_from_html(html)
-    #elif text_input_type == 'bbcode':
-        #html = get_html_from_bbcode(text)
-        #return html, _bbcode_markup.cleanup_html(text).strip()
-    #elif text_input_type == 'textile':
-        #html = get_html_from_textile(text)
-        #return html, get_plain_from_html(html)
-    #return text, text
