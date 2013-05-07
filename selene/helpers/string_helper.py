@@ -121,6 +121,13 @@ class TextileFormatter(MarkupLanguageFormatter):
         return textile.textile(input_text)
 
 
+class MediaWikiFormatter(MarkupLanguageFormatter):
+
+    def html(self, input_text):
+        import mediawiki
+        return mediawiki.wiki2html(input_text, False)
+
+
 class TextConverter(object):
 
     def __init__(self, formatter):
@@ -135,7 +142,8 @@ _formatter_map = {'text': TextPlainFormatter,
                   'md': MarkdownFormatter,
                   'rst': reStructuredTextFormatter,
                   'bbcode': BBCodeFormatter,
-                  'textile': TextileFormatter}
+                  'textile': TextileFormatter,
+                  'mediawiki': MediaWikiFormatter}
 
 
 def get_html_and_plain(input_text, input_text_type):
