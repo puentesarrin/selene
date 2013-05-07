@@ -128,6 +128,13 @@ class MediaWikiFormatter(MarkupLanguageFormatter):
         return mediawiki.wiki2html(input_text, False)
 
 
+class CreoleFormatter(MarkupLanguageFormatter):
+
+    def html(self, input_text):
+        import creole
+        return creole.creole2html(input_text)
+
+
 class TextConverter(object):
 
     def __init__(self, formatter):
@@ -143,7 +150,8 @@ _formatter_map = {'text': TextPlainFormatter,
                   'rst': reStructuredTextFormatter,
                   'bbcode': BBCodeFormatter,
                   'textile': TextileFormatter,
-                  'mediawiki': MediaWikiFormatter}
+                  'mediawiki': MediaWikiFormatter,
+                  'creole': CreoleFormatter}
 
 
 def get_html_and_plain(input_text, input_text_type):

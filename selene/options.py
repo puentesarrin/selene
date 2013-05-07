@@ -9,7 +9,7 @@ from tornado.options import (define, options, parse_command_line,
 
 TEXT_TYPES = [('text', 'Text plain'), ('html', 'HTML'), ('md', 'Markdown'),
     ('rst', 'reStructuredText'), ('bbcode', 'BBCode'), ('textile', 'Textile'),
-    ('mediawiki', 'MediaWiki')]
+    ('mediawiki', 'MediaWiki'), ('creole', 'Creole')]
 STATUSES = [('published', 'Published'), ('unpublished', 'Unpublished')]
 STOP_WORDS = 'a,an,are,as,at,be,by,for,in,is,of,on,or,that,to,was'.split(',')
 TWITTER_COUNTER = ['none', 'horizontal', 'vertical']
