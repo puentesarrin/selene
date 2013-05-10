@@ -32,7 +32,7 @@ def get_rtl_languages():
     return ['ar_AR']
 
 
-def setup_options(path):
+def define_options():
     #Tornado
     group = 'Tornado'
     define("use_pyuv", default=False, type=bool,
@@ -187,13 +187,14 @@ def setup_options(path):
            help='Disqus widget enabled')
     define('disqus_shortname', type=str, group=group, help='Disqus short name')
 
+
+def setup_options(path):
+    define_options()
     if os.path.exists(path):
         parse_config_file(path)
     else:
         raise ValueError('No config file at %s' % path)
-
     parse_command_line()
-
     if not options.cookie_secret:
         options.cookie_secret = base64.b64encode(os.urandom(32))
         logging.warning('Selene will use a random cookie_secret: %s' %
