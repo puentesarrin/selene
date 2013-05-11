@@ -23,7 +23,9 @@ Requirements
 * Misaka_
 * Postmarkup_
 * Textile_
+* mediawiki_
 * TornadoMail_
+* python-creole_
 
 Core features
 -------------
@@ -37,6 +39,8 @@ Core features
    * reStructuredText
    * BBCode
    * Textile
+   * MediaWiki
+   * Creole
 * Posts sharing via Google+, Twitter and Facebook.
 * Optional comments management via Disqus.
 * Supported localization:
@@ -74,5 +78,7 @@ pull-requests!
 .. _Misaka: https://github.com/FSX/misaka
 .. _Postmarkup: https://code.google.com/p/postmarkup/
 .. _Textile: https://pypi.python.org/pypi/textile
+.. _mediawiki: https://github.com/zikzakmedia/python-mediawiki
+.. _python-creole: https://github.com/jedie/python-creole
 .. _WTForms: http://wtforms.simplecodes.com/
 .. _TornadoMail: https://github.com/equeny/tornadomail

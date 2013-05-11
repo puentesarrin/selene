@@ -1,11 +1,6 @@
 # -*- coding: utf-8 *-*
-import misaka
-import postmarkup
 import re
-import textile
 
-from docutils import core
-from docutils.writers.html4css1 import Writer, HTMLTranslator
 from HTMLParser import HTMLParser
 from unicodedata import normalize
 
@@ -48,58 +43,116 @@ def get_plain_from_html(html):
     return parser.value()
 
 
-class CleanedHTMLTranslator(HTMLTranslator):
+class TextPlainFormatter(object):
 
-    def __init__(self, document):
-        HTMLTranslator.__init__(self, document)
-        self.head = ""
-        self.head_prefix = ['', '', '', '', '']
-        self.body_prefix = []
-        self.body_suffix = []
-        self.stylesheet = []
+    def html(self, input_text):
+        return input_text
 
-    def visit_document(self, node):
-        pass
+    def plain(self, input_text):
+        return input_text
 
-    def depart_document(self, node):
-        self.fragment = self.body
-
-_w = Writer()
-_w.translator_class = CleanedHTMLTranslator
+    def process(self, input_text):
+        return self.html(input_text), self.plain(input_text)
 
 
-def get_html_from_rst(rst):
-    return core.publish_string(rst, writer=_w)
+class HTMLFormatter(TextPlainFormatter):
+
+    def plain(self, input_text):
+        return get_plain_from_html(input_text)
 
 
-def get_html_from_md(md):
-    return misaka.html(md)
+class MarkupLanguageFormatter(HTMLFormatter):
+
+    def process(self, input_text):
+        html = self.html(input_text)
+        return html, self.plain(html)
 
 
-_bbcode_markup = postmarkup.create()
+class MarkdownFormatter(MarkupLanguageFormatter):
+
+    def html(self, input_text):
+        import misaka
+        return misaka.html(input_text)
 
 
-def get_html_from_bbcode(bbcode):
-    return _bbcode_markup(bbcode)
+class reStructuredTextFormatter(MarkupLanguageFormatter):
+
+    def __init__(self):
+        from docutils.writers.html4css1 import HTMLTranslator
+
+        class CleanedHTMLTranslator(HTMLTranslator):
+
+            def __init__(self, document):
+                HTMLTranslator.__init__(self, document)
+                self.head = ""
+                self.head_prefix = ['', '', '', '', '']
+                self.body_prefix = []
+                self.body_suffix = []
+                self.stylesheet = []
+
+            def visit_document(self, node):
+                pass
+
+            def depart_document(self, node):
+                self.fragment = self.body
+
+        self.translator_class = CleanedHTMLTranslator
+
+    def html(self, input_text):
+        from docutils import core
+        from docutils.writers.html4css1 import Writer
+        writer = Writer()
+        writer.translator_class = self.translator_class
+        return core.publish_string(input_text, writer=writer)
 
 
-def get_html_from_textile(text):
-    return textile.textile(text)
+class BBCodeFormatter(MarkupLanguageFormatter):
+
+    def html(self, input_text):
+        import postmarkup
+        bbcode_markup = postmarkup.create()
+        return bbcode_markup(input_text)
 
 
-def get_html_and_plain(text, text_input_type):
-    if text_input_type == 'html':
-        return text, get_plain_from_html(text)
-    elif text_input_type == 'md':
-        html = get_html_from_md(text)
-        return html, get_plain_from_html(html)
-    elif text_input_type == 'rst':
-        html = get_html_from_rst(text)
-        return html, get_plain_from_html(html)
-    elif text_input_type == 'bbcode':
-        html = get_html_from_bbcode(text)
-        return html, _bbcode_markup.cleanup_html(text).strip()
-    elif text_input_type == 'textile':
-        html = get_html_from_textile(text)
-        return html, get_plain_from_html(html)
-    return text, text
+class TextileFormatter(MarkupLanguageFormatter):
+
+    def html(self, input_text):
+        import textile
+        return textile.textile(input_text)
+
+
+class MediaWikiFormatter(MarkupLanguageFormatter):
+
+    def html(self, input_text):
+        import mediawiki
+        return mediawiki.wiki2html(input_text, False)
+
+
+class CreoleFormatter(MarkupLanguageFormatter):
+
+    def html(self, input_text):
+        import creole
+        return creole.creole2html(input_text)
+
+
+class TextConverter(object):
+
+    def __init__(self, formatter):
+        self.formatter = formatter
+
+    def __call__(self, input_text):
+        return self.formatter().process(input_text)
+
+
+_formatter_map = {'text': TextPlainFormatter,
+                  'html': HTMLFormatter,
+                  'md': MarkdownFormatter,
+                  'rst': reStructuredTextFormatter,
+                  'bbcode': BBCodeFormatter,
+                  'textile': TextileFormatter,
+                  'mediawiki': MediaWikiFormatter,
+                  'creole': CreoleFormatter}
+
+
+def get_html_and_plain(input_text, input_text_type):
+    return TextConverter(_formatter_map[input_text_type])(input_text)

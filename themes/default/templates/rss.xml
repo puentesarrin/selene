@@ -9,7 +9,7 @@
     <item>
         <title>{{ post["title"] }}</title>
         <link>{{ options.base_url + "/post/" + post["slug"] }}</link>
-        <description>{{ post["content"] }}</description>
+        <description>{{ escape(post["html_content"]) }}</description>
         <comments>{{ options.base_url + "/post/" + post["slug"] }}#comments</comments>
         {% for tag in post["tags"] %}
         <category domain="{{ "%s/tag/%s" % (options.base_url, tag) }}">{{ tag }}</category>
