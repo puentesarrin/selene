@@ -57,6 +57,7 @@ def _format_value(option):
     if option.multiple:
         return '%s' % option.value()
     _format_string = {
+#        TODO: Improves to format type
         datetime: '',
         timedelta: '',
         str: "'%s'",
