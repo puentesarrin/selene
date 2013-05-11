@@ -57,6 +57,22 @@ Core features
 * Customizable search for publications using regular expressions or full text
   search.
 
+Installing and Running
+----------------------
+
+1. Install the requirements using pip_::
+
+      pip install -r requirements.txt
+
+#. Configure your Selene instance using the ``configure.py`` script, setting
+   all available options::
+
+      python configure.py
+
+#. Run your Selene instance::
+
+      python server.py
+
 Contributors
 ------------
 
@@ -82,3 +98,4 @@ pull-requests!
 .. _python-creole: https://github.com/jedie/python-creole
 .. _WTForms: http://wtforms.simplecodes.com/
 .. _TornadoMail: https://github.com/equeny/tornadomail
+.. _pip: http://www.pip-installer.org/en/latest/
