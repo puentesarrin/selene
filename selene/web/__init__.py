@@ -12,7 +12,7 @@ def redirect_authenticated_user(f):
     def wrapper(self, *args, **kwargs):
         self._auto_finish = False
         if self.current_user:
-            self.redirect('/')
+            self.redirect(self.reverse_url('home'))
         else:
             f(self, *args, **kwargs)
     return wrapper

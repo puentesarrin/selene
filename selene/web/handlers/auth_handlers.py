@@ -143,6 +143,7 @@ class LoginTwitterHandler(BaseHandler, tornado.auth.TwitterMixin):
 
 class AccountHandler(BaseHandler):
 
+    @tornado.web.authenticated
     def get(self):
         form = forms.AccountForm(locale_code=self.locale.code,
             language_choices=opts.get_allowed_languages(),
@@ -150,6 +151,7 @@ class AccountHandler(BaseHandler):
             **self.current_user)
         self.render('account.html', form=form)
 
+    @tornado.web.authenticated
     def post(self):
         form = forms.AccountForm(self.request.arguments,
             locale_code=self.locale.code,
