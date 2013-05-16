@@ -38,7 +38,7 @@ class RegisterHandler(BaseHandler):
                 self.db.users.insert(user)
                 self.smtp.send(constants.CONFIRM_YOUR_ACCOUNT, 'newuser.html',
                     user['email'], {'user': user})
-                self.redirect("/login")
+                self.redirect(self.reverse_url("login"))
         else:
             self.render('register.html', message=form.errors, form=form)
 
@@ -73,7 +73,8 @@ class LoginHandler(BaseHandler):
                     if pass_check:
                         self.set_secure_cookie("current_user",
                                                user["email"])
-                        self.redirect(form.data['next_'] or "/")
+                        self.redirect(form.data['next_'] or
+                                      self.reverse_url('home'))
                         return
             self.render('login.html',
                 message=constants.INCORRECT_USER_PASSWORD, form=form)
@@ -162,7 +163,7 @@ class AccountHandler(BaseHandler):
                 update['$set'].update({'password':
                     bcrypt.hashpw(form.data['password'], bcrypt.gensalt())})
             self.db.users.update({'email': self.current_user['email']}, update)
-            self.redirect('/my-account')
+            self.redirect(self.reverse_url('my-account'))
         else:
             self.render('account.html', message=form.errors, form=form)
 
@@ -173,7 +174,7 @@ class ChangeLanguageHandler(BaseHandler):
     def post(self):
         form = forms.LanguageForm(self.request.arguments)
         self.set_cookie('locale', form.data['language'])
-        self.redirect('/')
+        self.redirect(self.reverse_url('home'))
 
 
 class RequestNewPasswordHandler(BaseHandler):
@@ -197,7 +198,7 @@ class RequestNewPasswordHandler(BaseHandler):
                     '$unset': {'join_hash': 1}}, new=True)
                 self.smtp.send(constants.RESET_PASSWORD, 'newpassword.html',
                     user["email"], {'user': user})
-                self.redirect('/')
+                self.redirect(self.reverse_url('home'))
                 return
             self.render('newpassword.html',
                 message=constants.USER_IS_NOT_EXIST, form=form)
@@ -223,7 +224,7 @@ class ResetPasswordHandler(BaseHandler):
             if user:
                 self.smtp.send(constants.UPDATED_PASSWORD,
                     'resetpassword.html', user['email'], {'user': user})
-            self.redirect('/login')
+            self.redirect(self.reverse_url('login'))
         else:
             self.render('resetpassword.html', message=form.errors, form=form)
 
@@ -233,4 +234,4 @@ class LogoutHandler(BaseHandler):
     @tornado.web.authenticated
     def post(self):
         self.clear_cookie("current_user")
-        self.redirect("/")
+        self.redirect(self.reverse_url('home'))
