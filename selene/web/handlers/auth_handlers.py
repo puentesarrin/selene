@@ -66,16 +66,15 @@ class LoginHandler(BaseHandler):
             locale_code=self.locale.code)
         if form.validate():
             user = self.db.users.find_one({"email": form.data['email']})
-            if user:
-                if user['enabled']:
-                    pass_check = bcrypt.hashpw(form.data['password'],
-                        user["password"]) == user["password"]
-                    if pass_check:
-                        self.set_secure_cookie("current_user",
-                                               user["email"])
-                        self.redirect(form.data['next_'] or
-                                      self.reverse_url('home'))
-                        return
+            if user and user['enabled']:
+                pass_check = bcrypt.hashpw(form.data['password'],
+                    user["password"]) == user["password"]
+                if pass_check:
+                    self.set_secure_cookie("current_user",
+                                           user["email"])
+                    self.redirect(form.data['next_'] or
+                                  self.reverse_url('home'))
+                    return
             self.render('login.html',
                 message=constants.INCORRECT_USER_PASSWORD, form=form)
         else:
