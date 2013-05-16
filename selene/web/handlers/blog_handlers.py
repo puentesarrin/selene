@@ -68,9 +68,9 @@ class NewPostHandler(BaseHandler):
                 })
                 self.db.posts.insert(post)
                 if post['status'] == 'published':
-                    self.redirect('/post/%s' % post['slug'])
+                    self.redirect(self.reverse_url('post', post['slug']))
                 else:
-                    self.redirect('/')
+                    self.redirect(self.reverse_url('home'))
         else:
             self.render('newpost.html', message=form.errors, form=form)
 
@@ -136,9 +136,9 @@ class EditPostHandler(BaseHandler):
             })
             self.db.posts.update({'slug': slug}, {'$set': post})
             if post['status'] == 'published':
-                self.redirect('/post/%s' % slug)
+                self.redirect(self.reverse_url('post', slug))
             else:
-                self.redirect('/')
+                self.redirect(self.reverse_url('home'))
         else:
             self.render('editpost.html', message=form.errors, form=form)
 
@@ -157,7 +157,7 @@ class DeletePostHandler(BaseHandler):
             raise tornado.web.HTTPError(404)
         self.db.comments.remove({'postid': post['_id']})
         self.db.posts.remove({'slug': slug})
-        self.redirect('/posts')
+        self.redirect(self.reverse_url('posts'))
 
 
 class VotePostHandler(BaseHandler):
@@ -167,7 +167,7 @@ class VotePostHandler(BaseHandler):
         if not post:
             raise tornado.web.HTTPError(404)
         self.db.posts.update({'slug': slug}, {'$inc': {'votes': 1}})
-        self.redirect('/post/%s' % slug)
+        self.redirect(self.reverse_url('post', slug))
 
 
 class PostsHandlers(BaseHandler):
@@ -274,7 +274,7 @@ class NewCommentHandler(BaseHandler):
                 'dislikes': 0
             })
             self.db.comments.insert(comment)
-            self.redirect('/post/%s' % slug)
+            self.redirect(self.reverse_url('post', slug))
         else:
             post = self.db.posts.find_one({'slug': slug, 'status': 'published'})
             if not post:
@@ -302,7 +302,7 @@ class LikeCommentHandler(BaseHandler):
         if not comment:
             raise tornado.web.HTTPError(404)
         post = self.db.posts.find_one({'_id': comment['postid']})
-        self.redirect('/post/%s' % post['slug'])
+        self.redirect(self.reverse_url('post', post['slug']))
 
 
 class EditCommentHandler(BaseHandler):
@@ -328,7 +328,7 @@ class EditCommentHandler(BaseHandler):
             self.db.comments.update({'_id': ObjectId(comment_id)},
                 {'$set': form.data})
             post = self.db.posts.find_one({'_id': comment['postid']})
-            self.redirect('/post/%s' % post['slug'])
+            self.redirect(self.reverse_url('post', post['slug']))
         else:
             post = self.db.posts.find_one({'_id': comment['postid']})
             self.render('editcomment.html', post=post,
@@ -353,4 +353,4 @@ class DeleteCommentHandler(BaseHandler):
             raise tornado.web.HTTPError(404)
         post = self.db.posts.find_one({'_id': comment['postid']})
         self.db.comments.remove({'_id': ObjectId(comment_id)})
-        self.redirect('/post/%s' % post['slug'])
+        self.redirect(self.reverse_url('post', post['slug']))
