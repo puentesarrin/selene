@@ -239,14 +239,6 @@ class SearchHandler(BaseHandler):
             page=page, page_size=options.page_size_search_posts)
 
 
-class RssHandler(BaseHandler):
-
-    def get(self):
-        self.set_header("Content-Type", "application/rss+xml; charset=utf-8")
-        self.render("rss.xml",
-            posts=self.db.posts.find().sort("date", -1).limit(10))
-
-
 class NewCommentHandler(BaseHandler):
 
     def post(self, slug):
