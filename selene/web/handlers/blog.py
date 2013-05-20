@@ -4,7 +4,7 @@ import re
 import tornado.web
 
 from bson.objectid import ObjectId
-from selene import constants, forms, helpers, options as opts
+from selene import constants, forms, helpers, options as opts, text
 from selene.base import BaseHandler
 from tornado.options import options
 
@@ -45,14 +45,14 @@ class NewPostHandler(BaseHandler):
             if form.data['custom_slug']:
                 slug = form.data['slug']
             else:
-                slug = helpers.get_slug(form.data['title'],
+                slug = text.get_slug(form.data['title'],
                     stop_words=options.slug_stop_words)
             if self.db.posts.find_one({'slug': slug}, {'_id': 1}) or \
                 slug.strip() == '':
                 self.render('newpost.html',
                     message=constants.POST_IS_ALREADY_REGISTERED, form=form)
             else:
-                html_content, plain_content = helpers.get_html_and_plain(
+                html_content, plain_content = text.get_html_and_plain(
                     form.data['content'], form.data['text_type'])
                 post = form.data
                 post.update({
@@ -123,9 +123,9 @@ class EditPostHandler(BaseHandler):
             if form.data['custom_slug']:
                 slug = form.data['slug']
             else:
-                slug = helpers.get_slug(form.data['title'],
+                slug = text.get_slug(form.data['title'],
                     stop_words=options.slug_stop_words)
-            html_content, plain_content = helpers.get_html_and_plain(
+            html_content, plain_content = text.get_html_and_plain(
                 form.data['content'], form.data['text_type'])
             post = form.data
             post.update({
