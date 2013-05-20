@@ -15,9 +15,6 @@ class TestRegisterHandler(tornado.testing.AsyncHTTPTestCase,
         response = self.fetch('/register')
         self.assertEqual(response.code, 200)
 
-        response = self.fetch('/register/')
-        self.assertEqual(response.code, 200)
-
 
 class TestLoginHandler(tornado.testing.AsyncHTTPTestCase,
                        tornado.testing.LogTrapTestCase):
@@ -27,7 +24,4 @@ class TestLoginHandler(tornado.testing.AsyncHTTPTestCase,
 
     def test_login_url_valid(self):
         response = self.fetch('/login')
-        self.assertEqual(response.code, 200)
-
-        response = self.fetch('/login/')
         self.assertEqual(response.code, 200)
