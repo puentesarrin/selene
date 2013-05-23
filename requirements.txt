@@ -1,5 +1,5 @@
-tornado
-pymongo
+tornado==2.4.1
+pymongo==2.5
 py-bcrypt
 WTForms
 docutils
