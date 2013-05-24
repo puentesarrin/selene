@@ -18,6 +18,22 @@ def redirect_authenticated_user(f):
     return wrapper
 
 
+def validate_form(form_class, template):
+
+    def decorator(f):
+
+        @functools.wraps(f)
+        @tornado.gen.engine
+        def wrapper(self, *args, **kwargs):
+            self.form = form_class(self.request.arguments)
+            if not self.form.validate():
+                self.render(template, message=self.form.errors, form=self.form)
+            else:
+                f(self, *args, **kwargs)
+        return wrapper
+    return decorator
+
+
 class ErrorHandler(BaseHandler):
 
     def __init__(self, application, request, status_code):
