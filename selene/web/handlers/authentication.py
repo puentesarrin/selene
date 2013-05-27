@@ -96,7 +96,7 @@ class LoginGoogleHandler(BaseHandler, tornado.auth.GoogleMixin):
         if not data:
             raise tornado.web.HTTPError(500)
         user = {
-            'name': data['name'],
+            'full_name': data['name'],
             'email': data['email'],
             'enabled': True,
             'join': datetime.datetime.now(),
