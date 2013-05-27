@@ -11,7 +11,8 @@ class RSSHandler(BaseHandler):
     def get(self):
         self.set_header("Content-Type", "application/rss+xml; charset=utf-8")
         self.render("rss.xml",
-            posts=self.db.posts.find().sort("date", -1).limit(10))
+            posts=self.db.posts.find({'status': 'published'}).sort("date",
+                -1).limit(10))
 
 
 class AtomHandler(BaseHandler):
@@ -21,7 +22,8 @@ class AtomHandler(BaseHandler):
                      selene.version)
         feed = AtomFeed(title=options.title, feed_url=self.reverse_url('atom'),
                         url=options.base_url, generator=generator)
-        posts = self.db.posts.find().sort("date", -1).limit(10)
+        posts = self.db.posts.find({'status': 'published'}).sort("date",
+                                                                 -1).limit(10)
         for post in posts:
             feed.add(title=post['title'], content=post['html_content'],
                      content_type='html', author=post['author'],
