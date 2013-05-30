@@ -10,3 +10,4 @@ Pygments
 git+https://github.com/equeny/tornadomail.git
 mediawiki
 python-creole
+werkzeug
