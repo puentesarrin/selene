@@ -26,6 +26,7 @@ Requirements
 * mediawiki_
 * TornadoMail_
 * python-creole_
+* Werkzeug_
 
 Core features
 -------------
@@ -99,3 +100,4 @@ pull-requests!
 .. _WTForms: http://wtforms.simplecodes.com/
 .. _TornadoMail: https://github.com/equeny/tornadomail
 .. _pip: http://www.pip-installer.org/en/latest/
+.. _Werkzeug: http://werkzeug.pocoo.org/
