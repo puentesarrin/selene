@@ -3,7 +3,7 @@ Selene
 ======
 
 A simple CMS for blogging inspired by my beautiful wife and built with Tornado
-and MongoDB. Here is a `Selene demo site <http://selene.lowstz.org>`_.
+and MongoDB. See a demo site `here <http://selene.lowstz.org>`_.
 
 .. important::
 
@@ -84,8 +84,8 @@ Contributors
 * Luigi Van (`@fdb713 <https://github.com/fdb713>`_)
 * Liangyi Zhang (`@SidneyZhang <https://twitter.com/SidneyZhang>`_ in Twitter)
 
-I want to improve this project with your help... I will watch to all of your
-pull-requests!
+I want to improve this project with your help... I'm looking forward for all of
+your pullrequests!
 
 .. _Tornado: http://www.tornadoweb.org/
 .. _PyMongo: http://api.mongodb.org/python/current/
