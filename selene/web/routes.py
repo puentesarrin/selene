@@ -43,4 +43,5 @@ urls = [
         name='comment-edit'),
     url(r'/comment/([a-z0-9]{24})/delete', handlers.DeleteCommentHandler,
         name='comment-delete'),
-    url(r"/rss", handlers.RssHandler, name='rss')]
+    #url(r"/feed.rss", handlers.RSSHandler, name='rss'),
+    url(r"/feed.atom", handlers.AtomHandler, name='atom')]
