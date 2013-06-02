@@ -25,7 +25,8 @@ def validate_form(form_class, template):
         @functools.wraps(f)
         @tornado.gen.engine
         def wrapper(self, *args, **kwargs):
-            self.form = form_class(self.request.arguments)
+            self.form = form_class(locale_code=self.locale.code,
+                                   self.request.arguments)
             if not self.form.validate():
                 self.render(template, message=self.form.errors, form=self.form)
             else:
