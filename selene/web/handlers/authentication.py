@@ -18,29 +18,26 @@ class RegisterHandler(BaseHandler):
             form=forms.RegisterForm(locale_code=self.locale.code))
 
     @selene.web.redirect_authenticated_user
+    @selene.web.validate_form(forms.RegisterForm, 'register.html')
     def post(self):
-        form = forms.RegisterForm(self.request.arguments,
-            locale_code=self.locale.code)
-        if form.validate():
-            if self.db.users.find_one({'email': form.data['email']}):
-                self.render('register.html',
-                    message=constants.EMAIL_IS_ALREADY_REGISTERED, form=form)
-            else:
-                user = form.data
-                user.update({
-                    "password": bcrypt.hashpw(form.data['password'],
-                        bcrypt.gensalt()),
-                    'enabled': False,
-                    'join': datetime.datetime.now(),
-                    'join_hash': helpers.generate_md5(),
-                    "locale": options.default_language
-                })
-                self.db.users.insert(user)
-                self.smtp.send(constants.CONFIRM_YOUR_ACCOUNT, 'newuser.html',
-                    user['email'], {'user': user})
-                self.redirect(self.reverse_url("login"))
+        if self.db.users.find_one({'email': self.form.data['email']}):
+            self.render('register.html',
+                        message=constants.EMAIL_IS_ALREADY_REGISTERED,
+                        form=self.form)
         else:
-            self.render('register.html', message=form.errors, form=form)
+            user = self.form.data
+            user.update({
+                "password": bcrypt.hashpw(self.form.data['password'],
+                                          bcrypt.gensalt()),
+                'enabled': False,
+                'join': datetime.datetime.now(),
+                'join_hash': helpers.generate_md5(),
+                "locale": options.default_language
+            })
+            self.db.users.insert(user)
+            self.smtp.send(constants.CONFIRM_YOUR_ACCOUNT, 'newuser.html',
+                           user['email'], {'user': user})
+            self.redirect(self.reverse_url("login"))
 
 
 class ConfirmAccountHandler(BaseHandler):
@@ -61,24 +58,19 @@ class LoginHandler(BaseHandler):
                 next_=self.get_argument('next', '/')))
 
     @selene.web.redirect_authenticated_user
+    @selene.web.validate_form(forms.LoginForm, 'login.html')
     def post(self):
-        form = forms.LoginForm(self.request.arguments,
-            locale_code=self.locale.code)
-        if form.validate():
-            user = self.db.users.find_one({"email": form.data['email']})
-            if user and user['enabled']:
-                pass_check = bcrypt.hashpw(form.data['password'],
-                    user["password"]) == user["password"]
-                if pass_check:
-                    self.set_secure_cookie("current_user",
-                                           user["email"])
-                    self.redirect(form.data['next_'] or
-                                  self.reverse_url('home'))
-                    return
-            self.render('login.html',
-                message=constants.INCORRECT_USER_PASSWORD, form=form)
-        else:
-            self.render('login.html', message=form.errors, form=form)
+        user = self.db.users.find_one({"email": self.form.data['email']})
+        if user and user['enabled']:
+            pass_check = bcrypt.hashpw(self.form.data['password'],
+                                       user["password"]) == user["password"]
+            if pass_check:
+                self.set_secure_cookie("current_user", user["email"])
+                self.redirect(self.form.data['next_'] or
+                              self.reverse_url('home'))
+                return
+        self.render('login.html',
+            message=constants.INCORRECT_USER_PASSWORD, form=self.form)
 
 
 class LoginGoogleHandler(BaseHandler, tornado.auth.GoogleMixin):
@@ -186,25 +178,21 @@ class RequestNewPasswordHandler(BaseHandler):
             form=forms.RequestNewPasswordForm(locale_code=self.locale.code))
 
     @selene.web.redirect_authenticated_user
+    @selene.web.validate_form(forms.RequestNewPasswordForm, 'newpassword.html')
     def post(self):
-        form = forms.RequestNewPasswordForm(self.request.arguments,
-            locale_code=self.locale.code)
-        if form.validate():
-            user = self.db.users.find_one({'email': form.data['email']})
-            if user:
-                reset_hash = helpers.generate_md5()
-                user = self.db.users.find_and_modify(
-                    {'email': form.data['email']},
-                    {'$set': {'reset_hash': reset_hash, 'enabled': True},
-                    '$unset': {'join_hash': 1}}, new=True)
-                self.smtp.send(constants.RESET_PASSWORD, 'newpassword.html',
-                    user["email"], {'user': user})
-                self.redirect(self.reverse_url('home'))
-                return
-            self.render('newpassword.html',
-                message=constants.USER_IS_NOT_EXIST, form=form)
-        else:
-            self.render('newpassword.html', message=form.errors, form=form)
+        user = self.db.users.find_one({'email': self.form.data['email']})
+        if user:
+            reset_hash = helpers.generate_md5()
+            user = self.db.users.find_and_modify(
+                {'email': self.form.data['email']},
+                {'$set': {'reset_hash': reset_hash, 'enabled': True},
+                '$unset': {'join_hash': 1}}, new=True)
+            self.smtp.send(constants.RESET_PASSWORD, 'newpassword.html',
+                           user["email"], {'user': user})
+            self.redirect(self.reverse_url('home'))
+            return
+        self.render('newpassword.html', message=constants.USER_IS_NOT_EXIST,
+                    form=self.form)
 
 
 class ResetPasswordHandler(BaseHandler):
