@@ -85,7 +85,7 @@ Contributors
 * Liangyi Zhang (`@SidneyZhang <https://twitter.com/SidneyZhang>`_ in Twitter)
 
 I want to improve this project with your help... I'm looking forward for all of
-your pullrequests!
+your pull requests!
 
 .. _Tornado: http://www.tornadoweb.org/
 .. _PyMongo: http://api.mongodb.org/python/current/
