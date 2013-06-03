@@ -98,7 +98,7 @@ def get_dict_options():
 def generate_configuration_file():
     dict_options = get_dict_options()
     lines = []
-    for name, value in dict_options.iteritems():
+    for name, value in list(dict_options.items()):
         if name.startswith('#'):
             lines.append('\n%s options' % name)
         else:

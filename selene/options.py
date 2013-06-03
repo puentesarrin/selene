@@ -25,7 +25,7 @@ def get_allowed_text_types():
 
 def get_allowed_languages():
     return sorted([(k, v['name_en']) for k, v in
-        tornado.locale.LOCALE_NAMES.iteritems() if k in
+        list(tornado.locale.LOCALE_NAMES.items()) if k in
         tornado.locale.get_supported_locales()])
 
 
