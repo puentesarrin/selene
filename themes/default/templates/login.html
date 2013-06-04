@@ -9,15 +9,8 @@
 
 {% block content %}
     <div class="row-fluid">
-        <div class="span8">
+        <div class="span12">
             {% module LoginModule(form=form) %}
-        </div>
-        <div class="span4">
-            <fieldset>
-                <legend>{{ _("Third-party login") }}</legend>
-                {% module GoogleLoginModule() %}
-                {% module TwitterLoginModule() %}
-            </fieldset>
         </div>
     </div>
 {% end %}
