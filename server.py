@@ -11,8 +11,13 @@ from selene import options, Selene, web
 
 if __name__ == '__main__':
     options.setup_options('selene.conf')
-    db = pymongo.MongoClient(opts.db_uri)[opts.db_name]
-    logging.info('Connected to MongoDB.')
+    if not opts.db_rs:
+        db = pymongo.MongoClient(opts.db_uri)[opts.db_name]
+        logging.info('Connected to a MongoDB standalone instance.')
+    else:
+        db = pymongo.MongoReplicaSetClient(opts.db_uri,
+            replicaSet=opts.db_rs_name)[opts.db_name]
+        logging.info('Connected to a MongoDB replica set.')
     http_server = tornado.httpserver.HTTPServer(Selene(db))
     tornado.web.ErrorHandler = web.ErrorHandler
     http_server.listen(opts.port)

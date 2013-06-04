@@ -49,6 +49,10 @@ def define_options():
     group = 'Database'
     define("db_uri", default="mongodb://localhost:27017", type=str,
            help='MongoDB database URI', group=group)
+    define("db_rs", default=False, type=bool,
+           help='MongoDB use a replication strategy', group=group)
+    define("db_rs_name", default="rs0", type=str,
+           help='MongoDB replication name', group=group)
     define("db_name", default="selene", type=str, help='MongoDB database name',
            group=group)
     define("db_use_fts", default=False, type=bool,
