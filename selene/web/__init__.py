@@ -18,7 +18,7 @@ def redirect_authenticated_user(f):
     return wrapper
 
 
-def validate_form(form_class, template):
+def validate_form(form_class, template, **params):
 
     def decorator(f):
 
@@ -26,7 +26,7 @@ def validate_form(form_class, template):
         @tornado.gen.engine
         def wrapper(self, *args, **kwargs):
             self.form = form_class(self.request.arguments,
-                                   locale_code=self.locale.code)
+                                   locale_code=self.locale.code, **params)
             if not self.form.validate():
                 self.render(template, message=self.form.errors, form=self.form)
             else:
