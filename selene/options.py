@@ -110,6 +110,14 @@ def define_options():
            help='Selected theme directory name', group=group)
     define('static_url_prefix', default=None, type=str,
            help='Static files prefix', group=group)
+    define('logging_db', default=False, type=bool,
+           help='Enable logging on MongoDB database', group=group)
+    define('logging_db_uri', default='mongodb://localhost:27017', type=str,
+           help='MongoDB database uri for logging', group=group)
+    define('logging_db_name', default='selene_log', type=str,
+           help='MongoDB database name for logging', group=group)
+    define('logging_db_collection', default='log', type=str,
+           help='MongoDB collection name for logging', group=group)
 
     #Locale
     group = 'Locale'

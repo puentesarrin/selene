@@ -6,7 +6,7 @@ import tornado.httpserver
 
 from tornado.ioloop import IOLoop
 from tornado.options import options as opts
-from selene import options, Selene, web
+from selene import log, options, Selene, web
 
 
 if __name__ == '__main__':
@@ -18,6 +18,8 @@ if __name__ == '__main__':
         db = pymongo.MongoReplicaSetClient(opts.db_uri,
             replicaSet=opts.db_rs_name)[opts.db_name]
         logging.info('Connected to a MongoDB replica set.')
+    if opts.logging_db:
+        log.configure_mongolog()
     http_server = tornado.httpserver.HTTPServer(Selene(db))
     tornado.web.ErrorHandler = web.ErrorHandler
     http_server.listen(opts.port)
