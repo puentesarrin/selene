@@ -19,14 +19,20 @@ Requirements
 * PyMongo_
 * py-bcrypt_
 * WTForms_
+* TornadoMail_
+* Werkzeug_
+
+Other modules are optionally required
+-------------------------------------
+
 * docutils_
 * Misaka_
 * Postmarkup_
 * Textile_
 * mediawiki_
-* TornadoMail_
 * python-creole_
-* Werkzeug_
+* tornado_pyuv_
+* MongoLog_
 
 Core features
 -------------
@@ -101,3 +107,5 @@ your pull requests!
 .. _TornadoMail: https://github.com/equeny/tornadomail
 .. _pip: http://www.pip-installer.org/en/latest/
 .. _Werkzeug: http://werkzeug.pocoo.org/
+.. _tornado_pyuv: https://github.com/saghul/tornado-pyuv
+.. _MongoLog: https://pypi.python.org/pypi/mongolog
