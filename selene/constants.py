@@ -1,0 +1,21 @@
+# -*- coding: utf-8 *-*
+CONFIRM_YOUR_ACCOUNT = 'Confirm your account'
+CONTENT_IS_REQUIRED = 'Content is required'
+EMAIL_IS_ALREADY_REGISTERED = 'Email address already registered'
+EMAIL_IS_INVALID = 'Email address is invalid'
+EMAIL_IS_REQUIRED = 'Email address is required'
+FULL_NAME_IS_REQUIRED = 'Full Name is required'
+INCORRECT_USER_PASSWORD = ('Incorrect user/password combination or invalid '
+                           'account')
+LANGUAGE_IS_REQUIRED = 'Language is required'
+NAME_IS_REQUIRED = 'Name is required'
+PASSWORD_IS_REQUIRED = 'Password is required'
+POST_IS_ALREADY_REGISTERED = ('There are already an existing post with this '
+                              'title or slug')
+RESET_PASSWORD = 'Reset password'
+STATUS_IS_REQUIRED = 'Status is required'
+TAGS_ARE_REQUIRED = 'Tags are required'
+TEXT_TYPE_IS_REQUIRED = 'Text type is required'
+TITLE_IS_REQUIRED = 'Title is required'
+UPDATED_PASSWORD = 'Updated password'
+USER_IS_NOT_EXIST = 'User does not exist'

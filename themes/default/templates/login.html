@@ -8,29 +8,9 @@
 {% end %}
 
 {% block content %}
-    {% if isinstance(message, str) %}
-        <div class="alert alert-error">
-            {{ _(message) }}
-        </div>
-    {% elif isinstance(message, dict) %}
-        <div class="alert alert-error">
-            <ul>
-            {% for k, v in message.iteritems() %}
-                <li>{{ _(v[0]) }}</li>
-            {% end %}
-            </ul>
-        </div>
-    {% end %}
     <div class="row-fluid">
-        <div class="span8">
-            {% module LoginModule(_next=_next) %}
-        </div>
-        <div class="span4">
-            <fieldset>
-                <legend>{{ _("Third-party login") }}</legend>
-                {% module GoogleLoginModule() %}
-                {% module TwitterLoginModule() %}
-            </fieldset>
+        <div class="span12">
+            {% module LoginModule(form=form) %}
         </div>
     </div>
 {% end %}

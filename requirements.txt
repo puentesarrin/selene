@@ -1,4 +1,4 @@
-tornado
+tornado==2.4.1
 motor
 py-bcrypt
 WTForms
@@ -8,3 +8,6 @@ postmarkup
 textile
 Pygments
 git+https://github.com/equeny/tornadomail.git
+mediawiki
+python-creole
+werkzeug

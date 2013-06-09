@@ -1,18 +1,14 @@
 {% extends "base.html" %}
 
 {% block title %}
-{% if new %}
  | {{ _("Write a new post") }}
-{% else %}
- | {{ _("Edit post") }}: {{ post.get('title', '') }}
-{% end %}
 {% end %}
 
 {% block header %}
 {% end %}
 
 {% block content %}
-    {% module NewPostModule(message=message, post=post, new=new) %}
+    {% module NewPostModule(form=form) %}
 {% end %}
 
 {% block footer %}

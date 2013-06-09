@@ -6,7 +6,7 @@ import tornado.web
 import urllib
 
 from motor import Op
-from selene import forms, helpers
+from selene import helpers
 from tornado.options import options
 
 
@@ -33,10 +33,27 @@ def redirect_authenticated_user(f):
         self._auto_finish = False
         self.current_user = yield tornado.gen.Task(self.get_current_user_async)
         if self.current_user:
-            self.redirect('/')
+            self.redirect(self.reverse_url('home'))
         else:
             f(self, *args, **kwargs)
     return wrapper
+
+
+def validate_form(form_class, template, **params):
+
+    def decorator(f):
+
+        @functools.wraps(f)
+        @tornado.gen.engine
+        def wrapper(self, *args, **kwargs):
+            self.form = form_class(self.request.arguments,
+                                   locale_code=self.locale.code, **params)
+            if not self.form.validate():
+                self.render(template, message=self.form.errors, form=self.form)
+            else:
+                f(self, *args, **kwargs)
+        return wrapper
+    return decorator
 
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -58,24 +75,6 @@ class BaseHandler(tornado.web.RequestHandler):
             callback(None)
         else:
             callback((yield Op(self.db.users.find_one, {"email": email})))
-
-    def get_user_locale(self):
-        user = self.current_user
-        if not user:
-            return None
-        if not user["locale"]:
-            return None
-        return tornado.locale.get(user["locale"])
-
-    def get_template_namespace(self):
-        namespace = super(BaseHandler, self).get_template_namespace()
-        namespace.update({
-            'arguments': self.request.arguments,
-            'forms': forms,
-            'helpers': helpers,
-            'options': options,
-        })
-        return namespace
 
     @tornado.gen.engine
     @tornado.web.asynchronous
@@ -127,7 +126,3 @@ class ErrorHandler(BaseHandler):
 
     def prepare(self):
         raise tornado.web.HTTPError(self._status_code)
-
-
-class BaseUIModule(tornado.web.UIModule):
-    pass

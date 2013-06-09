@@ -7,8 +7,8 @@
         <link href="{{ static_url('css/bootstrap-responsive.min.css')}}" rel="stylesheet" media="screen">
         <link href="{{ static_url('css/custom.css') }}" rel="stylesheet" media="screen">
     </head>
-    <body>
-        <script src="http://code.jquery.com/jquery.js"></script>
+    <body{% if locale.code in opts.get_rtl_languages() %} dir="rtl" {% end %}>
+        <script src="{{ static_url('js/jquery.js') }}"></script>
         <script src="{{ static_url('js/bootstrap.min.js') }}"></script>
         <header class="jumbotron subhead" id="overview">
             <div class="container-fluid">
@@ -28,10 +28,15 @@
                     {% block sidebar %}{% end %}
                 </div>
                 <div class="span7">
+                    {% if 'message' in globals() %}
+                        {% module MessageModule(message=message) %}
+                    {% end %}
                     {% block content %}{% end %}
                 </div>
                 <div class="span3">
-                    {% module SearchModule() %}
+                    {% module LanguageModule(form=forms.LanguageForm(locale_code=locale.code,
+                        language_choices=language_choices, language=locale.code)) %}
+                    {% module SearchModule(form=forms.SearchForm(locale_code=locale.code)) %}
                     {% module TagsCloudModule(tags=_tags) %}
                     {% module RecentPostsModule(posts=_posts) %}
                     {% module RecentCommentsModule(comments=_comments) %}

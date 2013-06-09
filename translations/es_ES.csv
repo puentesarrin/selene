@@ -1,9 +1,13 @@
+Account confirmation, Confirmación de cuenta
 By, Por
 Cancel, Cancelar
+Change language, Cambiar idioma
 Click to comment, Haz clic aquí para comentar
 Commented on post, Comentado en la publicación
 Comments, Comentarios
+Confirm your account, Confirma tu cuenta
 Content, Contenido
+Content is required, El contenido es requerido
 Custom Slug, URL personalizado
 Date, Fecha
 Delete, Eliminar
@@ -16,22 +20,30 @@ Edit comment, Editar comentario
 Edit post, Editar publicación
 Email, Correo electrónico
 Email address already registered, El correo electrónico ya se encuentra registrado
+Email address is invalid, El correo electrónico no tiene un formato válido
 Email address is required, El correo electrónico es requerido
 Full Name, Nombre completo
+Full Name is required, El nombre completo es requerido
 Home, Inicio
 Incorrect user/password combination or invalid account, Usuario y/o contraseña no válidos
 Invalid arguments, Argumentos no válidos
 Invalid email address, Correo electrónico no válido
+Language, Idioma
+Language is required, El idioma es requerido
 List posts, Publicaciones
 Login, Ingresar
+login, ingresar
 Logout, Salir
+My account, Mi cuenta
 Name, Nombre
+Name is required, El nombre es requerido
 Next, Siguiente
 Next post, Siguiente publicación
 New comment, Nuevo comentario
-No one has comment yet, Aún no hay comentarios
-No one has post yet, Aún no hay publicaciones
-No one has tags yet, Aún no hay etiquetas
+No found results for, No se encontraron resultados para
+No one has commented yet, Aún no hay comentarios
+No one has posted yet, Aún no hay publicaciones
+No one has added any tags yet, Aún no hay etiquetas
 Page not found, Página no encontrada
 Password, Contraseña
 Password is required, La contraseña es requerida
@@ -45,20 +57,27 @@ Register, Registrarse
 Request a new password, Solicitar una nueva contraseña
 Reset password, Restablecer contraseña
 RSS Syndication, Sindicación RSS
+Save, Guardar
 says, comentó
 Search, Buscar
 Search results for, Resultados de búsqueda para
 Slug, URL
 Status, Estado
+Status is required, El estado es requerido
 Submit comment, Comentar
 Tag, Etiqueta
 Tags, Etiquetas
-Tags cloud, Nube de etiquetas
+Tag cloud, Nube de etiquetas
+Tags are required, Las etiquetas son requeridas
+There are already an existing post with this title or slug, Ya existe una publicación registrada con el mismo título o URL
 Third-party login, Ingresar a través de
 Text Type, Tipo de texto
+Text type is required, El tipo de texto es requerido
 Title, Título
+Title is required, El título es requerido
 Unpublished, No publicado
 User does not exist, El usuario no existe
 View more tags, Ver más etiquetas
 Vote, Votar
 Write a new post, Redactar una nueva publicación
+Your account has been activated sucessfully. You can %s now, Tu cuenta ha sido activada satisfactoriamente. Puedes %s ahora

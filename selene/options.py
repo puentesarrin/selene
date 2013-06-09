@@ -1,12 +1,15 @@
 # -*- coding: utf-8 *-*
 import base64
+import logging
 import os
+import tornado.locale
 
 from tornado.options import (define, options, parse_command_line,
                              parse_config_file)
 
 TEXT_TYPES = [('text', 'Text plain'), ('html', 'HTML'), ('md', 'Markdown'),
-    ('rst', 'reStructuredText'), ('bbcode', 'BBCode'), ('textile', 'Textile')]
+    ('rst', 'reStructuredText'), ('bbcode', 'BBCode'), ('textile', 'Textile'),
+    ('mediawiki', 'MediaWiki'), ('creole', 'Creole')]
 STATUSES = [('published', 'Published'), ('unpublished', 'Unpublished')]
 STOP_WORDS = 'a,an,are,as,at,be,by,for,in,is,of,on,or,that,to,was'.split(',')
 TWITTER_COUNTER = ['none', 'horizontal', 'vertical']
@@ -20,7 +23,17 @@ def get_allowed_text_types():
     return result
 
 
-def setup_options(path):
+def get_allowed_languages():
+    return sorted([(k, v['name_en']) for k, v in
+        list(tornado.locale.LOCALE_NAMES.items()) if k in
+        tornado.locale.get_supported_locales()])
+
+
+def get_rtl_languages():
+    return ['ar_AR']
+
+
+def define_options():
     #Tornado
     group = 'Tornado'
     define("use_pyuv", default=False, type=bool,
@@ -36,6 +49,10 @@ def setup_options(path):
     group = 'Database'
     define("db_uri", default="mongodb://localhost:27017", type=str,
            help='MongoDB database URI', group=group)
+    define("db_rs", default=False, type=bool,
+           help='MongoDB use a replication strategy', group=group)
+    define("db_rs_name", default="rs0", type=str,
+           help='MongoDB replication name', group=group)
     define("db_name", default="selene", type=str, help='MongoDB database name',
            group=group)
     define("db_use_fts", default=False, type=bool,
@@ -93,6 +110,14 @@ def setup_options(path):
            help='Selected theme directory name', group=group)
     define('static_url_prefix', default=None, type=str,
            help='Static files prefix', group=group)
+    define('logging_db', default=False, type=bool,
+           help='Enable logging on MongoDB database', group=group)
+    define('logging_db_uri', default='mongodb://localhost:27017', type=str,
+           help='MongoDB database uri for logging', group=group)
+    define('logging_db_name', default='selene_log', type=str,
+           help='MongoDB database name for logging', group=group)
+    define('logging_db_collection', default='log', type=str,
+           help='MongoDB collection name for logging', group=group)
 
     #Locale
     group = 'Locale'
@@ -175,13 +200,16 @@ def setup_options(path):
            help='Disqus widget enabled')
     define('disqus_shortname', type=str, group=group, help='Disqus short name')
 
+
+def setup_options(path):
+    define_options()
     if os.path.exists(path):
         parse_config_file(path)
     else:
         raise ValueError('No config file at %s' % path)
-
     parse_command_line()
-
     if not options.cookie_secret:
         options.cookie_secret = base64.b64encode(os.urandom(32))
+        logging.warning('Selene will use a random cookie_secret: %s' %
+                        options.cookie_secret)
     return options

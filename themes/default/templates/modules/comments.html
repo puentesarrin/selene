@@ -13,9 +13,12 @@
             </ul>
         {% else %}
             <div class="alert alert-info">
-                {{ _("No one has comment yet") }}
+                {{ _("No one has commented yet") }}
             </div>
         {% end %}
     </fieldset>
-    {% module NewCommentModule(post=post) %}
+    {% if 'message' in globals() %}
+        {% module MessageModule(message=message) %}
+    {% end %}
+    {% module NewCommentModule(post=post, form=form) %}
 {% end %}

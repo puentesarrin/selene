@@ -1,41 +1,55 @@
+Account confirmation, 帐号确认
 By, 来自
 Cancel, 取消
+Change language, 改变语言
 Click to comment, 点击发表评论
-Commented on post, 评论已经发表
+Commented on post, 评论已经发表文章
 Comments, 评论
+Confirm your account, 提交你的帐号
+Content is required, 内容是必填的
 Content, 内容
 Custom Slug, 自定义URL
 Date, 日期
-Delete, 删除
 Delete comment, 删除评论
 Delete post, 删除文章
+Delete, 删除
 Do you want to delete this comment, 你真的要删除这个评论吗？
 Do you want to delete this post, 你真的要删除这篇文章吗？
-Edit, 编辑
 Edit comment, 编辑评论
 Edit post, 编辑文字
-Email, 电子邮箱
+Edit, 编辑
 Email address already registered, 该电子邮箱地址已经被注册
+Email address is invalid, 电子邮箱地址是无效的
 Email address is required, 电子邮箱地址为必填项
+Email, 电子邮箱
+Full Name is required, 完全姓名是必填项
 Full Name, 完整姓名
 Home, 主页
 Incorrect user/password combination or invalid account, 不正确的用户名/密码组合或无效的帐户
 Invalid arguments, 无效参数
+Invalid email address, 无效的电子邮件地址
+Language, 语言
+Language is required 语言是必填项
 List posts, 文章列表
+login, 登陆
 Login, 登陆
 Logout, 注销
-Name, 名字
-Next, 下一个
-Next post, 下一篇文章
+My account, 我的帐号
+Name is required 用户名是必填项
+Name, 用户名
 New comment, 新评论
-No one has comment yet, 暂时没有任何评论呢
-No one has post yet, 暂时没有任何文章呢
-No one has tags yet, 暂时没有任何标签呢
+Next post, 下一篇文章
+Next, 下一个
+No found results for, 找不到任何结果LOL
+No one has added any tags yet, 暂时没有任何标签呢
+No one has commented yet, 暂时没有任何评论呢
+No one has posted yet, 暂时没有任何文章呢
 Page not found, 页面找不了╯﹏╰
+Password is required, 密码是必填项
 Password, 密码
 Posted, 发表于
-Prev, 上一页
 Previous post, 前一篇文章
+Prev, 上一页
 Published, 发布
 Recent comments, 最新评论
 Recent posts, 最新文章
@@ -43,20 +57,27 @@ Register, 注册
 Request a new password, 申请修改密码
 Reset password, 重置密码
 RSS Syndication, RSS聚合
+Save, 保存
 says, 说
-Search, 搜索
 Search results for, 搜索结果
-Slug, URL
+Search, 搜索
+Slug, URL 
+Status is required, 状态是必填项
 Status, 状态
 Submit comment, 提交评论
-Tag, 标签
+Tag cloud, 标签云
+Tags are required, 标签是必填项
 Tags, 标签
-Tags cloud, 标签云
-Third-party login, 第三方登陆
+Tag, 标签
+Text type is required, 文本类型是必填项
 Text Type, 文本类型
+There are already an existing post with this title or slug, 已经有文章的标题或自定义URL和现在这个一样，换一个吧亲:)
+Third-party login, 第三方登陆 
+Title is required,标题是必填项
 Title, 标题
 Unpublished, 草稿
 User does not exist, 该用户不存在
 View more tags, 浏览更多标签
 Vote, 顶
 Write a new post, 发表新文章
+Your account has been activated sucessfully. You can %s now 你的帐号已经激活成功！ 你现在可以%s

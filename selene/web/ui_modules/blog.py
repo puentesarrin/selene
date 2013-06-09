@@ -1,12 +1,17 @@
 # -*- coding: utf-8 *-*
-from selene.web import BaseUIModule
+from selene.base import BaseUIModule
 
 
 class NewPostModule(BaseUIModule):
 
-    def render(self, message, post, new):
-        return self.render_string('modules/newpost.html', message=message,
-            post=post, new=new)
+    def render(self, form):
+        return self.render_string('modules/newpost.html', form=form)
+
+
+class EditPostModule(BaseUIModule):
+
+    def render(self, form):
+        return self.render_string('modules/editpost.html', form=form)
 
 
 class PostModule(BaseUIModule):
@@ -56,10 +61,17 @@ class RecentPostsModule(BaseUIModule):
         return self.render_string("modules/recentposts.html", posts=posts)
 
 
+class LanguageModule(BaseUIModule):
+
+    def render(self, form):
+        return self.render_string("modules/language.html", form=form)
+
+
 class SearchModule(BaseUIModule):
 
-    def render(self, header=True, q=''):
-        return self.render_string('modules/search.html', header=header, q=q)
+    def render(self, form, header=True):
+        return self.render_string('modules/search.html', header=header,
+            form=form)
 
 
 class SearchPostsModule(BaseUIModule):
@@ -78,7 +90,7 @@ class RecentCommentsModule(BaseUIModule):
 class TagsCloudModule(BaseUIModule):
 
     def render(self, tags):
-        return self.render_string('modules/tagscloud.html', tags=tags)
+        return self.render_string('modules/tagcloud.html', tags=tags)
 
 
 class VoteModule(BaseUIModule):
@@ -89,15 +101,16 @@ class VoteModule(BaseUIModule):
 
 class NewCommentModule(BaseUIModule):
 
-    def render(self, post):
-        return self.render_string('modules/newcomment.html', post=post)
+    def render(self, post, form):
+        return self.render_string('modules/newcomment.html', post=post,
+            form=form)
 
 
 class CommentsModule(BaseUIModule):
 
-    def render(self, post, comments):
+    def render(self, post, comments, message, form):
         return self.render_string("modules/comments.html", post=post,
-            comments=comments)
+            comments=comments, message=message, form=form)
 
 
 class CommentModule(BaseUIModule):

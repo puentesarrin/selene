@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+ | {{ _("Edit post") }}: {{ form.data["title"] }}
+{% end %}
+
+{% block header %}
+{% end %}
+
+{% block content %}
+    {% module EditPostModule(form=form) %}
+{% end %}
+
+{% block footer %}
+{% end %}

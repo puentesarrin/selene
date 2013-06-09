@@ -6,8 +6,8 @@ import tornado.gen
 
 from bson import SON
 from motor import Op
-from selene import ui_modules, smtp
-from selene.web import routes
+from selene import smtp
+from selene.web import routes, ui_modules
 from tornado.options import options as opts
 
 
@@ -58,11 +58,11 @@ class Selene(tornado.web.Application):
     def setup_translations(self):
         tornado.locale.LOCALE_NAMES['zh_HK'] = {
             'name_en': 'Chinese (Hong Kong)',
-            'name': ''
+            'name': '\u4e2d\u6587(\u7e41\u9ad4)'
         }
         tornado.locale.load_translations("translations")
         tornado.locale.set_default_locale(opts.default_locale)
         logging.info('Loaded translations: %s.' %
-            ', '.join([v['name_en'] for k, v in
-                tornado.locale.LOCALE_NAMES.iteritems() if k in
-                tornado.locale.get_supported_locales()]))
+            ', '.join(sorted([v['name_en'] for k, v in
+                list(tornado.locale.LOCALE_NAMES.items()) if k in
+                tornado.locale.get_supported_locales()])))

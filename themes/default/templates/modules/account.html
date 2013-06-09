@@ -1,0 +1,36 @@
+ <form class="form-horizontal" method="post">
+    <fieldset>
+        <legend><h2>{{ _("My account") }}</h2></legend>
+        <div class="control-group">
+            {% raw form.full_name.label(class_="control-label") %}
+            <div class="controls">
+                {% raw form.full_name(placeholder=form.full_name.label.text) %}
+            </div>
+        </div>
+        <div class="control-group">
+            {% raw form.email.label(class_="control-label") %}
+            <div class="controls">
+                {% raw form.email(placeholder=form.email.label.text, disabled="disabled") %}
+            </div>
+        </div>
+        <div class="control-group">
+            {% raw form.password.label(class_="control-label") %}
+            <div class="controls">
+                {% raw form.password(placeholder=form.password.label.text) %}
+            </div>
+        </div>
+        <div class="control-group">
+            {% raw form.language.label(class_="control-label") %}
+            <div class="controls">
+                {% raw form.language() %}
+            </div>
+        </div>
+        {% raw xsrf_form_html() %}
+    </fieldset>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+            <i class="icon-ok"></i>{{ _("Save") }}
+        </button>
+        <a href="/" class="btn">{{ _("Cancel") }}</a>
+    </div>
+</form>

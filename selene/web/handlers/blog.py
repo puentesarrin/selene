@@ -8,6 +8,8 @@ from bson.objectid import ObjectId
 from motor import Op
 from selene import helpers
 from selene.web import authenticated_async, BaseHandler
+from selene import constants, forms, helpers, options as opts, text
+from selene.base import BaseHandler
 from tornado.options import options
 
 
@@ -38,7 +40,10 @@ class NewPostHandler(BaseHandler):
 
     @authenticated_async
     def get(self):
-        self.render('newpost.html', message='', post={}, new=True)
+        self.render('newpost.html',
+            form=forms.PostForm(locale_code=self.locale.code,
+                status_choices=opts.STATUSES,
+                text_type_choices=opts.get_allowed_text_types()))
 
     @authenticated_async
     @tornado.gen.engine
@@ -77,7 +82,7 @@ class NewPostHandler(BaseHandler):
         if post['status'] == 'published':
             self.redirect('/post/%s' % post['slug'])
         else:
-            self.redirect('/')
+            self.render('newpost.html', message=form.errors, form=form)
 
 
 class PostHandler(BaseHandler):
@@ -89,21 +94,39 @@ class PostHandler(BaseHandler):
             'status': 'published'}, update={'$inc': {'views': 1}}, new=True)
         if not post:
             raise tornado.web.HTTPError(404)
+<<<<<<< HEAD:selene/handlers/blog_handlers.py
 
         comments = yield Op(self.db.comments.find({'postid':
             post['_id']}).to_list)
         older = None
         newer = None
         older_cursor = self.db.posts.find({'_id': {'$lt': post['_id']},
+=======
+        comments = list(self.db.comments.find({'postid':
+            post['_id']}).sort('date', 1))
+        older = self.db.posts.find({'_id': {'$lt': post['_id']},
+>>>>>>> master:selene/web/handlers/blog.py
             'status': 'published'}).sort('date', -1).limit(1)
         newer_cursor = self.db.posts.find({'_id': {'$gt': post['_id']},
             'status': 'published'}).sort('date', 1).limit(1)
+<<<<<<< HEAD:selene/handlers/blog_handlers.py
         while (yield older_cursor.fetch_next):
             older = older_cursor.next_object()
         while (yield newer_cursor.fetch_next):
             newer = newer_cursor.next_object()
+=======
+        older = None if older.count() == 0 else older[0]
+        newer = None if newer.count() == 0 else newer[0]
+        data = {}
+        if self.current_user:
+            data.update({
+                'name': self.current_user['full_name'],
+                'email': self.current_user['email']
+            })
+        comment_form = forms.CommentForm(locale_code=self.locale.code, **data)
+>>>>>>> master:selene/web/handlers/blog.py
         self.render('post.html', post=post, comments=comments, older=older,
-            newer=newer)
+            newer=newer, form_message=None, comment_form=comment_form)
 
 
 class EditPostHandler(BaseHandler):
@@ -111,14 +134,23 @@ class EditPostHandler(BaseHandler):
     @authenticated_async
     @tornado.gen.engine
     def get(self, slug):
+<<<<<<< HEAD:selene/handlers/blog_handlers.py
         post = yield Op(self.db.posts.find_one, {'slug': slug})
+=======
+        post = self.db.posts.find_one({'slug': slug}, {'_id': 0})
+>>>>>>> master:selene/web/handlers/blog.py
         if not post:
             raise tornado.web.HTTPError(404)
-        self.render("newpost.html", message='', post=post, new=False)
+        post['tags'] = ','.join(post['tags'])
+        form = forms.PostForm(locale_code=self.locale.code,
+            status_choices=opts.STATUSES,
+            text_type_choices=opts.get_allowed_text_types(), **post)
+        self.render("editpost.html", form=form)
 
     @authenticated_async
     @tornado.gen.engine
     def post(self, slug):
+<<<<<<< HEAD:selene/handlers/blog_handlers.py
         slug_flag = self.get_argument('slug', False)
         if slug_flag:
             new_slug = self.get_argument('customslug', '')
@@ -140,8 +172,33 @@ class EditPostHandler(BaseHandler):
         yield Op(self.db.posts.update, {'slug': slug}, {'$set': new_post})
         if new_post['status'] == 'published':
             self.redirect('/post/%s' % new_slug)
+=======
+        form = forms.PostForm(self.request.arguments,
+            locale_code=self.locale.code, status_choices=opts.STATUSES,
+            text_type_choices=opts.get_allowed_text_types())
+        if form.validate():
+            if form.data['custom_slug']:
+                slug = form.data['slug']
+            else:
+                slug = text.get_slug(form.data['title'],
+                    stop_words=options.slug_stop_words)
+            html_content, plain_content = text.get_html_and_plain(
+                form.data['content'], form.data['text_type'])
+            post = form.data
+            post.update({
+                'slug': slug,
+                'tags': helpers.remove_duplicates(form.data['tags']),
+                'html_content': html_content,
+                'plain_content': plain_content,
+            })
+            self.db.posts.update({'slug': slug}, {'$set': post})
+            if post['status'] == 'published':
+                self.redirect(self.reverse_url('post', slug))
+            else:
+                self.redirect(self.reverse_url('home'))
+>>>>>>> master:selene/web/handlers/blog.py
         else:
-            self.redirect('/')
+            self.render('editpost.html', message=form.errors, form=form)
 
 
 class DeletePostHandler(BaseHandler):
@@ -161,7 +218,7 @@ class DeletePostHandler(BaseHandler):
             raise tornado.web.HTTPError(404)
         self.db.comments.remove({'postid': post['_id']})
         self.db.posts.remove({'slug': slug})
-        self.redirect('/posts')
+        self.redirect(self.reverse_url('posts'))
 
 
 class VotePostHandler(BaseHandler):
@@ -172,8 +229,13 @@ class VotePostHandler(BaseHandler):
         post = yield Op(self.db.posts.find({'slug': slug}).count)
         if not post:
             raise tornado.web.HTTPError(404)
+<<<<<<< HEAD:selene/handlers/blog_handlers.py
         yield Op(self.db.posts.update, {'slug': slug}, {'$inc': {'votes': 1}})
         self.redirect('/post/%s' % slug)
+=======
+        self.db.posts.update({'slug': slug}, {'$inc': {'votes': 1}})
+        self.redirect(self.reverse_url('post', slug))
+>>>>>>> master:selene/web/handlers/blog.py
 
 
 class PostsHandlers(BaseHandler):
@@ -236,24 +298,36 @@ class SearchHandler(BaseHandler):
     @tornado.web.asynchronous
     def get(self):
         page = int(self.get_argument('page', 1))
-        q = self.get_argument('q', '')
-        if q:
+        form = forms.SearchForm(locale_code=self.locale.code,
+            q=self.get_argument('q', ''))
+        if form.data['q']:
             if not options.db_use_fts:
+<<<<<<< HEAD:selene/handlers/blog_handlers.py
                 q_filter = re.compile('.*%s.*' % q, re.IGNORECASE)
                 posts = yield Op(self.db.posts.find({'plain_content': q_filter,
+=======
+                q_filter = re.compile('.*%s.*' % form.data['q'], re.IGNORECASE)
+                posts = list(self.db.posts.find({'plain_content': q_filter,
+>>>>>>> master:selene/web/handlers/blog.py
                     'status': 'published'}).sort('date', -1).skip((page - 1) *
                     options.page_size_search_posts).limit(
                         options.page_size_search_posts).to_list)
                 total = yield Op(self.db.posts.find({'plain_content': q_filter,
                     'status': 'published'}).count)
             else:
+<<<<<<< HEAD:selene/handlers/blog_handlers.py
                 text_output = yield Op(self.db.command, "text", "posts",
                     search=q, filter={'status': 'published'})
+=======
+                text_output = self.db.command("text", "posts",
+                    search=form.data['q'], filter={'status': 'published'})
+>>>>>>> master:selene/web/handlers/blog.py
                 posts = [result['obj'] for result in text_output['results']]
                 total = len(posts)
         else:
             posts = []
             total = 0
+<<<<<<< HEAD:selene/handlers/blog_handlers.py
         self.render('search.html', posts=posts, q=q, total=total, page=page,
             page_size=options.page_size_search_posts)
 
@@ -267,6 +341,10 @@ class RssHandler(BaseHandler):
             -1).limit(10).to_list)
         self.set_header("Content-Type", "text/xml; charset=UTF-8")
         self.render("rss.xml", posts=posts, options=options)
+=======
+        self.render('search.html', posts=posts, form=form, total=total,
+            page=page, page_size=options.page_size_search_posts)
+>>>>>>> master:selene/web/handlers/blog.py
 
 
 class NewCommentHandler(BaseHandler):
@@ -277,10 +355,14 @@ class NewCommentHandler(BaseHandler):
         post = yield Op(self.db.posts.find_one, {'slug': slug}, {'_id': 1})
         if not post:
             raise tornado.web.HTTPError(500)
+        data = {'content': self.get_argument('content', '')}
         if not self.current_user:
-            name = self.get_argument('name')
-            email = self.get_argument('email')
+            data.update({
+                'name': self.get_argument('name', ''),
+                'email': self.get_argument('email', '')
+            })
         else:
+<<<<<<< HEAD:selene/handlers/blog_handlers.py
             name = self.current_user['name']
             email = self.current_user['email']
         yield Op(self.db.comments.insert, {
@@ -288,6 +370,37 @@ class NewCommentHandler(BaseHandler):
             'content': self.get_argument('content'),
             'date': datetime.datetime.now(), 'likes': 0, 'dislikes': 0})
         self.redirect('/post/%s' % slug)
+=======
+            data.update({
+                'name': self.current_user['full_name'],
+                'email': self.current_user['email']
+            })
+        form = forms.CommentForm(locale_code=self.locale.code, **data)
+        if form.validate():
+            comment = form.data
+            comment.update({
+                'postid': post['_id'],
+                'date': datetime.datetime.now(),
+                'likes': 0,
+                'dislikes': 0
+            })
+            self.db.comments.insert(comment)
+            self.redirect(self.reverse_url('post', slug))
+        else:
+            post = self.db.posts.find_one({'slug': slug, 'status': 'published'})
+            if not post:
+                raise tornado.web.HTTPError(404)
+            comments = list(self.db.comments.find({'postid':
+                post['_id']}).sort('date', 1))
+            older = self.db.posts.find({'_id': {'$lt': post['_id']},
+                'status': 'published'}).sort('date', -1).limit(1)
+            newer = self.db.posts.find({'_id': {'$gt': post['_id']},
+                'status': 'published'}).sort('date', 1).limit(1)
+            older = None if older.count() == 0 else older[0]
+            newer = None if newer.count() == 0 else newer[0]
+            self.render('post.html', post=post, comments=comments, older=older,
+                newer=newer, form_message=form.errors, comment_form=form)
+>>>>>>> master:selene/web/handlers/blog.py
 
 
 class LikeCommentHandler(BaseHandler):
@@ -303,8 +416,13 @@ class LikeCommentHandler(BaseHandler):
             update={'$inc': {action + 's': 1}}, new=True)
         if not comment:
             raise tornado.web.HTTPError(404)
+<<<<<<< HEAD:selene/handlers/blog_handlers.py
         post = yield Op(self.db.posts.find_one, {'_id': comment['postid']})
         self.redirect('/post/%s' % post['slug'])
+=======
+        post = self.db.posts.find_one({'_id': comment['postid']})
+        self.redirect(self.reverse_url('post', post['slug']))
+>>>>>>> master:selene/web/handlers/blog.py
 
 
 class EditCommentHandler(BaseHandler):
@@ -317,8 +435,14 @@ class EditCommentHandler(BaseHandler):
             {'_id': ObjectId(comment_id)})
         if not comment:
             raise tornado.web.HTTPError(404)
+<<<<<<< HEAD:selene/handlers/blog_handlers.py
         post = yield Op(self.db.posts.find_one, {'_id': comment['postid']})
         self.render('editcomment.html', post=post, comment=comment)
+=======
+        post = self.db.posts.find_one({'_id': comment['postid']})
+        self.render('editcomment.html', post=post,
+            form=forms.CommentForm(locale_code=self.locale.code, **comment))
+>>>>>>> master:selene/web/handlers/blog.py
 
     @authenticated_async
     @tornado.gen.engine
@@ -328,6 +452,7 @@ class EditCommentHandler(BaseHandler):
             {'_id': ObjectId(comment_id)}, {'postid': 1})
         if not comment:
             raise tornado.web.HTTPError(404)
+<<<<<<< HEAD:selene/handlers/blog_handlers.py
         yield Op(self.db.comments.update, {'_id': ObjectId(comment_id)}, {
             '$set': {
                 'name': self.get_argument('name'),
@@ -337,6 +462,19 @@ class EditCommentHandler(BaseHandler):
         })
         post = yield Op(self.db.posts.find_one, {'_id': comment['postid']})
         self.redirect('/post/%s' % post['slug'])
+=======
+        form = forms.CommentForm(self.request.arguments,
+            locale_code=self.locale.code)
+        if form.validate():
+            self.db.comments.update({'_id': ObjectId(comment_id)},
+                {'$set': form.data})
+            post = self.db.posts.find_one({'_id': comment['postid']})
+            self.redirect(self.reverse_url('post', post['slug']))
+        else:
+            post = self.db.posts.find_one({'_id': comment['postid']})
+            self.render('editcomment.html', post=post,
+                message=form.errors, form=form)
+>>>>>>> master:selene/web/handlers/blog.py
 
 
 class DeleteCommentHandler(BaseHandler):
@@ -360,6 +498,12 @@ class DeleteCommentHandler(BaseHandler):
             {'_id': ObjectId(comment_id)}, {'postid': 1})
         if not comment:
             raise tornado.web.HTTPError(404)
+<<<<<<< HEAD:selene/handlers/blog_handlers.py
         post = yield Op(self.db.posts.find_one, {'_id': comment['postid']})
         yield Op(self.db.comments.remove, {'_id': ObjectId(comment_id)})
         self.redirect('/post/%s' % post['slug'])
+=======
+        post = self.db.posts.find_one({'_id': comment['postid']})
+        self.db.comments.remove({'_id': ObjectId(comment_id)})
+        self.redirect(self.reverse_url('post', post['slug']))
+>>>>>>> master:selene/web/handlers/blog.py

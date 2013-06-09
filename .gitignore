@@ -3,4 +3,6 @@
 *.pyc
 *.so
 *~
-build 
+build
+venv
+selene_sample.conf
