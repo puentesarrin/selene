@@ -13,7 +13,6 @@ from tornado.options import options as opts
 
 class Selene(tornado.web.Application):
 
-    @tornado.gen.engine
     def __init__(self, db):
         self.db = db
         self.smtp = smtp.SMTP()
@@ -39,7 +38,9 @@ class Selene(tornado.web.Application):
             [(r"/(favicon\.ico)", tornado.web.StaticFileHandler,
             {'path': settings['static_path']})], **settings)
 
+    @tornado.gen.engine
     def setup_fts(self):
+        # TODO: Should be used with a sync db connection.
         if opts.db_use_fts:
             try:
                 yield Op(self.db.connection.admin.command,
