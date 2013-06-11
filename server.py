@@ -27,5 +27,7 @@ if __name__ == '__main__':
     if opts.use_pyuv:
         from tornado_pyuv import UVLoop
         IOLoop.configure(UVLoop)
-    loop = IOLoop.instance()
-    loop.start()
+    try:
+        IOLoop.instance().start()
+    except KeyboardInterrupt:
+        logging.info('Exiting with keyboard interrupt.')
