@@ -6,8 +6,8 @@ import tornado.web
 import urllib
 
 from motor import Op
-from selene import helpers
 from tornado.options import options
+from selene import forms, options as opts
 
 
 def authenticated_async(f):
@@ -102,10 +102,13 @@ class BaseHandler(tornado.web.RequestHandler):
         kwargs.update({
             'current_user':
                 (yield tornado.gen.Task(self.get_current_user_async)),
-            'url_path': helpers.Url(self.request.uri).path,
+            'url_path': self.request.uri,
             '_next': self.get_argument('next', ''),
             '_posts': posts,
             '_comments': comments,
+            'opts': opts,
+            'options': options,
+            'forms': forms,
             '_tags': tags['result']
         })
         super(BaseHandler, self).render(template_name, **kwargs)
