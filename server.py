@@ -21,7 +21,7 @@ if __name__ == '__main__':
             replicaSet=opts.db_rs_name).open_sync()[opts.db_name]
         logging.info('Connected to a MongoDB replica set.')
     http_server = tornado.httpserver.HTTPServer(Selene(db))
-    tornado.web.ErrorHandler = web.ErrorHandler
+    #tornado.web.ErrorHandler = web.ErrorHandler  # Look a better way.
     http_server.listen(opts.port)
     logging.info('Web server listening on %s port.' % opts.port)
     if opts.use_pyuv:
