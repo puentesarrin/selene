@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import selene
 
-from selene.base import BaseHandler
+from selene.web import BaseHandler
 from tornado.options import options
 from werkzeug.contrib.atom import AtomFeed
 

@@ -6,7 +6,7 @@ import tornado.web
 import selene.web
 
 from selene import constants, forms, helpers, options as opts
-from selene.base import BaseHandler
+from selene.web import BaseHandler
 from tornado.options import options
 
 
