@@ -93,7 +93,6 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def get_template_namespace(self):
         namespace = super(BaseHandler, self).get_template_namespace()
-        from selene import forms
         namespace.update({
             'arguments': self.request.arguments,
             'forms': forms,
@@ -140,65 +139,6 @@ class BaseHandler(tornado.web.RequestHandler):
             '_tags': tags['result']
         })
         super(BaseHandler, self).render(template_name, **kwargs)
-
-"""
-class BaseHandler(tornado.web.RequestHandler):
-
-    current_user = None
-
-    @property
-    def db(self):
-        return self.application.db
-
-    @property
-    def smtp(self):
-        return self.application.smtp
-
-    @tornado.gen.engine
-    def get_current_user_async(self, callback):
-        email = self.get_secure_cookie("current_user") or False
-        if not email:
-            callback(None)
-        else:
-            callback((yield Op(self.db.users.find_one, {"email": email})))
-
-    @tornado.gen.engine
-    @tornado.web.asynchronous
-    def render(self, template_name, **kwargs):
-        @tornado.gen.engine
-        def find_post(comment, callback):
-            comment['post'] = yield Op(self.db.posts.find_one, {'_id':
-                comment['postid']})
-            callback(comment)
-
-        posts = yield Op(self.db.posts.find({'status': 'published'}).sort(
-            'date', -1).limit(options.recent_posts_limit).to_list)
-        comments = yield Op(self.db.comments.find().sort('date', -1).limit(
-            options.recent_comments_limit).to_list)
-        for comment in comments:
-            find_post(comment, (yield tornado.gen.Callback(comment['_id'])))
-        comments = yield tornado.gen.WaitAll([comment['_id'] for comment in
-            comments])
-        tags = yield Op(self.db.posts.aggregate, [
-            {'$match': {'status': 'published'}},
-            {'$unwind': '$tags'},
-            {'$group': {'_id': '$tags', 'sum': {'$sum': 1}}},
-            {'$limit': options.tag_cloud_limit}
-        ])
-        kwargs.update({
-            'current_user':
-                (yield tornado.gen.Task(self.get_current_user_async)),
-            'url_path': self.request.uri,
-            '_next': self.get_argument('next', ''),
-            '_posts': posts,
-            '_comments': comments,
-            'opts': opts,
-            'options': options,
-            'forms': forms,
-            '_tags': tags['result']
-        })
-        super(BaseHandler, self).render(template_name, **kwargs)
-"""
 
 
 class ErrorHandler(BaseHandler):
