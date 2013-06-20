@@ -58,6 +58,8 @@ def validate_form(form_class, template, **params):
 
 class BaseHandler(tornado.web.RequestHandler):
 
+    current_user = None
+
     @property
     def db(self):
         return self.application.db
