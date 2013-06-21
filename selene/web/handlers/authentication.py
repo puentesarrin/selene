@@ -2,12 +2,14 @@
 import bcrypt
 import datetime
 import tornado.auth
+import tornado.gen
 import tornado.web
 import selene.web
 
 from selene import constants, forms, helpers, options as opts
 from selene.web import BaseHandler
 from tornado.options import options
+from motor import Op
 
 
 class RegisterHandler(BaseHandler):
@@ -19,8 +21,11 @@ class RegisterHandler(BaseHandler):
 
     @selene.web.redirect_authenticated_user
     @selene.web.validate_form(forms.RegisterForm, 'register.html')
+    @tornado.gen.engine
+    @tornado.web.asynchronous
     def post(self):
-        if self.db.users.find_one({'email': self.form.data['email']}):
+        if (yield Op(self.db.users.find_one, {'email': self.form.data['email']},
+                     {'_id': 1})):
             self.render('register.html',
                         message=constants.EMAIL_IS_ALREADY_REGISTERED,
                         form=self.form)
@@ -34,7 +39,7 @@ class RegisterHandler(BaseHandler):
                 'join_hash': helpers.generate_md5(),
                 "locale": options.default_language
             })
-            self.db.users.insert(user)
+            yield Op(self.db.users.insert, user)
             self.smtp.send(constants.CONFIRM_YOUR_ACCOUNT, 'newuser.html',
                            user['email'], {'user': user})
             self.redirect(self.reverse_url("login"))
