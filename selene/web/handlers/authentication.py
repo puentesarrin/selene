@@ -64,8 +64,11 @@ class LoginHandler(BaseHandler):
 
     @selene.web.redirect_authenticated_user
     @selene.web.validate_form(forms.LoginForm, 'login.html')
+    @tornado.gen.engine
+    @tornado.web.asynchronous
     def post(self):
-        user = self.db.users.find_one({"email": self.form.data['email']})
+        user = yield Op(self.db.users.find_one,
+                        {"email": self.form.data['email']})
         if user and user['enabled']:
             pass_check = bcrypt.hashpw(self.form.data['password'],
                                        user["password"]) == user["password"]
