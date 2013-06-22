@@ -187,14 +187,18 @@ class RequestNewPasswordHandler(BaseHandler):
 
     @selene.web.redirect_authenticated_user
     @selene.web.validate_form(forms.RequestNewPasswordForm, 'newpassword.html')
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     def post(self):
-        user = self.db.users.find_one({'email': self.form.data['email']})
+        user = yield Op(self.db.users.find_one,
+                        {'email': self.form.data['email']})
         if user:
             reset_hash = helpers.generate_md5()
-            user = self.db.users.find_and_modify(
-                {'email': self.form.data['email']},
-                {'$set': {'reset_hash': reset_hash, 'enabled': True},
-                '$unset': {'join_hash': 1}}, new=True)
+            user = yield Op(self.db.users.find_and_modify,
+                            {'email': self.form.data['email']},
+                            {'$set':
+                                {'reset_hash': reset_hash, 'enabled': True},
+                                 '$unset': {'join_hash': 1}}, new=True)
             self.smtp.send(constants.RESET_PASSWORD, 'newpassword.html',
                            user["email"], {'user': user})
             self.redirect(self.reverse_url('home'))
