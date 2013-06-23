@@ -215,13 +215,16 @@ class ResetPasswordHandler(BaseHandler):
             form=forms.ResetPasswordForm(reset_hash=reset_hash))
 
     @selene.web.redirect_authenticated_user
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     def post(self, reset_hash=None):
         form = forms.ResetPasswordForm(self.request.arguments,
             locale_code=self.locale.code, reset_hash=reset_hash)
         if form.validate():
             password = bcrypt.hashpw(form.data['password'], bcrypt.gensalt())
-            user = self.db.users.find_and_modify({'reset_hash': reset_hash},
-                {'$set': {'password': password}}, new=True)
+            user = yield Op(self.db.users.find_and_modify,
+                            {'reset_hash': reset_hash},
+                            {'$set': {'password': password}}, new=True)
             if user:
                 self.smtp.send(constants.UPDATED_PASSWORD,
                     'resetpassword.html', user['email'], {'user': user})
