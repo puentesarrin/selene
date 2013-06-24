@@ -83,7 +83,8 @@ class NewPostHandler(BaseHandler):
         if post['status'] == 'published':
             self.redirect('/post/%s' % post['slug'])
         else:
-            self.render('newpost.html', message=form.errors, form=form)
+            self.render('newpost.html', message=self.form.errors,
+                        form=self.form)
 
 
 class PostHandler(BaseHandler):
