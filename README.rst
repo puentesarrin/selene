@@ -58,6 +58,7 @@ Core features
    * French (fr_FR)
    * Japanese (ja_JP)
    * Macedonian (mk_MK)
+   * Brazilian Portuguese (pt_BR)
    * Chinese Simplified (zh_CN)
    * Chinese Traditional (zh_HK, zh_TW)
 * Support for Google Analytics and Gravatar.
