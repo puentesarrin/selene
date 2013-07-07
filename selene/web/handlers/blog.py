@@ -30,8 +30,6 @@ class HomeHandler(BaseHandler):
                 options.page_size_posts).to_list)
         for post in posts:
             post['comments'] = yield gen.Task(find_comments(post))
-            #find_comments(post, (yield tornado.gen.Callback(post['_id'])))
-        #posts = yield tornado.gen.WaitAll([post['_id'] for post in posts])
         total = yield Op(self.db.posts.find({'status': 'published'}).count)
         self.render("home.html", posts=posts, total=total, page=int(page),
             page_size=options.page_size_posts)
