@@ -1,11 +1,12 @@
 # -*- coding: utf-8 *-*
 import logging
-import motor
 import tornado.web
 import tornado.httpserver
 
 from tornado.ioloop import IOLoop
 from tornado.options import options as opts
+
+import motor
 from selene import log, options, Selene, web
 
 
