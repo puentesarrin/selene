@@ -34,6 +34,9 @@ def get_rtl_languages():
 
 
 def define_options():
+    """This method will define all options useful to the application. It'll be
+    called before to start the application and to configure the application by
+    executting the ``configure.py`` script."""
     #Tornado
     group = 'Tornado'
     define("use_pyuv", default=False, type=bool,
@@ -202,6 +205,8 @@ def define_options():
 
 
 def setup_options(path):
+    """Must be called before to starting the application. For security
+    propuses, it will set a random cookie secret."""
     define_options()
     if os.path.exists(path):
         parse_config_file(path)
