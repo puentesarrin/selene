@@ -14,10 +14,9 @@ class gravatar_memoized(object):
             return self.func(*args)
         if args in self.cache:
             return self.cache[args]
-        else:
-            value = self.func(*args)
-            self.cache[args] = value
-            return value
+        value = self.func(*args)
+        self.cache[args] = value
+        return value
 
 
 @gravatar_memoized
