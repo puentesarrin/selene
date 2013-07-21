@@ -40,17 +40,21 @@ class RegisterHandler(BaseHandler):
                 "locale": options.default_language
             })
             yield Op(self.db.users.insert, user)
-            self.smtp.send(constants.CONFIRM_YOUR_ACCOUNT, 'newuser.html',
-                           user['email'], {'user': user})
+            yield tornado.gen.Task(self.smtp.send,
+                                   constants.CONFIRM_YOUR_ACCOUNT,
+                                   'newuser.html', user['email'],
+                                   {'user': user})
             self.redirect(self.reverse_url("login"))
 
 
 class ConfirmAccountHandler(BaseHandler):
 
     @selene.web.redirect_authenticated_user
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     def get(self, join_hash=None):
-        self.db.users.find_and_modify({'join_hash': join_hash},
-            {'$unset': {'join_hash': 1}, '$set': {'enabled': True}})
+        yield Op(self.db.users.find_and_modify, {'join_hash': join_hash},
+                 {'$unset': {'join_hash': 1}, '$set': {'enabled': True}})
         self.render('confirmaccount.html')
 
 
