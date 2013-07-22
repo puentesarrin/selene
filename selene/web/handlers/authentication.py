@@ -203,8 +203,9 @@ class RequestNewPasswordHandler(BaseHandler):
                             {'$set':
                                 {'reset_hash': reset_hash, 'enabled': True},
                                  '$unset': {'join_hash': 1}}, new=True)
-            self.smtp.send(constants.RESET_PASSWORD, 'newpassword.html',
-                           user["email"], {'user': user})
+            yield tornado.gen.Task(self.smtp.send, constants.RESET_PASSWORD,
+                                   'newpassword.html',
+                                   user["email"], {'user': user})
             self.redirect(self.reverse_url('home'))
             return
         self.render('newpassword.html', message=constants.USER_IS_NOT_EXIST,
@@ -230,8 +231,10 @@ class ResetPasswordHandler(BaseHandler):
                             {'reset_hash': reset_hash},
                             {'$set': {'password': password}}, new=True)
             if user:
-                self.smtp.send(constants.UPDATED_PASSWORD,
-                    'resetpassword.html', user['email'], {'user': user})
+                yield tornado.gen.Task(self.smtp.send,
+                                       constants.UPDATED_PASSWORD,
+                                       'resetpassword.html',
+                                       user['email'], {'user': user})
             self.redirect(self.reverse_url('login'))
         else:
             self.render('resetpassword.html', message=form.errors, form=form)
