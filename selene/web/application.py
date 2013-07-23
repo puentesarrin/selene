@@ -17,7 +17,7 @@ class Selene(tornado.web.Application):
         self.db = db
         self.smtp = smtp.SMTP()
         self.theme_path = os.path.join(opts.themes_directory,
-            opts.selected_theme)
+                                       opts.selected_theme)
         self.setup_translations()
         self.setup_fts()
         settings = {
@@ -63,7 +63,7 @@ class Selene(tornado.web.Application):
         }
         tornado.locale.load_translations("translations")
         tornado.locale.set_default_locale(opts.default_locale)
-        logging.info('Loaded translations: %s.' %
+        logging.info('Loaded translations: {}.'.format(
             ', '.join(sorted([v['name_en'] for k, v in
                 list(tornado.locale.LOCALE_NAMES.items()) if k in
-                tornado.locale.get_supported_locales()])))
+                tornado.locale.get_supported_locales()]))))
