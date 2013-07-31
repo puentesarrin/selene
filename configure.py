@@ -27,7 +27,7 @@ options_to_exclude = ['help', 'logging', 'log_to_stderr', 'log_file_prefix',
 
 
 def exit():
-    print 'Exiting...'
+    print('Exiting...')
     sys.exit(1)
 
 
@@ -47,7 +47,7 @@ def _get_option(label, option):
         except KeyboardInterrupt:
             exit()
         except:
-            print '* Please enter some text.'
+            print('* Please enter some text.')
         else:
             pass_ = True
     return option
