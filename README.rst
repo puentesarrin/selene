@@ -56,6 +56,7 @@ Core features
    * English (en_US)
    * Spanish (es_ES)
    * French (fr_FR)
+   * Italian (it_IT)
    * Japanese (ja_JP)
    * Macedonian (mk_MK)
    * Brazilian Portuguese (pt_BR)
@@ -84,6 +85,7 @@ Installing and Running
 Contributors
 ------------
 
+* Cristina Diliberto (`@cristy10589 <https://twitter.com/cristy10589>`_ in Twitter)
 * Elena Petrevska (`@el3na77 <https://twitter.com/el3na77>`_ in Twitter)
 * Samar Hazboun (`@Samar_Hazboun <https://twitter.com/Samar_Hazboun>`_ in Twitter)
 * Shermila Guerra (`@shermilaguerra <https://twitter.com/shermilaguerra>`_ in Twitter)
