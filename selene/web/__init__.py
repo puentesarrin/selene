@@ -75,6 +75,7 @@ class BaseHandler(tornado.web.RequestHandler):
 
     async def prepare(self):
         self._current_user = await self.get_current_user_async()
+        self._user_cache: dict[Any, dict[str, Any] | None] = {}
 
     def get_current_user(self):
         return getattr(self, '_current_user', None)
@@ -111,6 +112,48 @@ class BaseHandler(tornado.web.RequestHandler):
         )
         return namespace
 
+    @staticmethod
+    def _user_name(user: dict[str, Any]) -> str:
+        return str(user.get('full_name') or user.get('name') or user.get('email') or '')
+
+    async def _user_by_id(self, user_id: Any) -> dict[str, Any] | None:
+        if not user_id:
+            return None
+        user_cache = getattr(self, '_user_cache', None)
+        if user_cache is None:
+            user_cache = self._user_cache = {}
+        if user_id not in user_cache:
+            user_cache[user_id] = await self.db.users.find_one({'_id': user_id})
+        return user_cache[user_id]
+
+    async def hydrate_post(self, post: dict[str, Any]) -> dict[str, Any]:
+        user = await self._user_by_id(post.get('author_id'))
+        if user:
+            post['author'] = self._user_name(user)
+            post['email'] = user.get('email')
+        if post.get('comments'):
+            await self.hydrate_comments(post['comments'])
+        return post
+
+    async def hydrate_posts(self, posts: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        for post in posts:
+            await self.hydrate_post(post)
+        return posts
+
+    async def hydrate_comment(self, comment: dict[str, Any]) -> dict[str, Any]:
+        user = await self._user_by_id(comment.get('author_id'))
+        if user:
+            comment['name'] = self._user_name(user)
+            comment['email'] = user.get('email')
+        if comment.get('post'):
+            await self.hydrate_post(comment['post'])
+        return comment
+
+    async def hydrate_comments(self, comments: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        for comment in comments:
+            await self.hydrate_comment(comment)
+        return comments
+
     async def render(self, template_name, **kwargs):
         posts = (
             await self.db.posts.find({'status': PostStatus.PUBLISHED.value})
@@ -121,6 +164,8 @@ class BaseHandler(tornado.web.RequestHandler):
         comments = await self.db.comments.find().sort('date', -1).limit(options.recent_comments_limit).to_list(None)
         for comment in comments:
             comment['post'] = await self.db.posts.find_one({'_id': comment['postid']})
+        await self.hydrate_posts(posts)
+        await self.hydrate_comments(comments)
         tags_cursor = await self.db.posts.aggregate(
             [
                 {'$match': {'status': PostStatus.PUBLISHED.value}},
@@ -130,6 +175,21 @@ class BaseHandler(tornado.web.RequestHandler):
             ]
         )
         tags = await tags_cursor.to_list(None)
+        for key in ('post', 'comment'):
+            value = kwargs.get(key)
+            if isinstance(value, dict):
+                if key == 'post':
+                    await self.hydrate_post(value)
+                else:
+                    await self.hydrate_comment(value)
+        for key in ('posts', '_posts'):
+            value = kwargs.get(key)
+            if isinstance(value, list):
+                await self.hydrate_posts(value)
+        for key in ('comments', '_comments'):
+            value = kwargs.get(key)
+            if isinstance(value, list):
+                await self.hydrate_comments(value)
         kwargs.update(
             {
                 'current_user': self.current_user,

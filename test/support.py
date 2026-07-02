@@ -1,5 +1,6 @@
 from types import SimpleNamespace
 
+from bson.objectid import ObjectId
 from tornado.options import Error, options
 
 from selene import options as selene_options
@@ -30,6 +31,8 @@ def ensure_options():
     options.recent_posts_limit = 10
     options.recent_comments_limit = 10
     options.tag_cloud_limit = 20
+    options.gravatar_for_posts = False
+    options.gravatar_for_comments = False
     options.page_size_posts = 10
     options.page_size_tag_posts = 10
     options.page_size_search_posts = 10
@@ -108,8 +111,10 @@ class FakeCollection:
         return 'idx'
 
     async def insert_one(self, document):
-        self.documents.append(document.copy())
-        return SimpleNamespace(inserted_id=document.get('_id'))
+        document = document.copy()
+        document.setdefault('_id', ObjectId())
+        self.documents.append(document)
+        return SimpleNamespace(inserted_id=document['_id'])
 
     async def update_one(self, query, update):
         matched = 0
@@ -131,6 +136,16 @@ class FakeCollection:
         return SimpleNamespace(deleted_count=0)
 
     async def find_one_and_update(self, query, update, **kwargs):
+        for doc in self.documents:
+            if matches(doc, query):
+                if '$set' in update:
+                    doc.update(update['$set'])
+                if '$inc' in update:
+                    for key, value in update['$inc'].items():
+                        doc[key] = doc.get(key, 0) + value
+                if kwargs.get('return_document'):
+                    return doc.copy()
+                return doc.copy()
         return None
 
 

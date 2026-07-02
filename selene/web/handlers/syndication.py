@@ -14,6 +14,7 @@ class RSSHandler(BaseHandler):
         posts = (
             await self.db.posts.find({'status': PostStatus.PUBLISHED.value}).sort('date', -1).limit(10).to_list(None)
         )
+        await self.hydrate_posts(posts)
         await self.render('rss.xml', posts=posts)
 
 
@@ -22,6 +23,7 @@ class AtomHandler(BaseHandler):
         posts = (
             await self.db.posts.find({'status': PostStatus.PUBLISHED.value}).sort('date', -1).limit(10).to_list(None)
         )
+        await self.hydrate_posts(posts)
         updated = posts[0]['date'] if posts else None
         entries = []
         for post in posts:

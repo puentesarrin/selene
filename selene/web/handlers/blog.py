@@ -68,8 +68,7 @@ class NewPostHandler(BaseHandler):
             'html_content': html_content,
             'plain_content': plain_content,
             'status': self.get_argument('status'),
-            'author': self.current_user.get('name') or self.current_user.get('full_name'),
-            'email': self.current_user['email'],
+            'author_id': self.current_user['_id'],
             'votes': 0,
             'views': 0,
         }
@@ -305,23 +304,19 @@ class NewCommentHandler(BaseHandler):
         post = await self.db.posts.find_one({'slug': slug}, {'_id': 1})
         if not post:
             raise tornado.web.HTTPError(500)
+        comment = {
+            'postid': post['_id'],
+            'content': self.get_argument('content'),
+            'date': datetime.datetime.now(),
+            'likes': 0,
+            'dislikes': 0,
+        }
         if not self.current_user:
-            name = self.get_argument('name', '')
-            email = self.get_argument('email', '')
+            comment['name'] = self.get_argument('name', '')
+            comment['email'] = self.get_argument('email', '')
         else:
-            name = self.current_user.get('name') or self.current_user.get('full_name')
-            email = self.current_user['email']
-        await self.db.comments.insert_one(
-            {
-                'postid': post['_id'],
-                'name': name,
-                'email': email,
-                'content': self.get_argument('content'),
-                'date': datetime.datetime.now(),
-                'likes': 0,
-                'dislikes': 0,
-            }
-        )
+            comment['author_id'] = self.current_user['_id']
+        await self.db.comments.insert_one(comment)
         self.redirect(f'/post/{slug}')
 
 
@@ -355,16 +350,10 @@ class EditCommentHandler(BaseHandler):
         comment = await self.db.comments.find_one({'_id': ObjectId(comment_id)}, {'postid': 1})
         if not comment:
             raise tornado.web.HTTPError(404)
-        await self.db.comments.update_one(
-            {'_id': ObjectId(comment_id)},
-            {
-                '$set': {
-                    'name': self.get_argument('name'),
-                    'email': self.get_argument('email'),
-                    'content': self.get_argument('content'),
-                }
-            },
-        )
+        update = {'content': self.get_argument('content')}
+        if not comment.get('author_id'):
+            update.update({'name': self.get_argument('name'), 'email': self.get_argument('email')})
+        await self.db.comments.update_one({'_id': ObjectId(comment_id)}, {'$set': update})
         post = await self.db.posts.find_one({'_id': comment['postid']})
         self.redirect(f'/post/{post["slug"]}')
 
