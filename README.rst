@@ -3,39 +3,38 @@ Selene
 ======
 
 A simple CMS for blogging inspired by my beautiful wife and built with Tornado
-and MongoDB. See a demo site `here <http://selene.lowstz.org>`_.
+and MongoDB.
 
 .. important::
 
-   For this project we have considered to move all MongoDB operations from
-   PyMongo_ to Motor_, the asynchronous Python driver for Tornado_, any changes
-   regarding this can be found in a branch named
-   `"motor" <https://github.com/puentesarrin/selene/tree/motor>`_.
+   Selene targets Python 3.11+, Tornado 6, and the async PyMongo driver.
+
+Current status
+--------------
+
+* No live demo site is maintained.
+* Contributors are listed in `CONTRIBUTORS.rst <CONTRIBUTORS.rst>`_.
 
 Requirements
 ------------
 
 * `Tornado`_
-* `Motor`_
-* `py-bcrypt`_
+* `PyMongo`_
+* `bcrypt`_
 * `WTForms`_
-* `docutils`_
-* `Misaka`_
-* `Postmarkup`_
-* `Textile`_
-* `TornadoMail`_
+* `python-slugify`_
+* `aiosmtplib`_
 
-Other modules are optionally required
--------------------------------------
+Optional modules
+----------------
 
-* docutils_
-* Misaka_
-* Postmarkup_
-* Textile_
-* mediawiki_
-* python-creole_
-* tornado_pyuv_
-* MongoLog_
+* `docutils`_ - only needed if you want reStructuredText rendering enabled.
+* `Mistune`_ - only needed if you want Markdown rendering enabled.
+* `bbcode`_ - only needed if you want BBCode rendering enabled.
+* `Textile`_ - only needed if you want Textile rendering enabled.
+* `python-creole`_ - only needed if you want Creole rendering enabled.
+* `tornado_pyuv`_ - optional libuv IOLoop integration.
+* `MongoLog`_ - optional MongoDB-backed logging handler.
 
 Core features
 -------------
@@ -51,7 +50,7 @@ Core features
    * Textile
    * MediaWiki
    * Creole
-* Posts sharing via Google+, Twitter and Facebook.
+* Posts sharing via Twitter and Facebook.
 * Optional comments management via Disqus.
 * Supported localization:
    * Arabic (ar_AR)
@@ -69,50 +68,52 @@ Core features
 * Customizable search for publications using regular expressions or full text
   search.
 
-Installing and Running
-----------------------
+Quickstart
+----------
 
-1. Install the requirements using pip_::
+1. Create and activate a virtual environment.
+2. Install the project using pip_::
 
-      pip install -r requirements.txt
+      pip install .
 
-#. Configure your Selene instance using the ``configure.py`` script, setting
+   Install the optional text-format extras you need, for example::
+
+      pip install '[md,rst,bbcode,textile,creole]'
+
+   SMTP is disabled by default; set ``smtp_enabled = True`` in ``selene.conf``
+   when you want confirmation and password-reset emails to be sent.
+
+   If you change the server ``port``, update ``base_url`` to match so links
+   generated in emails and feeds keep pointing at the running instance.
+
+3. Configure your Selene instance using the ``configure.py`` script, setting
    all available options::
 
       python configure.py
 
-#. Run your Selene instance::
+4. Run your Selene instance::
 
       python server.py
 
-Contributors
-------------
+Testing
+-------
 
-* Cristina Diliberto (`@cry10589 <https://twitter.com/cry10589>`_ in Twitter)
-* Elena Petrevska (`@el3na77 <https://twitter.com/el3na77>`_ in Twitter)
-* Samar Hazboun (`@Samar_Hazboun <https://twitter.com/Samar_Hazboun>`_ in Twitter)
-* Shermila Guerra (`@shermilaguerra <https://twitter.com/shermilaguerra>`_ in Twitter)
-* Lowstz Chen (`@lowstz <https://github.com/lowstz>`_)
-* Juan Carlos Farah (`@juancarlosfarah <https://github.com/juancarlosfarah>`_)
-* Luigi Van (`@fdb713 <https://github.com/fdb713>`_)
-* Liangyi Zhang (`@SidneyZhang <https://twitter.com/SidneyZhang>`_ in Twitter)
+Run the test suite with::
 
-I want to improve this project with your help... I'm looking forward for all of
-your pull requests!
+   python -m unittest discover -s test -v
+
 
 .. _Tornado: http://www.tornadoweb.org/
 .. _PyMongo: http://api.mongodb.org/python/current/
-.. _Motor: https://motor.readthedocs.org/en/latest/
-.. _py-bcrypt: https://code.google.com/p/py-bcrypt/
+.. _bcrypt: https://pypi.org/project/bcrypt/
 .. _docutils: http://sourceforge.net/projects/docutils/
-.. _Misaka: https://github.com/FSX/misaka
-.. _Postmarkup: https://code.google.com/p/postmarkup/
+.. _Mistune: https://mistune.lepture.com/
+.. _bbcode: https://pypi.org/project/bbcode/
 .. _Textile: https://pypi.python.org/pypi/textile
-.. _mediawiki: https://github.com/zikzakmedia/python-mediawiki
 .. _python-creole: https://github.com/jedie/python-creole
 .. _WTForms: http://wtforms.simplecodes.com/
-.. _TornadoMail: https://github.com/equeny/tornadomail
 .. _pip: http://www.pip-installer.org/en/latest/
-.. _Werkzeug: http://werkzeug.pocoo.org/
 .. _tornado_pyuv: https://github.com/saghul/tornado-pyuv
 .. _MongoLog: https://pypi.python.org/pypi/mongolog
+.. _python-slugify: https://pypi.org/project/python-slugify/
+.. _aiosmtplib: https://aiosmtplib.readthedocs.io/en/latest/

@@ -1,7 +1,7 @@
 <fieldset>
     <legend>
         {% if linkable %}
-        <h2><a href="{{ '/post/%s' % post['slug'] }}">{{ post['title'] }}</a></h2>
+        <h2><a href="{{ reverse_url('post', post['slug']) }}">{{ post['title'] }}</a></h2>
         {% else %}
         <h2>{{ post['title'] }}</h2>
         {% end %}
@@ -31,7 +31,7 @@
                         <i class="icon-star"></i>
                         <span class="badge badge-info">{{ '%d' % post['votes'] }}</span>
                         {% if linkable %}
-                        <a href="{{ '/post/%s' % post['slug'] }}#new-comment" title="{{ _('Click to comment') }}"></a>
+                        <a href="{{ reverse_url('post', post['slug']) }}#new-comment" title="{{ _('Click to comment') }}"></a>
                         {% else %}
                         <a href="#new-comment" title="{{ _('Click to comment') }}"></a>
                         {% end %}
@@ -42,10 +42,10 @@
                 <div class="btn-group pull-right">
                     {% module VoteModule(post=post) %}
                     {% if current_user %}
-                    <a class="btn btn-primary" href="{{ '/post/%s/edit' % post['slug'] }}" title="{{ _('Edit post') }}">
+                    <a class="btn btn-primary" href="{{ reverse_url('post-edit', post['slug']) }}" title="{{ _('Edit post') }}">
                         <i class="icon-edit"></i>
                     </a>
-                    <a class="btn" href="{{ '/post/%s/delete' % post['slug'] }}" title="{{ _('Delete post') }}">
+                    <a class="btn" href="{{ reverse_url('post-delete', post['slug']) }}" title="{{ _('Delete post') }}">
                         <i class="icon-remove"></i>
                     </a>
                     {% end %}
@@ -62,7 +62,7 @@
             <ul class="unstyled inline">
                 {% for tag in post['tags'] %}
                     <li>
-                        <a href="{{ '/tag/%s' % tag }}">{{ tag }}</a>
+                        <a href="{{ reverse_url('tag', tag) }}">{{ tag }}</a>
                     </li>
                 {% end %}
             </ul>

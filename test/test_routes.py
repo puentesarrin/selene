@@ -1,15 +1,13 @@
-# -*- coding: utf-8 -*-
-import pymongo
 import tornado.testing
 
 from selene import Selene
+from test.support import FakeDB, ensure_options
 
 
-class TestPublicRoutes(tornado.testing.AsyncHTTPTestCase,
-                       tornado.testing.LogTrapTestCase):
-
+class TestPublicRoutes(tornado.testing.AsyncHTTPTestCase):
     def get_app(self):
-        return Selene(pymongo.MongoClient()['selene'])
+        ensure_options()
+        return Selene(FakeDB())
 
     def test_home(self):
         response = self.fetch('/')
@@ -27,9 +25,9 @@ class TestPublicRoutes(tornado.testing.AsyncHTTPTestCase,
         response = self.fetch('/feed.atom')
         self.assertEqual(response.code, 200)
 
-    def test_posts(self):
-        response = self.fetch('/posts')
-        self.assertEqual(response.code, 200)
+    def test_posts_redirects_to_login(self):
+        response = self.fetch('/posts', follow_redirects=False)
+        self.assertEqual(response.code, 302)
 
     def test_tags(self):
         response = self.fetch('/tags')

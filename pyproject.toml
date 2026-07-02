@@ -1,0 +1,53 @@
+[project]
+name = "selene"
+version = "0.1.0.dev0"
+description = "A simple CMS for blogging built with Tornado and MongoDB."
+requires-python = ">=3.11"
+dependencies = [
+    "tornado>=6.5,<7",
+    "pymongo>=4.11",
+    "bcrypt>=4.1",
+    "WTForms>=3.1,<4",
+    "email-validator>=2.1",
+    "Pygments>=2.17",
+    "python-slugify>=8.0",
+    "aiosmtplib>=5.1.2",
+]
+
+[project.optional-dependencies]
+md = ["mistune>=3.0"]
+rst = ["docutils>=0.20"]
+bbcode = ["bbcode>=1.1"]
+textile = ["textile>=4.0"]
+creole = ["python-creole>=1.4"]
+dev = [
+    "ruff>=0.6",
+    "pytest>=8",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+extend-exclude = []
+
+lint.select = [
+    "I",
+    "C4",
+    "F",
+    "E",
+    "TID",
+    "RUF",
+]
+lint.ignore = [
+    "E501",
+    "C401",
+    "C408",
+    "C417",
+    "PLC0414",
+    "C901",
+    "I001",
+    "RUF012",
+    "RUF006",
+    "RUF100",
+]
+format.quote-style = "single"

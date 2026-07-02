@@ -15,7 +15,7 @@
                     <h2>{{ _("Edit comment") }}</h2>
                 </legend>
                 <p>
-                    {{ _("Commented on post") }}: "<a href="{{ '/post/%s' % post['slug'] }}">{{ post['title'] }}</a>":
+                    {{ _("Commented on post") }}: "<a href="{{ reverse_url('post', post['slug']) }}">{{ post['title'] }}</a>":
                 </p>
                 <div class="row-fluid">
                     <div class="span5">
@@ -45,7 +45,7 @@
             <fieldset>
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">{{ _("Edit") }}</button>
-                <a href="{{ '/post/%s' % post['slug'] }}" class="btn">{{ _("Cancel") }}</a>
+                <a href="{{ reverse_url('post', post['slug']) }}" class="btn">{{ _("Cancel") }}</a>
             </div>
         </form>
     </div>

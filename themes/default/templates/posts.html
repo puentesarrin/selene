@@ -24,7 +24,7 @@
             {% for post in posts %}
             <tr>
                 <td>
-                    <a href="{{ '/post/%s' % post['slug'] }}">
+                    <a href="{{ reverse_url('post', post['slug']) }}">
                         {{ post['title'] }}
                     </a>
                 </td>
@@ -35,11 +35,11 @@
                     {{ post['date'].strftime('%b %d, %Y %I:%M%p') }}
                 </td>
                 <td>
-                    <a class="btn btn-primary" href="{{ '/post/%s/edit' % post['slug'] }}">
+                    <a class="btn btn-primary" href="{{ reverse_url('post-edit', post['slug']) }}">
                         <i class="icon-edit"></i>
                         {{ _("Edit") }}
                     </a>
-                    <a class="btn" href="{{ '/post/%s/delete' % post['slug'] }}">
+                    <a class="btn" href="{{ reverse_url('post-delete', post['slug']) }}">
                         <i class="icon-remove"></i>
                         {{ _("Delete") }}
                     </a>

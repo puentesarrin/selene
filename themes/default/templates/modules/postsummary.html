@@ -1,6 +1,6 @@
 <p>
     <h4>
-        <a href="{{ '/post/%s' % post['slug'] }}">{{ post['title'] }}</a>
+        <a href="{{ reverse_url('post', post['slug']) }}">{{ post['title'] }}</a>
     </h4>
     <blockquote>
         {% raw post['html_content'] %}

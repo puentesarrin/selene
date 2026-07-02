@@ -1,4 +1,3 @@
-# -*- coding: utf-8 *-*
-from selene.web.handlers.authentication import *
-from selene.web.handlers.blog import *
-from selene.web.handlers.syndication import *
+from selene.web.handlers.authentication import *  # noqa: F403
+from selene.web.handlers.blog import *  # noqa: F403
+from selene.web.handlers.syndication import *  # noqa: F403

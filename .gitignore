@@ -5,4 +5,8 @@
 *~
 build
 venv
+.venv/
 selene_sample.conf
+__pycache__/
+*.py[cod]
+.pytest_cache/

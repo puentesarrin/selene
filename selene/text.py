@@ -1,90 +1,84 @@
-# -*- coding: utf-8 *-*
 import re
+from collections.abc import Sequence
+from html import escape
+from html.parser import HTMLParser
+from importlib import import_module
+from typing import Any
 
-from HTMLParser import HTMLParser
-from unicodedata import normalize
+from slugify import slugify
 
-_punct_re = re.compile(r'[\t !"#$%&\'()*\:\;\-/<=>?@\[\\\]^_`{|},.]+')
+from selene.constants import TextType
+
+WHITESPACE_RE = re.compile(r'\s+')
 
 
-def get_slug(input_text, delim=u"-", stop_words=[]):
-    result = []
-    for word in _punct_re.split(input_text.lower()):
-        word = normalize('NFKD', word).encode('ascii', 'ignore')
-        if word and word not in stop_words:
-            result.append(word)
-    return unicode(delim.join(result))
-
-_whitespace = re.compile('\s+')
+def get_slug(input_text: str, stop_words: Sequence[str] | None = None) -> str:
+    return slugify(input_text, stopwords=stop_words or [])
 
 
 class HTMLStripTags(HTMLParser):
+    def __init__(self, *args: Any, **kwargs: Any):
+        super().__init__(*args, **kwargs)
+        self.out = ''
 
-    def __init__(self, *args, **kwargs):
-        HTMLParser.__init__(self, *args, **kwargs)
-        self.out = ""
-
-    def handle_data(self, data):
+    def handle_data(self, data: str) -> None:
         self.out += data
 
-    def handle_entityref(self, name):
-        self.out += '&%s;' % name
+    def handle_entityref(self, name: str) -> None:
+        self.out += f'&{name};'
 
-    def handle_charref(self, name):
+    def handle_charref(self, name: str) -> None:
         return self.handle_entityref('#' + name)
 
-    def value(self):
-        return _whitespace.sub(' ', self.out).strip()
+    def value(self) -> str:
+        return WHITESPACE_RE.sub(' ', self.out).strip()
 
 
-def get_plain_from_html(html):
+def get_plain_from_html(html: str | None) -> str:
     parser = HTMLStripTags()
-    parser.feed(html)
+    parser.feed(html or '')
     return parser.value()
 
 
-class TextPlainFormatter(object):
-
-    def html(self, input_text):
+class TextPlainFormatter:
+    def html(self, input_text: str) -> str:
         return input_text
 
-    def plain(self, input_text):
+    def plain(self, input_text: str) -> str:
         return input_text
 
-    def process(self, input_text):
+    def process(self, input_text: str) -> tuple[str, str]:
         return self.html(input_text), self.plain(input_text)
 
 
 class HTMLFormatter(TextPlainFormatter):
-
-    def plain(self, input_text):
+    def plain(self, input_text: str) -> str:
         return get_plain_from_html(input_text)
 
 
 class MarkupLanguageFormatter(HTMLFormatter):
-
-    def process(self, input_text):
+    def process(self, input_text: str) -> tuple[str, str]:
         html = self.html(input_text)
+        if isinstance(html, bytes):
+            html = html.decode('utf-8')
         return html, self.plain(html)
 
 
 class MarkdownFormatter(MarkupLanguageFormatter):
-
-    def html(self, input_text):
-        import misaka
-        return misaka.html(input_text)
+    def html(self, input_text: str) -> str:
+        mistune = _import_optional_dependency('mistune', 'Markdown')
+        return mistune.html(input_text)
 
 
 class reStructuredTextFormatter(MarkupLanguageFormatter):
-
-    def __init__(self):
+    def __init__(self) -> None:
+        _import_optional_dependency('docutils', 'reStructuredText')
         from docutils.writers.html4css1 import HTMLTranslator
 
         class CleanedHTMLTranslator(HTMLTranslator):
-
             def __init__(self, document):
-                HTMLTranslator.__init__(self, document)
-                self.head = ""
+                super().__init__(document)
+                self.head = ''
                 self.head_prefix = ['', '', '', '', '']
                 self.body_prefix = []
                 self.body_suffix = []
@@ -98,61 +92,69 @@ class reStructuredTextFormatter(MarkupLanguageFormatter):
 
         self.translator_class = CleanedHTMLTranslator
 
-    def html(self, input_text):
-        from docutils import core
+    def html(self, input_text: str) -> str:
+        docutils_core = _import_optional_dependency('docutils.core', 'reStructuredText')
         from docutils.writers.html4css1 import Writer
+
         writer = Writer()
         writer.translator_class = self.translator_class
-        return core.publish_string(input_text, writer=writer)
+        return docutils_core.publish_string(input_text, writer=writer).decode('utf-8')
 
 
 class BBCodeFormatter(MarkupLanguageFormatter):
-
-    def html(self, input_text):
-        import postmarkup
-        bbcode_markup = postmarkup.create()
-        return bbcode_markup(input_text)
+    def html(self, input_text: str) -> str:
+        bbcode = _import_optional_dependency('bbcode', 'BBCode')
+        parser = bbcode.Parser()
+        return parser.format(input_text)
 
 
 class TextileFormatter(MarkupLanguageFormatter):
-
-    def html(self, input_text):
-        import textile
+    def html(self, input_text: str) -> str:
+        textile = _import_optional_dependency('textile', 'Textile')
         return textile.textile(input_text)
 
 
 class MediaWikiFormatter(MarkupLanguageFormatter):
-
-    def html(self, input_text):
-        import mediawiki
-        return mediawiki.wiki2html(input_text, False)
+    def html(self, input_text: str) -> str:
+        return '<pre>{}</pre>'.format(escape(input_text))
 
 
 class CreoleFormatter(MarkupLanguageFormatter):
-
-    def html(self, input_text):
-        import creole
+    def html(self, input_text: str) -> str:
+        creole = _import_optional_dependency('creole', 'Creole')
         return creole.creole2html(input_text)
 
 
-class TextConverter(object):
-
-    def __init__(self, formatter):
+class TextConverter:
+    def __init__(self, formatter: type[TextPlainFormatter]):
         self.formatter = formatter
 
-    def __call__(self, input_text):
+    def __call__(self, input_text: str) -> tuple[str, str]:
         return self.formatter().process(input_text)
 
 
-_formatter_map = {'text': TextPlainFormatter,
-                  'html': HTMLFormatter,
-                  'md': MarkdownFormatter,
-                  'rst': reStructuredTextFormatter,
-                  'bbcode': BBCodeFormatter,
-                  'textile': TextileFormatter,
-                  'mediawiki': MediaWikiFormatter,
-                  'creole': CreoleFormatter}
+def _import_optional_dependency(module_name: str, text_type: str) -> Any:
+    try:
+        return import_module(module_name)
+    except ImportError as exc:
+        raise RuntimeError(
+            f'{text_type} rendering requires the optional {module_name!r} package. '
+            f'Install Selene with the matching extra or add {module_name!r} to your environment.'
+        ) from exc
 
 
-def get_html_and_plain(input_text, input_text_type):
-    return TextConverter(_formatter_map[input_text_type])(input_text)
+def get_html_and_plain(input_text: str, input_text_type: str) -> tuple[str, str]:
+    text_type = TextType(input_text_type)
+    return TextConverter(FORMATTER_MAP[text_type])(input_text)
+
+
+FORMATTER_MAP = {
+    TextType.TEXT: TextPlainFormatter,
+    TextType.HTML: HTMLFormatter,
+    TextType.MD: MarkdownFormatter,
+    TextType.RST: reStructuredTextFormatter,
+    TextType.BBCODE: BBCodeFormatter,
+    TextType.TEXTILE: TextileFormatter,
+    TextType.MEDIAWIKI: MediaWikiFormatter,
+    TextType.CREOLE: CreoleFormatter,
+}

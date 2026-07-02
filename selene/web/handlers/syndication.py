@@ -1,34 +1,49 @@
-# -*- coding: utf-8 -*-
-import selene
+from email.utils import format_datetime
+from xml.sax.saxutils import escape
 
-from selene.web import BaseHandler
 from tornado.options import options
-from werkzeug.contrib.atom import AtomFeed
+
+import selene
+from selene.constants import PostStatus
+from selene.web import BaseHandler
 
 
 class RSSHandler(BaseHandler):
-
-    def get(self):
-        self.set_header("Content-Type", "application/rss+xml; charset=utf-8")
-        self.render("rss.xml",
-            posts=self.db.posts.find({'status': 'published'}).sort("date",
-                -1).limit(10))
+    async def get(self):
+        self.set_header('Content-Type', 'application/rss+xml; charset=utf-8')
+        posts = (
+            await self.db.posts.find({'status': PostStatus.PUBLISHED.value}).sort('date', -1).limit(10).to_list(None)
+        )
+        await self.render('rss.xml', posts=posts)
 
 
 class AtomHandler(BaseHandler):
-
-    def get(self):
-        generator = ('Selene', 'https://github.com/puentesarrin/selene',
-                     selene.version)
-        feed = AtomFeed(title=options.title, feed_url=self.reverse_url('atom'),
-                        url=options.base_url, generator=generator)
-        posts = self.db.posts.find({'status': 'published'}).sort("date",
-                                                                 -1).limit(10)
+    async def get(self):
+        posts = (
+            await self.db.posts.find({'status': PostStatus.PUBLISHED.value}).sort('date', -1).limit(10).to_list(None)
+        )
+        updated = posts[0]['date'] if posts else None
+        entries = []
         for post in posts:
-            feed.add(title=post['title'], content=post['html_content'],
-                     content_type='html', author=post['author'],
-                     url=self.reverse_url('post', post['slug']),
-                     published=post['date'], updated=post['date'])
+            url = f'{options.base_url.rstrip("/")}{self.reverse_url("post", post["slug"])}'
+            entry = f'''
+  <entry>
+    <title>{escape(post['title'])}</title>
+    <link href="{escape(url)}"/>
+    <id>{escape(url)}</id>
+    <updated>{format_datetime(post['date'])}</updated>
+    <author><name>{escape(post.get('author') or '')}</name></author>
+    <content type="html">{escape(post.get('html_content') or '')}</content>
+  </entry>'''
+            entries.append(entry)
+        feed = f'''<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>{escape(options.title)}</title>
+  <link href="{escape(options.base_url.rstrip('/') + self.reverse_url('atom'))}" rel="self"/>
+  <link href="{escape(options.base_url)}"/>
+  <id>{escape(options.base_url)}</id>
+  <generator uri="https://github.com/puentesarrin/selene" version="{escape(selene.version)}">Selene</generator>
+  <updated>{format_datetime(updated) if updated else ''}</updated>{''.join(entries)}
+</feed>'''
         self.set_header('Content-Type', 'application/atom+xml; charset=UTF-8')
-        self.write(str(feed))
-        self.finish()
+        self.write(feed)

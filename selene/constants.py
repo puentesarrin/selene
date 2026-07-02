@@ -1,17 +1,51 @@
-# -*- coding: utf-8 *-*
+from enum import StrEnum
+
+
+class PostStatus(StrEnum):
+    PUBLISHED = 'published'
+    UNPUBLISHED = 'unpublished'
+
+
+class TextType(StrEnum):
+    TEXT = 'text'
+    HTML = 'html'
+    MD = 'md'
+    RST = 'rst'
+    BBCODE = 'bbcode'
+    TEXTILE = 'textile'
+    MEDIAWIKI = 'mediawiki'
+    CREOLE = 'creole'
+
+    @property
+    def label(self) -> str:
+        labels = {
+            TextType.TEXT: 'Text plain',
+            TextType.HTML: 'HTML',
+            TextType.MD: 'Markdown',
+            TextType.RST: 'reStructuredText',
+            TextType.BBCODE: 'BBCode',
+            TextType.TEXTILE: 'Textile',
+            TextType.MEDIAWIKI: 'MediaWiki',
+            TextType.CREOLE: 'Creole',
+        }
+        return labels[self]
+
+    @classmethod
+    def choices(cls) -> list[tuple[str, str]]:
+        return [(text_type.value, text_type.label) for text_type in cls]
+
+
 CONFIRM_YOUR_ACCOUNT = 'Confirm your account'
 CONTENT_IS_REQUIRED = 'Content is required'
 EMAIL_IS_ALREADY_REGISTERED = 'Email address already registered'
 EMAIL_IS_INVALID = 'Email address is invalid'
 EMAIL_IS_REQUIRED = 'Email address is required'
 FULL_NAME_IS_REQUIRED = 'Full Name is required'
-INCORRECT_USER_PASSWORD = ('Incorrect user/password combination or invalid '
-                           'account')
+INCORRECT_USER_PASSWORD = 'Incorrect user/password combination or invalid account'
 LANGUAGE_IS_REQUIRED = 'Language is required'
 NAME_IS_REQUIRED = 'Name is required'
 PASSWORD_IS_REQUIRED = 'Password is required'
-POST_IS_ALREADY_REGISTERED = ('There are already an existing post with this '
-                              'title or slug')
+POST_IS_ALREADY_REGISTERED = 'There are already an existing post with this title or slug'
 RESET_PASSWORD = 'Reset password'
 STATUS_IS_REQUIRED = 'Status is required'
 TAGS_ARE_REQUIRED = 'Tags are required'

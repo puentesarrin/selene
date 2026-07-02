@@ -1,34 +1,29 @@
-# -*- coding: utf-8 *-*
+import asyncio
 import logging
-import tornado.web
-import tornado.httpserver
 
-from tornado.ioloop import IOLoop
+from pymongo import AsyncMongoClient
 from tornado.options import options as opts
 
-import motor
-from selene import log, options, Selene, web
+from selene import Selene, log, options
 
 
-if __name__ == '__main__':
+async def main():
     options.setup_options('selene.conf')
     if opts.logging_db:
         log.configure_mongolog()
-    if not opts.db_rs:
-        db = motor.MotorClient(opts.db_uri).open_sync()[opts.db_name]
-        logging.info('Connected to a MongoDB standalone instance.')
-    else:
-        db = motor.MotorReplicaSetClient(opts.db_uri,
-            replicaSet=opts.db_rs_name).open_sync()[opts.db_name]
-        logging.info('Connected to a MongoDB replica set.')
-    http_server = tornado.httpserver.HTTPServer(Selene(db))
-    #tornado.web.ErrorHandler = web.ErrorHandler  # Look a better way.
-    http_server.listen(opts.port)
-    logging.info('Web server listening on %s port.' % opts.port)
-    if opts.use_pyuv:
-        from tornado_pyuv import UVLoop
-        IOLoop.configure(UVLoop)
+
+    client = AsyncMongoClient(opts.db_uri)
+    db = client[opts.db_name]
+    logging.info('Connected to MongoDB.')
+
+    app = Selene(db)
+    app.listen(opts.port)
+    logging.info(f'Web server listening on {opts.port} port.')
+    await asyncio.Event().wait()
+
+
+if __name__ == '__main__':
     try:
-        IOLoop.instance().start()
+        asyncio.run(main())
     except KeyboardInterrupt:
         logging.info('Exiting with keyboard interrupt.')

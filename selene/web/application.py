@@ -1,25 +1,27 @@
-# -*- coding: utf-8 *-*
+from __future__ import annotations
+
 import logging
 import os
-import tornado.web
-import tornado.gen
+from typing import TYPE_CHECKING, Any
 
-from bson import SON
-from motor import Op
+import tornado.ioloop
+import tornado.locale
+import tornado.web
+from tornado.options import options as opts
+
 from selene import smtp
 from selene.web import routes, ui_modules
-from tornado.options import options as opts
+
+if TYPE_CHECKING:
+    from pymongo.asynchronous.database import AsyncDatabase
 
 
 class Selene(tornado.web.Application):
-
-    def __init__(self, db):
+    def __init__(self, db: AsyncDatabase[Any]):
         self.db = db
         self.smtp = smtp.SMTP()
-        self.theme_path = os.path.join(opts.themes_directory,
-                                       opts.selected_theme)
+        self.theme_path = os.path.join(opts.themes_directory, opts.selected_theme)
         self.setup_translations()
-        self.setup_fts()
         settings = {
             'login_url': '/login',
             'static_path': os.path.join(self.theme_path, 'static'),
@@ -27,43 +29,37 @@ class Selene(tornado.web.Application):
             'xsrf_cookies': True,
             'cookie_secret': opts.cookie_secret,
             'ui_modules': ui_modules,
-            'debug': opts.debug
+            'debug': opts.debug,
         }
         if opts.static_url_prefix:
             settings['static_url_prefix'] = opts.static_url_prefix
         if opts.twitter_consumer_key and opts.twitter_consumer_secret:
             settings['twitter_consumer_key'] = opts.twitter_consumer_key
             settings['twitter_consumer_secret'] = opts.twitter_consumer_secret
-        tornado.web.Application.__init__(self, routes.urls +
-            [(r"/(favicon\.ico)", tornado.web.StaticFileHandler,
-            {'path': settings['static_path']})], **settings)
+        super().__init__(
+            [*routes.urls, (r'/(favicon\.ico)', tornado.web.StaticFileHandler, {'path': settings['static_path']})],
+            **settings,
+        )
+        tornado.ioloop.IOLoop.current().spawn_callback(self.setup_fts)
 
-    @tornado.gen.engine
-    def setup_fts(self):
-        # TODO: Should be used with a sync db connection.
-        if opts.db_use_fts:
-            try:
-                yield Op(self.db.connection.admin.command,
-                    SON([('getParameter', 1),
-                            ('textSearchEnabled', 1)]))['textSearchEnabled']
-                yield Op(self.db.posts.ensure_index,
-                    [('plain_content', 'text')])
-            except:
-                opts.db_use_fts = False
-                logging.warning('Full text search is probably not activated '
-                    'on MongoDB server, If you want to activated it, use 2.4 '
-                    'version and issue the following command on admin '
-                    'database:\n db.runCommand({ setParameter: 1, '
-                    'textSearchEnabled: true })')
+    async def setup_fts(self):
+        try:
+            await self.db.posts.create_index([('plain_content', 'text')])
+        except Exception:
+            logging.warning('MongoDB text search could not be enabled. Regex search will be used for queries.')
 
     def setup_translations(self):
         tornado.locale.LOCALE_NAMES['zh_HK'] = {
             'name_en': 'Chinese (Hong Kong)',
-            'name': '\u4e2d\u6587(\u7e41\u9ad4)'
+            'name': '中文(繁體)',
         }
-        tornado.locale.load_translations("translations")
+        tornado.locale.load_translations('translations')
         tornado.locale.set_default_locale(opts.default_locale)
-        logging.info('Loaded translations: {}.'.format(
-            ', '.join(sorted([v['name_en'] for k, v in
-                list(tornado.locale.LOCALE_NAMES.items()) if k in
-                tornado.locale.get_supported_locales()]))))
+        supported = sorted(
+            [
+                v['name_en']
+                for k, v in list(tornado.locale.LOCALE_NAMES.items())
+                if k in tornado.locale.get_supported_locales()
+            ]
+        )
+        logging.info(f'Loaded translations: {", ".join(supported)}.')

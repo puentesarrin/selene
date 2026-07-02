@@ -25,7 +25,7 @@
             <fieldset>
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">{{ _("Delete") }}</button>
-                <a href="{{ '/post/%s' % post['slug'] }}" class="btn">{{ _("Cancel") }}</a>
+                <a href="{{ reverse_url('post', post['slug']) }}" class="btn">{{ _("Cancel") }}</a>
             </div>
         </form>
     </div>

@@ -11,7 +11,7 @@
                             <p>
                                 <blockquote>
                                     <b>{{ comment['name'] }}</b> commented on
-                                    <a href="{{ '/post/%s' % comment['post']['slug'] }}">{{ comment['post']['title'] }}</a>:
+                                    <a href="{{ reverse_url('post', comment['post']['slug']) }}">{{ comment['post']['title'] }}</a>:
                                     {% if len(comment['content']) > 100 %}
                                         {{ comment['content'][:100] }}...
                                     {% else %}

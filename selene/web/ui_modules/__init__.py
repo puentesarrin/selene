@@ -1,30 +1,31 @@
-# -*- coding: utf-8 *-*
 from selene.base import BaseUIModule
-from selene.web.ui_modules.authentication import *
-from selene.web.ui_modules.blog import *
-from selene.web.ui_modules.social import *
+from selene.web.ui_modules.authentication import *  # noqa: F403
+from selene.web.ui_modules.blog import *  # noqa: F403
+from selene.web.ui_modules.social import *  # noqa: F403
 
 
 class MenuModule(BaseUIModule):
-
     def render(self, url_path, current_user):
-        return self.render_string("modules/menu.html", url_path=url_path,
-            current_user=current_user)
+        return self.render_string(
+            'modules/menu.html',
+            url_path=url_path,
+            current_user=current_user,
+        )
 
 
 class MessageModule(BaseUIModule):
-
     def render(self, message):
-        return self.render_string('modules/message.html', message=message)
+        return self.render_string(
+            'modules/message.html',
+            message=message,
+        )
 
 
 class PoweredByModule(BaseUIModule):
-
     def render(self):
-        return self.render_string("modules/powered_by.html")
+        return self.render_string('modules/powered_by.html')
 
 
 class GoogleAnalyticsModule(BaseUIModule):
-
     def render(self):
         return self.render_string('modules/googleanalytics.html')

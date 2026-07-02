@@ -1,4 +1,4 @@
-# -*- coding: utf-8 *-*
-from selene.helpers.list_helper import *
-from selene.helpers.random_helper import *
-from selene.helpers.avatar_helper import *
+from selene.helpers.avatar_helper import *  # noqa: F403
+from selene.helpers.list_helper import *  # noqa: F403
+from selene.helpers.random_helper import *  # noqa: F403
+from selene.text import *  # noqa: F403

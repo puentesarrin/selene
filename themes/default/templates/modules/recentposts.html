@@ -5,7 +5,7 @@
             <ul>
                 {% for post in posts %}
                     <li>
-                        <a href="{{ '/post/%s' % post['slug'] }}">{{ post['title'] }}</a>
+                        <a href="{{ reverse_url('post', post['slug']) }}">{{ post['title'] }}</a>
                     </li>
                 {% end %}
             </ul>
