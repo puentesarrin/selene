@@ -14,12 +14,15 @@
     <thead>
         <tr>
             <th>{{ _("Title") }}</th>
+            {% if current_user and current_user.get('is_admin') %}
+                <th>{{ _("Author") }}</th>
+            {% end %}
             <th>{{ _("Status") }}</th>
             <th>{{ _("Date") }}</th>
             <th>&nbsp;</th>
         </tr>
     </thead>
-    </tbody>
+    <tbody>
         {% if len(posts) %}
             {% for post in posts %}
             <tr>
@@ -28,6 +31,9 @@
                         {{ post['title'] }}
                     </a>
                 </td>
+                {% if current_user and current_user.get('is_admin') %}
+                    <td>{{ post['author'] }}</td>
+                {% end %}
                 <td>
                     {{ _(post['status'].capitalize()) }}
                 </td>
@@ -35,27 +41,29 @@
                     {{ post['date'].strftime('%b %d, %Y %I:%M%p') }}
                 </td>
                 <td>
-                    <a class="btn btn-primary" href="{{ reverse_url('post-edit', post['slug']) }}">
-                        <i class="icon-edit"></i>
-                        {{ _("Edit") }}
-                    </a>
-                    <a class="btn" href="{{ reverse_url('post-delete', post['slug']) }}">
-                        <i class="icon-remove"></i>
-                        {{ _("Delete") }}
-                    </a>
+                    {% if post['can_manage'] %}
+                        <a class="btn btn-primary" href="{{ reverse_url('post-edit', post['slug']) }}">
+                            <i class="icon-edit"></i>
+                            {{ _("Edit") }}
+                        </a>
+                        <a class="btn" href="{{ reverse_url('post-delete', post['slug']) }}">
+                            <i class="icon-remove"></i>
+                            {{ _("Delete") }}
+                        </a>
+                    {% end %}
                 </td>
             </tr>
             {% end %}
         {% else %}
             <tr>
-                <td colspan="3">
+                <td colspan="{{ 5 if current_user and current_user.get('is_admin') else 4 }}">
                     <div class="alert alert-info">
                         {{ _("No one has posted yet") }}
                     </div>
                 </td>
             </tr>
         {% end %}
-    </thead>
+    </tbody>
 </table>
 {% end %}
 

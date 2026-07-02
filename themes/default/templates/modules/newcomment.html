@@ -3,26 +3,25 @@
         <legend>{{ _("New comment") }}</legend>
         <div class="row-fluid">
             <div class="span5">
-                <div class="control-group">
-                    {% raw form.name.label(class_="control-label") %}
-                    <div class="controls">
-                        {% if current_user %}
-                            {% raw form.name(placeholder=form.name.label.text, class_="input-block-level", disabled="disabled") %}
-                        {% else %}
+                {% if current_user %}
+                    <p>
+                        <strong>{{ current_user.get('full_name') or current_user.get('name') }}</strong>
+                        <span>{{ current_user['email'] }}</span>
+                    </p>
+                {% else %}
+                    <div class="control-group">
+                        {% raw form.name.label(class_="control-label") %}
+                        <div class="controls">
                             {% raw form.name(placeholder=form.name.label.text, class_="input-block-level") %}
-                        {% end %}
+                        </div>
                     </div>
-                </div>
-                <div class="control-group">
-                    {% raw form.email.label(class_="control-label") %}
-                    <div class="controls">
-                        {% if current_user %}
-                            {% raw form.email(placeholder=form.name.label.text, class_="input-block-level", disabled="disabled") %}
-                        {% else %}
-                            {% raw form.email(placeholder=form.name.label.text, class_="input-block-level") %}
-                        {% end %}
+                    <div class="control-group">
+                        {% raw form.email.label(class_="control-label") %}
+                        <div class="controls">
+                            {% raw form.email(placeholder=form.email.label.text, class_="input-block-level") %}
+                        </div>
                     </div>
-                </div>
+                {% end %}
             </div>
             <div class="span7">
                 <div class="control-group">

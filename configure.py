@@ -1,9 +1,12 @@
+import getpass
 import sys
 import textwrap
 from collections import OrderedDict
 from datetime import datetime, timedelta
 from typing import Any, NoReturn
 
+import bcrypt
+from pymongo import MongoClient
 from tornado.options import options as opts
 
 from selene import options, version
@@ -112,10 +115,67 @@ def generate_configuration_file() -> None:
         f.write('\n'.join(header + lines))
 
 
+def _prompt_yes_no(prompt: str, default: bool = True) -> bool:
+    suffix = '[Y/n]' if default else '[y/N]'
+    value = input(f'{prompt} {suffix} ').strip().lower()
+    if not value:
+        return default
+    return value in ('y', 'yes')
+
+
+def _prompt_non_empty(prompt: str) -> str:
+    while True:
+        value = input(prompt).strip()
+        if value:
+            return value
+        print('* Please enter some text.')
+
+
+def _prompt_password() -> str:
+    while True:
+        password = getpass.getpass('> admin password: ')
+        confirm = getpass.getpass('> confirm password: ')
+        if password and password == confirm:
+            return password
+        print('* Passwords do not match.')
+
+
+def bootstrap_database() -> None:
+    if not _prompt_yes_no('Create the initial admin user and site settings now?', default=True):
+        return
+    client = MongoClient(opts.db_uri)
+    db = client[opts.db_name]
+    site_settings = {'_id': 'site', 'title': opts.title, 'slogan': opts.slogan}
+    existing_settings = db.settings.find_one({'_id': 'site'})
+    if existing_settings:
+        db.settings.update_one({'_id': 'site'}, {'$set': {'title': opts.title, 'slogan': opts.slogan}})
+    else:
+        db.settings.insert_one(site_settings)
+    full_name = _prompt_non_empty('> admin full name: ')
+    email = _prompt_non_empty('> admin email: ')
+    password = _prompt_password()
+    user = {
+        'full_name': full_name,
+        'email': email,
+        'password': bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8'),
+        'enabled': True,
+        'is_admin': True,
+        'join': datetime.now(),
+        'locale': opts.default_language,
+    }
+    existing_user = db.users.find_one({'email': email})
+    if existing_user:
+        db.users.update_one({'email': email}, {'$set': user})
+    else:
+        db.users.insert_one(user)
+    print('Initial admin user created.')
+
+
 if __name__ == '__main__':
     try:
         print(WELCOME_MESSAGE)
         options.define_options()
         generate_configuration_file()
+        bootstrap_database()
     except KeyboardInterrupt:
         exit()

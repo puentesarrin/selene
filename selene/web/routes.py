@@ -16,6 +16,7 @@ urls = [
     url(r'/logout', handlers.LogoutHandler, name='logout'),
     url(r'/change-language', handlers.ChangeLanguageHandler, name='change-language'),
     url(r'/my-account', handlers.AccountHandler, name='my-account'),
+    url(r'/admin', handlers.AdminDashboardHandler, name='admin'),
     url(r'/post/new', handlers.NewPostHandler, name='post-new'),
     url(r'/post/([a-zA-Z0-9-]+)', handlers.PostHandler, name='post'),
     url(r'/post/([a-zA-Z0-9-]+)/edit', handlers.EditPostHandler, name='post-edit'),

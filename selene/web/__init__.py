@@ -47,6 +47,17 @@ def redirect_authenticated_user(f):
     return wrapper
 
 
+def admin_required(f):
+
+    @functools.wraps(f)
+    async def wrapper(self, *args, **kwargs):
+        if not self.current_user or not self.current_user.get('is_admin'):
+            raise tornado.web.HTTPError(403)
+        return await f(self, *args, **kwargs)
+
+    return wrapper
+
+
 def validate_form(form_class, template, **params):
 
     def decorator(f):
@@ -76,6 +87,7 @@ class BaseHandler(tornado.web.RequestHandler):
     async def prepare(self):
         self._current_user = await self.get_current_user_async()
         self._user_cache: dict[Any, dict[str, Any] | None] = {}
+        self._site_settings: dict[str, Any] | None = None
 
     def get_current_user(self):
         return getattr(self, '_current_user', None)
@@ -126,11 +138,41 @@ class BaseHandler(tornado.web.RequestHandler):
             user_cache[user_id] = await self.db.users.find_one({'_id': user_id})
         return user_cache[user_id]
 
+    async def get_site_settings_async(self) -> dict[str, Any]:
+        site_settings = getattr(self, '_site_settings', None)
+        if site_settings is None:
+            site_settings = await self.db.settings.find_one({'_id': 'site'}) or {}
+            self._site_settings = site_settings
+        return site_settings
+
+    def can_manage_post(self, post: dict[str, Any]) -> bool:
+        user = self.current_user
+        if not user:
+            return False
+        if user.get('is_admin'):
+            return True
+        user_id = user.get('_id')
+        if post.get('author_id') and post.get('author_id') == user_id:
+            return True
+        return post.get('email') == user.get('email')
+
+    def can_manage_comment(self, comment: dict[str, Any]) -> bool:
+        user = self.current_user
+        if not user:
+            return False
+        if user.get('is_admin'):
+            return True
+        user_id = user.get('_id')
+        if comment.get('author_id') and comment.get('author_id') == user_id:
+            return True
+        return comment.get('email') == user.get('email')
+
     async def hydrate_post(self, post: dict[str, Any]) -> dict[str, Any]:
         user = await self._user_by_id(post.get('author_id'))
         if user:
             post['author'] = self._user_name(user)
             post['email'] = user.get('email')
+        post['can_manage'] = self.can_manage_post(post)
         if post.get('comments'):
             await self.hydrate_comments(post['comments'])
         return post
@@ -145,6 +187,7 @@ class BaseHandler(tornado.web.RequestHandler):
         if user:
             comment['name'] = self._user_name(user)
             comment['email'] = user.get('email')
+        comment['can_manage'] = self.can_manage_comment(comment)
         if comment.get('post'):
             await self.hydrate_post(comment['post'])
         return comment
@@ -166,6 +209,7 @@ class BaseHandler(tornado.web.RequestHandler):
             comment['post'] = await self.db.posts.find_one({'_id': comment['postid']})
         await self.hydrate_posts(posts)
         await self.hydrate_comments(comments)
+        site_settings = await self.get_site_settings_async()
         tags_cursor = await self.db.posts.aggregate(
             [
                 {'$match': {'status': PostStatus.PUBLISHED.value}},
@@ -197,6 +241,9 @@ class BaseHandler(tornado.web.RequestHandler):
                 '_next': self.get_argument('next', ''),
                 '_posts': posts,
                 '_comments': comments,
+                'site_title': site_settings.get('title', options.title),
+                'site_slogan': site_settings.get('slogan', options.slogan),
+                'site_settings': site_settings,
                 'opts': opts,
                 'options': options,
                 'forms': forms,

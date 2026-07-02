@@ -41,7 +41,7 @@
                 </div>
                 <div class="btn-group pull-right">
                     {% module VoteModule(post=post) %}
-                    {% if current_user %}
+                    {% if post['can_manage'] %}
                     <a class="btn btn-primary" href="{{ reverse_url('post-edit', post['slug']) }}" title="{{ _('Edit post') }}">
                         <i class="icon-edit"></i>
                     </a>

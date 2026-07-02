@@ -24,6 +24,7 @@ class AtomHandler(BaseHandler):
             await self.db.posts.find({'status': PostStatus.PUBLISHED.value}).sort('date', -1).limit(10).to_list(None)
         )
         await self.hydrate_posts(posts)
+        site_settings = await self.get_site_settings_async()
         updated = posts[0]['date'] if posts else None
         entries = []
         for post in posts:
@@ -40,7 +41,7 @@ class AtomHandler(BaseHandler):
             entries.append(entry)
         feed = f'''<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>{escape(options.title)}</title>
+  <title>{escape(site_settings.get('title', options.title))}</title>
   <link href="{escape(options.base_url.rstrip('/') + self.reverse_url('atom'))}" rel="self"/>
   <link href="{escape(options.base_url)}"/>
   <id>{escape(options.base_url)}</id>

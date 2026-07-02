@@ -73,6 +73,7 @@ class RegisterHandler(BaseHandler):
             {
                 'password': hash_password(self.form.data['password']),
                 'enabled': False,
+                'is_admin': False,
                 'join': datetime.datetime.now(),
                 'join_hash': helpers.generate_md5(),
                 'locale': options.default_language,
@@ -141,6 +142,7 @@ class _ThirdPartyLoginHandler(BaseHandler):
             'email': email,
             'full_name': full_name,
             'enabled': True,
+            'is_admin': False,
             'locale': options.default_language,
             'auth_provider': self.provider_name,
             'auth_id': provider_id,

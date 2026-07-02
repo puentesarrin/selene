@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}
+ | {{ _("Dashboard") }}
+{% end %}
+
+{% block header %}
+{% end %}
+
+{% block content %}
+<h2>{{ _("Dashboard") }}</h2>
+<div class="row-fluid">
+    <div class="span4">
+        <fieldset>
+            <legend>{{ _("Status") }}</legend>
+            <ul class="unstyled">
+                <li><strong>{{ _("Python") }}</strong> {{ status['python'] }}</li>
+                <li><strong>{{ _("Tornado") }}</strong> {{ status['tornado'] }}</li>
+                <li><strong>{{ _("PyMongo") }}</strong> {{ status['pymongo'] }}</li>
+                <li><strong>{{ _("Selene") }}</strong> {{ status['selene'] }}</li>
+                <li><strong>{{ _("Database") }}</strong> {{ status['database'] }}</li>
+            </ul>
+        </fieldset>
+        <fieldset>
+            <legend>{{ _("Summary") }}</legend>
+            <ul class="unstyled">
+                <li><strong>{{ _("Users") }}</strong> {{ stats['users'] }}</li>
+                <li><strong>{{ _("Posts") }}</strong> {{ stats['posts'] }}</li>
+                <li><strong>{{ _("Published") }}</strong> {{ stats['published_posts'] }}</li>
+                <li><strong>{{ _("Drafts") }}</strong> {{ stats['draft_posts'] }}</li>
+                <li><strong>{{ _("Comments") }}</strong> {{ stats['comments'] }}</li>
+            </ul>
+        </fieldset>
+    </div>
+    <div class="span8">
+        <fieldset>
+            <legend>{{ _("Site settings") }}</legend>
+            <form method="post" class="form-horizontal">
+                <div class="control-group">
+                    {% raw form.title.label(class_="control-label") %}
+                    <div class="controls">
+                        {% raw form.title(placeholder=form.title.label.text, class_="input-block-level") %}
+                    </div>
+                </div>
+                <div class="control-group">
+                    {% raw form.slogan.label(class_="control-label") %}
+                    <div class="controls">
+                        {% raw form.slogan(placeholder=form.slogan.label.text, class_="input-block-level") %}
+                    </div>
+                </div>
+                {% raw xsrf_form_html() %}
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="icon-ok"></i>
+                        {{ _("Save") }}
+                    </button>
+                </div>
+            </form>
+        </fieldset>
+    </div>
+</div>
+<div class="row-fluid">
+    <fieldset>
+        <legend>{{ _("All posts") }}</legend>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{{ _("Title") }}</th>
+                    <th>{{ _("Author") }}</th>
+                    <th>{{ _("Status") }}</th>
+                    <th>{{ _("Date") }}</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if len(posts) %}
+                    {% for post in posts %}
+                        <tr>
+                            <td>
+                                <a href="{{ reverse_url('post', post['slug']) }}">{{ post['title'] }}</a>
+                            </td>
+                            <td>{{ post['author'] }}</td>
+                            <td>{{ _(post['status'].capitalize()) }}</td>
+                            <td>{{ post['date'].strftime('%b %d, %Y %I:%M%p') }}</td>
+                            <td>
+                                <a class="btn btn-primary" href="{{ reverse_url('post-edit', post['slug']) }}">
+                                    <i class="icon-edit"></i>
+                                    {{ _("Edit") }}
+                                </a>
+                                <a class="btn" href="{{ reverse_url('post-delete', post['slug']) }}">
+                                    <i class="icon-remove"></i>
+                                    {{ _("Delete") }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% end %}
+                {% else %}
+                    <tr>
+                        <td colspan="5">
+                            <div class="alert alert-info">
+                                {{ _("No one has posted yet") }}
+                            </div>
+                        </td>
+                    </tr>
+                {% end %}
+            </tbody>
+        </table>
+    </fieldset>
+</div>
+{% end %}
+
+{% block footer %}
+{% end %}

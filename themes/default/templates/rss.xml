@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xml:base="{{ options.base_url }}"  xmlns:dc="http://purl.org/dc/elements/1.1/">
 <channel>
-    <title>{{ options.title }}</title>
+    <title>{{ site_title }}</title>
     <link>{{ options.base_url }}</link>
-    <description>{{ options.slogan }}</description>
+    <description>{{ site_slogan }}</description>
     <language>{{ options.default_language }}</language>
     {% for post in posts %}
     <item>

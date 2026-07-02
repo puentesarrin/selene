@@ -7,6 +7,11 @@
             <li {% if url_path == '/my-account' %}class="active"{% end %}>
                 <a href="/my-account">{{ _("My account") }}</a>
             </li>
+            {% if current_user.get('is_admin') %}
+                <li {% if url_path == '/admin' %}class="active"{% end %}>
+                    <a href="/admin">{{ _("Dashboard") }}</a>
+                </li>
+            {% end %}
             <li {% if url_path == '/posts' %}class="active"{% end %}>
                 <a href="/posts">{{ _("List posts") }}</a>
             </li>

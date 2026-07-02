@@ -38,11 +38,20 @@ def ensure_options():
     options.page_size_search_posts = 10
     options.base_url = 'http://localhost'
     options.title = 'Selene'
+    options.slogan = 'A simple CMS for blogging built with Tornado and MongoDB'
     options.allowed_text_types = [text_type.value for text_type in TextType]
 
 
 def matches(document, query):
     for key, expected in query.items():
+        if key == '$or':
+            if not any(matches(document, item) for item in expected):
+                return False
+            continue
+        if key == '$and':
+            if not all(matches(document, item) for item in expected):
+                return False
+            continue
         value = document.get(key)
         if hasattr(expected, 'search'):
             if not expected.search(value or ''):
@@ -154,6 +163,7 @@ class FakeDB:
         self.posts = FakeCollection()
         self.comments = FakeCollection()
         self.users = FakeCollection()
+        self.settings = FakeCollection()
         self.client = SimpleNamespace(admin=SimpleNamespace(command=self.command))
 
     async def command(self, *args, **kwargs):

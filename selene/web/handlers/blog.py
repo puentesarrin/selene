@@ -139,6 +139,8 @@ class EditPostHandler(BaseHandler):
         post = await self.db.posts.find_one({'slug': slug})
         if not post:
             raise tornado.web.HTTPError(404)
+        if not self.can_manage_post(post):
+            raise tornado.web.HTTPError(403)
         post['tags'] = ','.join(post['tags'])
         form = forms.PostForm(
             locale_code=self.locale.code,
@@ -180,6 +182,8 @@ class EditPostHandler(BaseHandler):
             text_type_choices=opts.get_allowed_text_types(),
             **new_post,
         )
+        if not self.can_manage_post(await self.db.posts.find_one({'slug': slug}) or {}):
+            raise tornado.web.HTTPError(403)
         await self.db.posts.update_one({'slug': slug}, {'$set': new_post})
         if new_post['status'] == PostStatus.PUBLISHED.value:
             self.redirect(f'/post/{new_slug}')
@@ -191,6 +195,10 @@ class DeletePostHandler(BaseHandler):
     @authenticated_async
     async def get(self, slug):
         post = await self.db.posts.find_one({'slug': slug}, {'title': 1, 'slug': 1})
+        if not post:
+            raise tornado.web.HTTPError(404)
+        if not self.can_manage_post(post):
+            raise tornado.web.HTTPError(403)
         await self.render('deletepost.html', post=post)
 
     @authenticated_async
@@ -198,6 +206,8 @@ class DeletePostHandler(BaseHandler):
         post = await self.db.posts.find_one({'slug': slug})
         if not post:
             raise tornado.web.HTTPError(404)
+        if not self.can_manage_post(post):
+            raise tornado.web.HTTPError(403)
         await self.db.comments.delete_many({'postid': post['_id']})
         await self.db.posts.delete_one({'slug': slug})
         self.redirect(self.reverse_url('posts'))
@@ -216,7 +226,10 @@ class PostsHandlers(BaseHandler):
     async def get(self):
         title = self.get_argument('title', '')
         title_filter = re.compile(rf'.*{re.escape(title)}.*', re.IGNORECASE)
-        posts_cursor = self.db.posts.find({'title': title_filter})
+        query = {'title': title_filter}
+        if not self.current_user.get('is_admin'):
+            query = {'$and': [query, {'$or': [{'author_id': self.current_user['_id']}, {'email': self.current_user['email']}]}]}
+        posts_cursor = self.db.posts.find(query)
         posts_cursor = posts_cursor.sort('date', -1)
         posts = await posts_cursor.to_list(None)
         await self.render('posts.html', title=title, posts=posts)
@@ -316,6 +329,8 @@ class NewCommentHandler(BaseHandler):
             comment['email'] = self.get_argument('email', '')
         else:
             comment['author_id'] = self.current_user['_id']
+            comment['name'] = self.current_user.get('full_name') or self.current_user.get('name')
+            comment['email'] = self.current_user['email']
         await self.db.comments.insert_one(comment)
         self.redirect(f'/post/{slug}')
 
@@ -342,6 +357,8 @@ class EditCommentHandler(BaseHandler):
         comment = await self.db.comments.find_one({'_id': ObjectId(comment_id)})
         if not comment:
             raise tornado.web.HTTPError(404)
+        if not self.can_manage_comment(comment):
+            raise tornado.web.HTTPError(403)
         post = await self.db.posts.find_one({'_id': comment['postid']})
         await self.render('editcomment.html', post=post, comment=comment)
 
@@ -350,8 +367,11 @@ class EditCommentHandler(BaseHandler):
         comment = await self.db.comments.find_one({'_id': ObjectId(comment_id)}, {'postid': 1})
         if not comment:
             raise tornado.web.HTTPError(404)
+        full_comment = await self.db.comments.find_one({'_id': ObjectId(comment_id)})
+        if not self.can_manage_comment(full_comment or {}):
+            raise tornado.web.HTTPError(403)
         update = {'content': self.get_argument('content')}
-        if not comment.get('author_id'):
+        if not (full_comment or {}).get('author_id'):
             update.update({'name': self.get_argument('name'), 'email': self.get_argument('email')})
         await self.db.comments.update_one({'_id': ObjectId(comment_id)}, {'$set': update})
         post = await self.db.posts.find_one({'_id': comment['postid']})
@@ -364,14 +384,18 @@ class DeleteCommentHandler(BaseHandler):
         comment = await self.db.comments.find_one({'_id': ObjectId(comment_id)})
         if not comment:
             raise tornado.web.HTTPError(404)
+        if not self.can_manage_comment(comment):
+            raise tornado.web.HTTPError(403)
         post = await self.db.posts.find_one({'_id': comment['postid']})
         await self.render('deletecomment.html', post=post, comment=comment)
 
     @authenticated_async
     async def post(self, comment_id):
-        comment = await self.db.comments.find_one({'_id': ObjectId(comment_id)}, {'postid': 1})
+        comment = await self.db.comments.find_one({'_id': ObjectId(comment_id)})
         if not comment:
             raise tornado.web.HTTPError(404)
+        if not self.can_manage_comment(comment):
+            raise tornado.web.HTTPError(403)
         post = await self.db.posts.find_one({'_id': comment['postid']})
         await self.db.comments.delete_one({'_id': ObjectId(comment_id)})
         self.redirect(f'/post/{post["slug"]}')

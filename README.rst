@@ -86,14 +86,23 @@ Quickstart
    If you change the server ``port``, update ``base_url`` to match so links
    generated in emails and feeds keep pointing at the running instance.
 
-3. Configure your Selene instance using the ``configure.py`` script, setting
-   all available options::
+3. Configure your Selene instance using the ``configure.py`` script.
+
+   The wizard writes ``selene_sample.conf`` and can also bootstrap the
+   database with the initial site settings and admin user::
 
       python configure.py
 
 4. Run your Selene instance::
 
       python server.py
+
+Administration
+--------------
+
+* Admins manage posts and site settings from ``/admin``.
+* Comments are created from post pages, and edit/delete is limited to the
+  comment author or an admin.
 
 Testing
 -------

@@ -38,8 +38,10 @@
         </div>
         <div class="row-fluid text-right">
             <div class="span12 btn-group">
-                {% module EditCommentModule(comment=comment) %}
-                {% module DeleteCommentModule(comment=comment) %}
+                {% if comment['can_manage'] %}
+                    {% module EditCommentModule(comment=comment) %}
+                    {% module DeleteCommentModule(comment=comment) %}
+                {% end %}
             </div>
         </div>
     </div>

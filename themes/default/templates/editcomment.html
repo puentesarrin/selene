@@ -19,18 +19,25 @@
                 </p>
                 <div class="row-fluid">
                     <div class="span5">
-                        <div class="control-group">
-                            {% raw form.name.label(class_="control-label") %}
-                            <div class="controls">
-                                {% raw form.name(placeholder=form.name.label.text, class_="input-block-level") %}
+                        {% if comment.get('author_id') %}
+                            <p>
+                                <strong>{{ comment['name'] }}</strong>
+                                <span>{{ comment['email'] }}</span>
+                            </p>
+                        {% else %}
+                            <div class="control-group">
+                                {% raw form.name.label(class_="control-label") %}
+                                <div class="controls">
+                                    {% raw form.name(placeholder=form.name.label.text, class_="input-block-level") %}
+                                </div>
                             </div>
-                        </div>
-                        <div class="control-group">
-                            {% raw form.email.label(class_="control-label") %}
-                            <div class="controls">
-                                {% raw form.email(placeholder=form.email.label.text, class_="input-block-level") %}
+                            <div class="control-group">
+                                {% raw form.email.label(class_="control-label") %}
+                                <div class="controls">
+                                    {% raw form.email(placeholder=form.email.label.text, class_="input-block-level") %}
+                                </div>
                             </div>
-                        </div>
+                        {% end %}
                     </div>
                     <div class="span7">
                         <div class="control-group">
@@ -42,7 +49,7 @@
                         {% raw xsrf_form_html() %}
                     </div>
                 </div>
-            <fieldset>
+            </fieldset>
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">{{ _("Edit") }}</button>
                 <a href="{{ reverse_url('post', post['slug']) }}" class="btn">{{ _("Cancel") }}</a>
