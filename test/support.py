@@ -18,6 +18,13 @@ def ensure_options():
     options.default_language = 'en_US'
     options.debug = False
     options.static_url_prefix = None
+    options.google_login_enabled = False
+    options.google_oauth_key = None
+    options.google_oauth_secret = None
+    options.facebook_login_enabled = False
+    options.facebook_api_key = None
+    options.facebook_secret = None
+    options.twitter_login_enabled = False
     options.twitter_consumer_key = None
     options.twitter_consumer_secret = None
     options.recent_posts_limit = 10

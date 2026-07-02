@@ -30,10 +30,16 @@ class Selene(tornado.web.Application):
             'cookie_secret': opts.cookie_secret,
             'ui_modules': ui_modules,
             'debug': opts.debug,
+            'redirect_base_uri': opts.base_url.rstrip('/'),
         }
         if opts.static_url_prefix:
             settings['static_url_prefix'] = opts.static_url_prefix
-        if opts.twitter_consumer_key and opts.twitter_consumer_secret:
+        if opts.google_login_enabled and opts.google_oauth_key and opts.google_oauth_secret:
+            settings['google_oauth'] = {'key': opts.google_oauth_key, 'secret': opts.google_oauth_secret}
+        if opts.facebook_login_enabled and opts.facebook_api_key and opts.facebook_secret:
+            settings['facebook_api_key'] = opts.facebook_api_key
+            settings['facebook_secret'] = opts.facebook_secret
+        if opts.twitter_login_enabled and opts.twitter_consumer_key and opts.twitter_consumer_secret:
             settings['twitter_consumer_key'] = opts.twitter_consumer_key
             settings['twitter_consumer_secret'] = opts.twitter_consumer_secret
         super().__init__(

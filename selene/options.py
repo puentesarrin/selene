@@ -148,6 +148,16 @@ def define_options():
     define('gravatar_for_posts', default=True, type=bool, help='Enable Gravatar images on posts', group=group)
     define('gravatar_for_comments', default=True, type=bool, help='Enable Gravatar images on comments', group=group)
 
+    # Third-party auth
+    group = 'Third-party auth'
+    define('google_login_enabled', default=False, type=bool, help='Enable Google login', group=group)
+    define('google_oauth_key', type=str, help='Google OAuth client ID', group=group)
+    define('google_oauth_secret', type=str, help='Google OAuth client secret', group=group)
+    define('facebook_login_enabled', default=False, type=bool, help='Enable Facebook login', group=group)
+    define('facebook_api_key', type=str, help='Facebook app ID', group=group)
+    define('facebook_secret', type=str, help='Facebook app secret', group=group)
+    define('twitter_login_enabled', default=False, type=bool, help='Enable Twitter login', group=group)
+
     # Twitter auth
     group = 'Twitter auth'
     define('twitter_consumer_key', default=None, type=str, help='Twitter consumer key for authentication', group=group)

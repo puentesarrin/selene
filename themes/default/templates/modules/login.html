@@ -23,5 +23,21 @@
                 </button>
             </div>
         </div>
+
+{% if (options.google_login_enabled and options.google_oauth_key and options.google_oauth_secret) or (options.facebook_login_enabled and options.facebook_api_key and options.facebook_secret) or (options.twitter_login_enabled and options.twitter_consumer_key and options.twitter_consumer_secret) %}
+        <div class="control-group">
+            <div class="controls">
+                {% if options.google_login_enabled and options.google_oauth_key and options.google_oauth_secret %}
+                    {% module GoogleLoginModule() %}
+                {% end %}
+                {% if options.facebook_login_enabled and options.facebook_api_key and options.facebook_secret %}
+                    {% module FacebookLoginModule() %}
+                {% end %}
+                {% if options.twitter_login_enabled and options.twitter_consumer_key and options.twitter_consumer_secret %}
+                    {% module TwitterLoginModule() %}
+                {% end %}
+            </div>
+        </div>
+{% end %}
     </fieldset>
 </form>
