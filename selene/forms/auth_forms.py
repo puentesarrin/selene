@@ -2,7 +2,7 @@ from wtforms import HiddenField, PasswordField, SelectField, StringField
 from wtforms.validators import DataRequired, Email
 
 from selene import constants
-from selene.base import BaseForm
+from wtforms_tornado import BaseForm
 
 
 class RegisterForm(BaseForm):

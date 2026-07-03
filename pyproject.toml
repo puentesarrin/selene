@@ -12,6 +12,7 @@ dependencies = [
     "Pygments>=2.17",
     "python-slugify>=8.0",
     "aiosmtplib>=5.1.2",
+    "wtforms-tornado>=0.1.0,<0.2",
 ]
 
 [project.optional-dependencies]

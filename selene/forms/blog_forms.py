@@ -2,7 +2,7 @@ from wtforms import BooleanField, RadioField, SelectField, StringField, TextArea
 from wtforms.validators import DataRequired, Email
 
 from selene import constants
-from selene.base import BaseForm
+from wtforms_tornado import BaseForm
 from selene.constants import PostStatus
 
 

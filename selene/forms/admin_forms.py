@@ -2,7 +2,7 @@ from wtforms import StringField
 from wtforms.validators import DataRequired
 
 from selene import constants
-from selene.base import BaseForm
+from wtforms_tornado import BaseForm
 
 
 class SiteSettingsForm(BaseForm):
